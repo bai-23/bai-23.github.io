@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bai-23.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。 它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。 TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。 TS完全兼容JS，换言之，任何的JS代码都可以直接当成JS使用。   相较于JS而言，TS拥有了静态类型，更加严格的语法，更强大的功能； TS可以在代码执行前就完成代码的">
+<meta name="description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。 它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。 TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TypeScript">
+<meta property="og:title" content="TypeScript学习笔记">
 <meta property="og:url" content="https://bai-23.github.io/2021/07/21/TypeScript/index.html">
 <meta property="og:site_name" content="XXG0">
-<meta property="og:description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。 它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。 TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。 TS完全兼容JS，换言之，任何的JS代码都可以直接当成JS使用。   相较于JS而言，TS拥有了静态类型，更加严格的语法，更强大的功能； TS可以在代码执行前就完成代码的">
+<meta property="og:description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。 它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。 TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-21T06:42:40.000Z">
-<meta property="article:modified_time" content="2021-07-21T06:43:43.235Z">
+<meta property="article:modified_time" content="2021-07-21T07:29:20.824Z">
 <meta property="article:author" content="XXG0">
 <meta property="article:tag" content="typescript">
 <meta property="article:tag" content="frontEnd">
@@ -39,10 +39,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bai-23.github.io/2021/07/21/TypeScript/","path":"2021/07/21/TypeScript/","title":"TypeScript"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bai-23.github.io/2021/07/21/TypeScript/","path":"2021/07/21/TypeScript/","title":"TypeScript学习笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>TypeScript | XXG0</title>
+<title>TypeScript学习笔记 | XXG0</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -91,7 +91,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">2</span></a></li>
         <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
         <li class="menu-item menu-item-爬虫"><a href="/categories/code/Python/" rel="section"><i class="fa fa-bacterium fa-fw"></i>爬虫</a></li>
@@ -151,7 +151,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -172,6 +172,9 @@
       <span class="links-of-author-item">
         <a href="https://stackoverflow.com/xxg0" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;xxg0" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
       </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -237,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          TypeScript
+          TypeScript学习笔记
         </h1>
 
         <div class="post-meta-container">
@@ -249,10 +252,50 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-21 14:42:40 / 修改时间：14:43:43" itemprop="dateCreated datePublished" datetime="2021-07-21T14:42:40+08:00">2021-07-21</time>
+      <time title="创建时间：2021-07-21 14:42:40 / 修改时间：15:29:20" itemprop="dateCreated datePublished" datetime="2021-07-21T14:42:40+08:00">2021-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/typescript/" itemprop="url" rel="index"><span itemprop="name">typescript</span></a>
+        </span>
     </span>
 
   
+    <span class="post-meta-item" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>17k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
 </div>
 
         </div>
@@ -266,6 +309,10 @@
 <li>TypeScript是<strong>JavaScript的超集</strong>。</li>
 <li>它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。</li>
 <li>TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。</li>
+</ol>
+<span id="more"></span>
+
+<ol start="4">
 <li>TS完全兼容JS，换言之，任何的JS代码都可以直接当成JS使用。</li>
 </ol>
 <ul>
@@ -954,34 +1001,34 @@
     
 
     <footer class="post-footer">
-          <div class="followme">
-  <span>欢迎关注我的其它发布渠道</span>
+          
 
-  <div class="social-list">
-
-      <div class="social-item">
-        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
-          <span class="icon">
-            <i class="fab fa-weixin"></i>
-          </span>
-
-          <span class="label">WeChat</span>
-        </a>
-      </div>
-  </div>
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XXG0
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://bai-23.github.io/2021/07/21/TypeScript/" title="TypeScript学习笔记">https://bai-23.github.io/2021/07/21/TypeScript/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
 </div>
 
           <div class="post-tags">
-              <a href="/tags/typescript/" rel="tag"># typescript</a>
-              <a href="/tags/frontEnd/" rel="tag"># frontEnd</a>
+              <a href="/tags/typescript/" rel="tag"><i class="fa fa-tag"></i> typescript</a>
+              <a href="/tags/frontEnd/" rel="tag"><i class="fa fa-tag"></i> frontEnd</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/07/20/hello-world/" rel="prev" title="Hello World">
-                  <i class="fa fa-chevron-left"></i> Hello World
+                <a href="/2021/07/20/hello-world/" rel="prev" title="建站随笔">
+                  <i class="fa fa-chevron-left"></i> 建站随笔
                 </a>
             </div>
             <div class="post-nav-item">
@@ -1004,6 +1051,8 @@
   <footer class="footer">
     <div class="footer-inner">
 
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蜀ICP备2021008275号 </a>
+  </div>
 
 <div class="copyright">
   &copy; 
@@ -1013,8 +1062,22 @@
   </span>
   <span class="author" itemprop="copyrightHolder">XXG0</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">17k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">16 分钟</span>
+  </span>
+</div>
 
     </div>
   </footer>
@@ -1030,6 +1093,10 @@
 
   
 
+  <script src="https://cdn.jsdelivr.net/npm/firebase@8.6.8/firebase-app.js" integrity="sha256-3hdiTmkDsofqAYaeI/xZx6N7xYgnG+aXWangXu+jtCg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/firebase@8.6.8/firebase-firestore.js" integrity="sha256-Itvsoir8vLRlK5Xg9Mz8vQqzJ6gVmc5GQ27rNTOZSOY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="firestore" type="application/json">{"enable":true,"collection":"articles","apiKey":null,"projectId":null}</script>
+  <script src="/js/third-party/statistics/firestore.js"></script>
 
 
 
