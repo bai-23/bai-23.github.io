@@ -20,28 +20,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bai-23.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="…">
+<meta name="description" content="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="建站随笔">
-<meta property="og:url" content="https://bai-23.github.io/2021/07/20/hello-world/index.html">
+<meta property="og:title" content="Ajax跨域解决方案">
+<meta property="og:url" content="https://bai-23.github.io/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="XXG0">
-<meta property="og:description" content="…">
+<meta property="og:description" content="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-07-20T13:07:19.689Z">
-<meta property="article:modified_time" content="2021-07-21T14:19:13.871Z">
+<meta property="og:image" content="https://images.cnblogs.com/cnblogs_com/xzsj/1888303/o_210325085243filecross.png">
+<meta property="article:published_time" content="2021-07-21T12:30:40.000Z">
+<meta property="article:modified_time" content="2021-07-21T14:09:01.225Z">
 <meta property="article:author" content="XXG0">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="Ajax">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.cnblogs.com/cnblogs_com/xzsj/1888303/o_210325085243filecross.png">
 
 
-<link rel="canonical" href="https://bai-23.github.io/2021/07/20/hello-world/">
+<link rel="canonical" href="https://bai-23.github.io/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bai-23.github.io/2021/07/20/hello-world/","path":"2021/07/20/hello-world/","title":"建站随笔"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bai-23.github.io/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/","path":"2021/07/21/加载本地文件出现跨域解决方案/","title":"Ajax跨域解决方案"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>建站随笔 | XXG0</title>
+<title>Ajax跨域解决方案 | XXG0</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -152,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E7%AB%A0"><span class="nav-text">新建文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B5%E9%9D%A2"><span class="nav-text">新建页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4Git"><span class="nav-text">提交Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E8%B0%83%E8%AF%95"><span class="nav-text">本地调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0-Ajax-%E8%B7%A8%E5%9F%9F%E6%8A%A5%E9%94%99-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><span class="nav-text">本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8D%A2%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-text">1.换编辑器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85Server%E6%8F%92%E4%BB%B6"><span class="nav-text">2.安装Server插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode"><span class="nav-text">VSCode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sublime"><span class="nav-text">Sublime</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8D%A2%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="nav-text">3.换浏览器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AEChrome%E6%B5%8F%E8%A7%88%E5%99%A8%E6%94%AF%E6%8C%81file%E5%8D%8F%E8%AE%AE"><span class="nav-text">4.配置Chrome浏览器支持file协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-text">后记</span></a></div>
         </div>
         <!--/noindex-->
 
@@ -263,7 +265,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bai-23.github.io/2021/07/20/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://bai-23.github.io/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -276,7 +278,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          建站随笔
+          Ajax跨域解决方案
         </h1>
 
         <div class="post-meta-container">
@@ -286,27 +288,25 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-07-20 21:07:19" itemprop="dateCreated datePublished" datetime="2021-07-20T21:07:19+08:00">2021-07-20</time>
+      <time title="创建时间：2021-07-21 20:30:40 / 修改时间：22:09:01" itemprop="dateCreated datePublished" datetime="2021-07-21T20:30:40+08:00">2021-07-21</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 22:19:13" itemprop="dateModified" datetime="2021-07-21T22:19:13+08:00">2021-07-21</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9A%8F%E7%AC%94/hexo-next/" itemprop="url" rel="index"><span itemprop="name">hexo&next</span></a>
+          <a href="/categories/code/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/Ajax/" itemprop="url" rel="index"><span itemprop="name">Ajax</span></a>
         </span>
     </span>
 
@@ -330,7 +330,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>130</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -348,19 +348,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>…</p>
-<span id="more"></span>
+        <h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
 
+<hr>
+<p>当我们在做练习或者写 Demo 的时候，有访问本地文件的需求，当我们在加载的时候发现不能加载，会报如下错误： </p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/xzsj/1888303/o_210325085243filecross.png"></p>
+<p>根据错误信息大概知道原因在于使用了 File 协议，应该使用它提示的 http, data, chrome, chrome-extension, chrome-untrusted, https 这些协议，可是只是做个练习，写些小 Demo，不至于自己去创建一个服务器，开个端口。那么应该如何解决这个问题呢？各位看官，往下看。</p>
+<h2 id="1-换编辑器"><a href="#1-换编辑器" class="headerlink" title="1.换编辑器"></a>1.换编辑器</h2><hr>
+<p>使用 webstorm 或是 visual studio 这种重量级 IDE 的同学，应该不会遇到这种问题，这类 IDE 都内置了 HTTP 服务器。<br>但是对于一些喜欢使用 VSCode，Sublime Text 这类轻量级编辑器的同学，我们继续往下看。</p>
+<h2 id="2-安装Server插件"><a href="#2-安装Server插件" class="headerlink" title="2.安装Server插件"></a>2.安装Server插件</h2><hr>
+<p>这里针对 VSCode 和 Sublime 分别安利一款插件。</p>
+<h3 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h3><hr>
+<p>Live Server 插件，这个插件功能十分强大，不止可以解决 ajax 不支持 file 协议的问题，还可以实现在编辑器里保存修改后，页面自动刷新的功能。具体使用方法在插件安装的地方有说明，用起来也十分简单。<br>安装完成之后，打开 html 文件后，点击右下角的 GoLive 即可。</p>
+<h3 id="Sublime"><a href="#Sublime" class="headerlink" title="Sublime"></a>Sublime</h3><hr>
+<p>SublimeServer 插件，安装完成之后，点击 Tools-&gt;SublimeServer-&gt;Start SublimeServer，启动服务器，然后在 html 文件中，注意是文件中点击右键，选择 View in SublimeServer 即可。<br>（注意一定要以文件夹的方式打开 html 文件所在目录，否则可能失效。）</p>
+<h2 id="3-换浏览器"><a href="#3-换浏览器" class="headerlink" title="3.换浏览器"></a>3.换浏览器</h2><hr>
+<p>火狐支持 file 协议，对 Chorme 没有什么执念的童鞋，可以换成火狐。</p>
+<h2 id="4-配置Chrome浏览器支持file协议"><a href="#4-配置Chrome浏览器支持file协议" class="headerlink" title="4.配置Chrome浏览器支持file协议"></a>4.配置Chrome浏览器支持file协议</h2><hr>
+<p>如果你是那种非常喜欢 Chrome 开发者工具的人，也可以尝试如下方式。</p>
+<p>Windows：<br>设置 Chrome 的快捷方式属性，在“目标”后面加上–allow-file-access-from-files，注意前面有个空格，重新打开 Chrome 即可。</p>
+<p>Mac：<br>打开终端，输入下面命令：open -a “Google Chrome” –args –disable-web-security 然后就可以屏蔽安全访问了[ –args：此参数可有可无]</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><hr>
+<p>只是更改浏览器配置使之支持 file 协议，还是有很大的局限性的，建议最好采用前两种方式，配置 http 服务器才是长久之计。</p>
+<p>如需前端指导、前端资料、Java 指导和 Java 资料的请联系本人，感谢您的支持。</p>
+<blockquote>
+<p>WECHAT：xzsj07<br>备注：加好友请注明来源。</p>
+</blockquote>
 
-<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
-
-<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
     </div>
 
     
@@ -377,7 +391,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://bai-23.github.io/2021/07/20/hello-world/" title="建站随笔">https://bai-23.github.io/2021/07/20/hello-world/</a>
+      <a href="https://bai-23.github.io/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" title="Ajax跨域解决方案">https://bai-23.github.io/2021/07/21/加载本地文件出现跨域解决方案/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -386,17 +400,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+              <a href="/tags/Ajax/" rel="tag"><i class="fa fa-tag"></i> Ajax</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/07/21/%5B%20JavaScript%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E6%98%BE%E7%A4%BA%E6%97%B6%E9%97%B4%E6%95%88%E6%9E%9C%EF%BC%9AsetInterval%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8%20%5D/" rel="prev" title="Javascript动态显示时间">
+                  <i class="fa fa-chevron-left"></i> Javascript动态显示时间
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/07/21/TypeScript/" rel="next" title="TypeScript学习笔记">
-                  TypeScript学习笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/07/21/%E3%80%90JavaScript%20%E9%9A%8F%E7%AC%94%E3%80%91DOM%E4%BA%8B%E4%BB%B6%E4%B9%8B%E2%80%94%E2%80%94%E6%8B%96%E6%8B%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%8E%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/" rel="next" title="【JavaScript 随笔】DOM事件之——拖拽的实现与简单优化">
+                  【JavaScript 随笔】DOM事件之——拖拽的实现与简单优化 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -470,7 +487,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bai-23","repo":"commons","client_id":"65520e933c64c8e7954c","client_secret":"2c8b87f866ecdfb92cb8b284ad4dd0a16e73ffed","admin_user":"bai-23","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"ff5480dac37d674fb23e18963f86bbf5"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bai-23","repo":"commons","client_id":"65520e933c64c8e7954c","client_secret":"2c8b87f866ecdfb92cb8b284ad4dd0a16e73ffed","admin_user":"bai-23","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"d5f7ca4173e1897bb3127825ac25c50a"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>

@@ -2283,7 +2283,6 @@ pre code {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  display: none;
 }
 .post-eof {
   background: #ccc;

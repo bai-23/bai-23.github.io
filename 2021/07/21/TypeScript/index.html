@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bai-23.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。  它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。  TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。  TS完全兼容JS，换言之，任何的JS代码都可以直接当成JS使用。    相较于JS而言，TS拥有了静态类型，更加严格的语法，更强大的功能； TS可以在代码执行前就完">
+<meta name="description" content="第一章 快速入门">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TypeScript学习笔记">
 <meta property="og:url" content="https://bai-23.github.io/2021/07/21/TypeScript/index.html">
 <meta property="og:site_name" content="XXG0">
-<meta property="og:description" content="第一章 快速入门0、TypeScript简介 TypeScript是JavaScript的超集。  它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。  TS代码需要通过编译器编译为JS，然后再交由JS解析器执行。  TS完全兼容JS，换言之，任何的JS代码都可以直接当成JS使用。    相较于JS而言，TS拥有了静态类型，更加严格的语法，更强大的功能； TS可以在代码执行前就完">
+<meta property="og:description" content="第一章 快速入门">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-21T06:42:40.000Z">
-<meta property="article:modified_time" content="2021-07-21T12:57:49.386Z">
+<meta property="article:modified_time" content="2021-07-21T13:55:40.846Z">
 <meta property="article:author" content="XXG0">
 <meta property="article:tag" content="typescript">
 <meta property="article:tag" content="frontEnd">
@@ -91,10 +91,10 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">3</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">10</span></a></li>
         <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
-        <li class="menu-item menu-item-爬虫"><a href="/categories/code/Python/" rel="section"><i class="fa fa-bacterium fa-fw"></i>爬虫</a></li>
+        <li class="menu-item menu-item-爬虫"><a href="/categories/code/backend" rel="section"><i class="fa fa-bacterium fa-fw"></i>爬虫</a></li>
         <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
         <li class="menu-item menu-item-api"><a href="/apis/" rel="section"><i class="fa fa-star-half-alt fa-fw"></i>API</a></li>
       <li class="menu-item menu-item-search">
@@ -171,19 +171,19 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -229,12 +229,10 @@
           <h3 class="widget-title">Tag Cloud</h3>
           <div id="myCanvasContainer" class="widget tagcloud">
               <canvas width="250" height="250" id="resCanvas" style="width=100%">
-                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li></ul>
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">1</span></li></ul>
               </canvas>
           </div>
       </div>
-      
-
       
 
     </div>
@@ -291,7 +289,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-21 14:42:40 / 修改时间：20:57:49" itemprop="dateCreated datePublished" datetime="2021-07-21T14:42:40+08:00">2021-07-21</time>
+      <time title="创建时间：2021-07-21 14:42:40 / 修改时间：21:55:40" itemprop="dateCreated datePublished" datetime="2021-07-21T14:42:40+08:00">2021-07-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -349,7 +347,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第一章-快速入门"><a href="#第一章-快速入门" class="headerlink" title="第一章 快速入门"></a>第一章 快速入门</h1><h2 id="0、TypeScript简介"><a href="#0、TypeScript简介" class="headerlink" title="0、TypeScript简介"></a>0、TypeScript简介</h2><ol>
+        <h1 id="第一章-快速入门"><a href="#第一章-快速入门" class="headerlink" title="第一章 快速入门"></a>第一章 快速入门</h1><span id="more"></span>
+
+<h2 id="0、TypeScript简介"><a href="#0、TypeScript简介" class="headerlink" title="0、TypeScript简介"></a>0、TypeScript简介</h2><ol>
 <li><p>TypeScript是<strong>JavaScript的超集</strong>。</p>
 </li>
 <li><p>它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。</p>
@@ -365,8 +365,6 @@
 <li>TS代码可以编译为任意版本的JS代码，可有效解决不同JS运行环境的兼容问题；</li>
 <li>同样的功能，TS的代码量要大于JS，但由于TS的代码结构更加清晰，变量类型更加明确，在后期代码的维护中TS却远远胜于JS。</li>
 </ul>
-<span id="more"></span>
-
 <h2 id="1、TypeScript-开发环境搭建"><a href="#1、TypeScript-开发环境搭建" class="headerlink" title="1、TypeScript 开发环境搭建"></a>1、TypeScript 开发环境搭建</h2><ol>
 <li><p>下载Node.js</p>
 <ul>
@@ -1078,8 +1076,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/07/21/xiaoshesapi/" rel="next" title="小舍免费图片Api">
-                  小舍免费图片Api <i class="fa fa-chevron-right"></i>
+                <a href="/2021/07/21/spider/" rel="next" title="Python爬虫">
+                  Python爬虫 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -1116,13 +1114,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">18k</span>
+    <span title="站点总字数">110k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17 分钟</span>
+    <span title="站点阅读时长">1:40</span>
   </span>
 </div>
 <div class="busuanzi-count">
