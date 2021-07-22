@@ -531,6 +531,15 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
     <content><![CDATA[<blockquote>
 <p>项目名称：小舍图片Api接口</p>
 </blockquote>
+<div style="display:flex;">
+    <img width="100px" src="http://api.aoau.top:9999/photos/3/%20%2834%29.png"/>
+    <img width="100px" src="http://api.aoau.top:9999/photos/3/%20%2855%29.png"/>
+    <img width="100px" src="http://api.aoau.top:9999/photos/6/%20%2855%29.jpg"/>
+</div>
+
+
+
+
 <span id="more"></span>
 
 <blockquote>
@@ -566,10 +575,11 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 <blockquote>
 <p>注：参数page范围为：1~14，请填写正确。</p>
-<p>（建议线路5~14）</p>
+<p>（建议线路5~14，每条线路有100张图片）</p>
 </blockquote>
 <hr>
 <p>下面是测试，其他线路请自行尝试<br><a href="http://api.aoau.top:9999/photos/1/%20%2816%29.png">线路1</a><br><a href="http://api.aoau.top:9999/photos/2/%20%2819%29.png">线路2</a><br><a href="http://api.aoau.top:9999/photos/3/%20%2834%29.png">线路3</a><br><a href="http://api.aoau.top:9999/photos/4/%20%2883%29.png">线路4</a><br><a href="http://api.aoau.top:9999/photos/8/%20%2830%29.jpg">线路8</a><br><a href="http://api.aoau.top:9999/photos/14/%20%2860%29.jpg">线路14</a></p>
+<p>成品：<a href="http://aoau.top:3004/courses/ps">http://aoau.top:3004/courses/ps</a></p>
 ]]></content>
       <categories>
         <category>apis</category>
