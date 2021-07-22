@@ -102,6 +102,13 @@
 
   
   <url>
+    <loc>http://freepiao.cn/tags/Javascript/</loc>
+    <lastmod>2021-07-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://freepiao.cn/tags/Linux/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
@@ -110,13 +117,6 @@
   
   <url>
     <loc>http://freepiao.cn/tags/Nginx/</loc>
-    <lastmod>2021-07-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://freepiao.cn/tags/Javascript/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -188,13 +188,6 @@
 
   
   <url>
-    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2021-07-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://freepiao.cn/categories/code/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
@@ -202,28 +195,7 @@
   </url>
   
   <url>
-    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/%E5%BB%BA%E7%AB%99/</loc>
-    <lastmod>2021-07-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://freepiao.cn/categories/apis/</loc>
-    <lastmod>2021-07-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://freepiao.cn/categories/code/frontend/</loc>
-    <lastmod>2021-07-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/hexo-next/</loc>
+    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -237,7 +209,35 @@
   </url>
   
   <url>
-    <loc>http://freepiao.cn/categories/apis/%E5%9B%BE%E7%89%87api/</loc>
+    <loc>http://freepiao.cn/categories/code/frontend/</loc>
+    <lastmod>2021-07-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://freepiao.cn/categories/apis/</loc>
+    <lastmod>2021-07-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/%E5%BB%BA%E7%AB%99/</loc>
+    <lastmod>2021-07-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://freepiao.cn/categories/%E9%9A%8F%E7%AC%94/hexo-next/</loc>
+    <lastmod>2021-07-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://freepiao.cn/categories/code/backend/Python/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -251,14 +251,14 @@
   </url>
   
   <url>
-    <loc>http://freepiao.cn/categories/code/frontend/Ajax/</loc>
+    <loc>http://freepiao.cn/categories/apis/%E5%9B%BE%E7%89%87api/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://freepiao.cn/categories/code/backend/Python/</loc>
+    <loc>http://freepiao.cn/categories/code/frontend/Ajax/</loc>
     <lastmod>2021-07-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
