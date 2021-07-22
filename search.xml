@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【WebGL之巅】01-HelloCanvas2d</title>
+    <title>【WebGL之巅】01-使用canvas绘制2d矩形</title>
     <url>/2021/07/22/HelloCanvas2d/</url>
     <content><![CDATA[<blockquote>
-<p>HelloCanvas2d</p>
+<p>01-HelloCanvas2d</p>
 </blockquote>
 <span id="more"></span>
 
@@ -556,7 +556,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
     <content><![CDATA[<blockquote>
 <p>项目名称：小舍图片Api接口</p>
 </blockquote>
-<div style="display:flex;overflow:hidden;">
+<!--<div style="display:flex;overflow:hidden;">
     <img width="100px" src="http://api.aoau.top:9999/photos/3/%20%2834%29.png"/>
     <img width="100px" src="http://api.aoau.top:9999/photos/3/%20%2855%29.png"/>
     <img width="100px" src="http://api.aoau.top:9999/photos/6/%20%2855%29.jpg"/>
@@ -564,7 +564,10 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
     <img width="100px" src="http://api.aoau.top:9999/photos/6/%20%2865%29.jpg"/>
     <img width="100px" src="http://api.aoau.top:9999/photos/3/%20%2812%29.png"/>
     <img width="100px" src="http://api.aoau.top:9999/photos/1/%20%2845%29.png"/>
-</div>
+</div>-->
+
+
+
 
 
 
