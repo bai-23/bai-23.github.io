@@ -2026,7 +2026,13 @@ body {
   transition: 0.4s;
 }
 .use-motion .index {
+  padding: 20px;
   background: rgba(255,255,255,0.9);
+}
+.use-motion .index .pagination span {
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 5px rgba(47,50,49,0.3);
+  -moz-box-shadow: 2px 2px 5px rgba(47,50,49,0.3);
 }
 .use-motion .index .post-block {
   border-radius: 8px;
@@ -2569,6 +2575,14 @@ body {
 }
 .category-all-page .category-list-child {
   padding-left: 10px;
+}
+.category-all-page .category-list-child span,
+.category-all-page .category-list-child a {
+  font-size: 14px;
+  color: #55b9f3;
+}
+.category-all-page .category-list-child li {
+  list-style: none;
 }
 .event-list hr {
   background: #222;
