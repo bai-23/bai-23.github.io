@@ -48,6 +48,29 @@
       </tags>
   </entry>
   <entry>
+    <title>建站随笔</title>
+    <url>/2021/07/20/hello-world/</url>
+    <content><![CDATA[<p>…</p>
+<span id="more"></span>
+
+
+<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
+
+<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>]]></content>
+      <categories>
+        <category>essay</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos7 零成本搭建web服务器【外网可访问】</title>
     <url>/2021/07/21/centosweb/</url>
     <content><![CDATA[<blockquote>
@@ -135,29 +158,6 @@ Natapp网址：[点这里](https://natapp.cn/)
       <tags>
         <tag>Linux</tag>
         <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>建站随笔</title>
-    <url>/2021/07/20/hello-world/</url>
-    <content><![CDATA[<p>…</p>
-<span id="more"></span>
-
-
-<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
-
-<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3>]]></content>
-      <categories>
-        <category>essay</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
