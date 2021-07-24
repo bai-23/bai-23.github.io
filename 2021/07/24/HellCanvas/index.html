@@ -23,25 +23,25 @@
 <meta name="description" content="对应教程：02-HelloCanvas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【WebGL之巅】01-使用webgl清空绘图区">
-<meta property="og:url" content="https://freepiao.cn/2021/07/24/HelloCanvas/index.html">
+<meta property="og:url" content="https://freepiao.cn/2021/07/24/HellCanvas/index.html">
 <meta property="og:site_name" content="歌木头">
 <meta property="og:description" content="对应教程：02-HelloCanvas">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://freepiao.cn/.cn//1.png">
+<meta property="og:image" content="https://freepiao.cn/images/HellCanvas.png">
 <meta property="article:published_time" content="2021-07-24T02:38:47.000Z">
-<meta property="article:modified_time" content="2021-07-24T03:08:32.204Z">
+<meta property="article:modified_time" content="2021-07-24T03:29:44.992Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="frontEnd">
 <meta property="article:tag" content="WebGL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://freepiao.cn/.cn//1.png">
+<meta name="twitter:image" content="https://freepiao.cn/images/HellCanvas.png">
 
 
-<link rel="canonical" href="https://freepiao.cn/2021/07/24/HelloCanvas/">
+<link rel="canonical" href="https://freepiao.cn/2021/07/24/HellCanvas/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/2021/07/24/HelloCanvas/","path":"2021/07/24/HelloCanvas/","title":"【WebGL之巅】01-使用webgl清空绘图区"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/2021/07/24/HellCanvas/","path":"2021/07/24/HellCanvas/","title":"【WebGL之巅】01-使用webgl清空绘图区"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>【WebGL之巅】01-使用webgl清空绘图区 | 歌木头</title>
@@ -273,7 +273,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/2021/07/24/HelloCanvas/">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/2021/07/24/HellCanvas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -286,7 +286,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【WebGL之巅】01-使用webgl清空绘图区<a href="https://github.com/bai-23/bai-23.github.io_posts/HelloCanvas.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+          【WebGL之巅】01-使用webgl清空绘图区<a href="https://github.com/bai-23/bai-23.github.io_posts/HellCanvas.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
         </h1>
 
         <div class="post-meta-container">
@@ -298,7 +298,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-24 10:38:47 / 修改时间：11:08:32" itemprop="dateCreated datePublished" datetime="2021-07-24T10:38:47+08:00">2021-07-24</time>
+      <time title="创建时间：2021-07-24 10:38:47 / 修改时间：11:29:44" itemprop="dateCreated datePublished" datetime="2021-07-24T10:38:47+08:00">2021-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -335,8 +335,8 @@
       <span class="post-meta-item-text">Changyan：</span>
     
     
-      <a title="changyan" href="/2021/07/24/HelloCanvas/#SOHUCS" itemprop="discussionUrl">
-        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/07/24/HelloCanvas/" itemprop="commentCount"></span>
+      <a title="changyan" href="/2021/07/24/HellCanvas/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/07/24/HellCanvas/" itemprop="commentCount"></span>
       </a>
     
   </span>
@@ -373,19 +373,19 @@
 <span id="more"></span>
 
 <h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
-<li>获取<canvas>元素</canvas></li>
+<li>获取<code>&lt;canvas&gt;</code>元素</li>
 <li>获取webgl绘图上下文</li>
 <li>设置背景色</li>
-<li>清空<canvas></canvas></li>
+<li>清空<code>&lt;canvas&gt;</code></li>
 </ol>
 <h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
 <li><p>gl.cleanColor()的参数</p>
 </li>
 <li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
 </li>
-<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例</p>
+<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href>查看这里</a></p>
+<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
 </li>
 </ol>
 <h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
@@ -394,7 +394,7 @@
 <p><code>HelloCanvas.js</code></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/.cn//1.png"></p>
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
 <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
 
     </div>
@@ -413,7 +413,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freepiao.cn/2021/07/24/HelloCanvas/" title="【WebGL之巅】01-使用webgl清空绘图区">https://freepiao.cn/2021/07/24/HelloCanvas/</a>
+      <a href="https://freepiao.cn/2021/07/24/HellCanvas/" title="【WebGL之巅】01-使用webgl清空绘图区">https://freepiao.cn/2021/07/24/HellCanvas/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
