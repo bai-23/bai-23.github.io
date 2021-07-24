@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【WebGL之巅】01-使用canvas绘制2d矩形</title>
-    <url>/2021/07/22/HelloCanvas2d/</url>
+    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
+    <url>/2021/07/24/HelloCanvas/</url>
     <content><![CDATA[<blockquote>
-<p>01-HelloCanvas2d</p>
+<p>对应教程：02-HelloCanvas</p>
 </blockquote>
 <span id="more"></span>
 
-<p><code>HelloCanvas2d.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
+<li>获取<canvas>元素</canvas></li>
+<li>获取webgl绘图上下文</li>
+<li>设置背景色</li>
+<li>清空<canvas></canvas></li>
+</ol>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>gl.cleanColor()的参数</p>
+</li>
+<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
+</li>
+<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href>查看这里</a></p>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><code>HelloCanvas2d.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//fillstyle：设置或返回用于填充绘画的颜色、渐变或模式。</span></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 使用填充颜色填充矩形。</span></span><br><span class="line"><span class="comment">	 fillRect(x,y,width,height)</span></span><br><span class="line"><span class="comment">	 x    矩形左上角的 x 坐标</span></span><br><span class="line"><span class="comment">	 y    矩形左上角的 y 坐标</span></span><br><span class="line"><span class="comment">	 width        矩形的宽度</span></span><br><span class="line"><span class="comment">	 height   矩形的高度</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>HelloCanvas.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/.cn//1.png"></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -54,6 +64,52 @@
       <tags>
         <tag>python</tag>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
+    <url>/2021/07/22/HelloCanvas2d/</url>
+    <content><![CDATA[<blockquote>
+<p>对应教程：00-HelloCanvas2d</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</canvas></p>
+</li>
+<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
+</li>
+<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
+<p>参数：x    矩形左上角的 x 坐标</p>
+<pre><code>      y    矩形左上角的 y 坐标
+      width        矩形的宽度
+      height   矩形的高度
+</code></pre>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas2d.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
       </tags>
   </entry>
   <entry>
@@ -394,7 +450,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <li>2.标签或者标签对应的<strong>属性</strong>中存储的<strong>数据</strong>值进行<strong>提取（解析）</strong></li>
 </ul>
 <h5 id="正则解析"><a href="#正则解析" class="headerlink" title="正则解析"></a><strong>正则解析</strong></h5><p>回顾</p>
-<p><img src="C:\Users\86136\Pictures\学习\rep.png" alt="正则表达式"></p>
+<p><img src="/.cn//Users\86136\Pictures\学习\rep.png" alt="正则表达式"></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="comment">#提取出python</span></span><br><span class="line">key=<span class="string">&quot;javapythonc++php&quot;</span></span><br><span class="line">re.findall(<span class="string">&#x27;python&#x27;</span>,key)[<span class="number">0</span>]</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#提取出hello world</span></span><br><span class="line">key=<span class="string">&quot;</span></span><br><span class="line"><span class="string">hello world</span></span><br><span class="line"><span class="string">&quot;</span></span><br><span class="line">re.findall(<span class="string">&#x27;</span></span><br><span class="line"><span class="string">(.*)</span></span><br><span class="line"><span class="string">&#x27;</span>,key)[<span class="number">0</span>]</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#提取170</span></span><br><span class="line">string = <span class="string">&#x27;我喜欢身高为170的女孩&#x27;</span></span><br><span class="line">re.findall(<span class="string">&#x27;\d+&#x27;</span>,string)</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#提取出http://和https://</span></span><br><span class="line">key=<span class="string">&#x27;http://www.baidu.com and https://boob.com&#x27;</span></span><br><span class="line">re.findall(<span class="string">&#x27;https?://&#x27;</span>,key)</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#提取出hello</span></span><br><span class="line">key=<span class="string">&#x27;lalalahellohahah&#x27;</span> <span class="comment">#输出hello</span></span><br><span class="line">re.findall(<span class="string">&#x27;&lt;[Hh][Tt][mM][lL]&gt;(.*)&#x27;</span>,key)</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#提取出hit. </span></span><br><span class="line">key=<span class="string">&#x27;bobo@hit.edu.com&#x27;</span><span class="comment">#想要匹配到hit.</span></span><br><span class="line">re.findall(<span class="string">&#x27;h.*?\.&#x27;</span>,key)</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"><span class="comment">#匹配sas和saas</span></span><br><span class="line">key=<span class="string">&#x27;saas and sas and saaas&#x27;</span></span><br><span class="line">re.findall(<span class="string">&#x27;sa&#123;1,2&#125;s&#x27;</span>,key)</span><br></pre></td></tr></table></figure>
 
 
@@ -865,25 +921,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>正则解析爬取单页多张图片【★★】</title>
-    <url>/2021/07/23/%E6%AD%A3%E5%88%99%E8%A7%A3%E6%9E%90%E7%88%AC%E5%8F%96%E5%8D%95%E9%A1%B5%E5%A4%9A%E5%BC%A0%E5%9B%BE%E7%89%87/</url>
-    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/python/python-reg-expressions.html">Python正则解析语法</a></p>
-<p>需求：爬取糗事百科中糗图板块下所有的糗图图片</p>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re   <span class="comment"># 正则表达式模块</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：爬取糗事百科中糗图板块下所有的糗图图片</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 创建一个文件夹，保存所有的图片</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&#x27;./img&#x27;</span>):</span><br><span class="line">        os.mkdir(<span class="string">&#x27;./img&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># url = &#x27;https://www.qiushibaike.com/imgrank/&#x27;</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sitapix.com/search/%E5%B1%B1&#x27;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 使用通用爬虫对url对应的一整张页面进行爬取</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line">    <span class="comment"># print(page_text)</span></span><br><span class="line">    <span class="comment"># 使用聚焦爬虫将页面中所有的糗图进行解析/提取</span></span><br><span class="line">    ex = <span class="string">&#x27;&lt;div class=&quot;thumb&quot;&gt;.*?&lt;img src=&quot;(.*?)&quot; alt.*?&lt;/div&gt;&#x27;</span></span><br><span class="line">    <span class="comment"># ex = &#x27;&lt;img src=&quot;(.*?)&quot; class.*?&gt;&#x27;</span></span><br><span class="line">    img_src_list = re.findall(ex, page_text, re.S)</span><br><span class="line">    <span class="comment"># print(img_src_list)</span></span><br><span class="line">    <span class="keyword">for</span> src <span class="keyword">in</span> img_src_list:</span><br><span class="line">        <span class="comment"># 拼接出一个完整的图片url</span></span><br><span class="line">        src = <span class="string">&#x27;https:&#x27;</span> + src</span><br><span class="line">        <span class="comment"># 请求到了图片的二进制数据</span></span><br><span class="line">        img_data = requests.get(url=src, headers=headers).content</span><br><span class="line">        <span class="comment"># 生成图片名称</span></span><br><span class="line">        img_name = src.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 图片存储的路径</span></span><br><span class="line">        imgPath = <span class="string">&#x27;./img/&#x27;</span> + img_name</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(imgPath, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            fp.write(img_data)</span><br><span class="line">            <span class="built_in">print</span>(img_name, <span class="string">&#x27;下载成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>正则解析爬取分页多张图片【★★★】</title>
     <url>/2021/07/23/%E6%AD%A3%E5%88%99%E8%A7%A3%E6%9E%90%E7%88%AC%E5%8F%96%E5%88%86%E9%A1%B5%E5%A4%9A%E5%BC%A0%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<p>复习：<a href="https://www.runoob.com/python/python-reg-expressions.html">Python正则解析语法</a></p>
@@ -910,6 +947,25 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># - 需求：爬取搜狗首页的页面数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># step_1:指定url</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/&#x27;</span></span><br><span class="line">    <span class="comment"># step_2:发起请求</span></span><br><span class="line">    <span class="comment"># get方法会返回一个响应对象</span></span><br><span class="line">    response = requests.get(url=url)</span><br><span class="line">    <span class="comment"># step_3:获取响应数据.text返回的是字符串形式的响应数据</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    <span class="built_in">print</span>(page_text)</span><br><span class="line">    <span class="comment"># step_4:持久化存储</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./sogou.html&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;#########CRAWLING END#########&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则解析爬取单页多张图片【★★】</title>
+    <url>/2021/07/23/%E6%AD%A3%E5%88%99%E8%A7%A3%E6%9E%90%E7%88%AC%E5%8F%96%E5%8D%95%E9%A1%B5%E5%A4%9A%E5%BC%A0%E5%9B%BE%E7%89%87/</url>
+    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/python/python-reg-expressions.html">Python正则解析语法</a></p>
+<p>需求：爬取糗事百科中糗图板块下所有的糗图图片</p>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re   <span class="comment"># 正则表达式模块</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：爬取糗事百科中糗图板块下所有的糗图图片</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 创建一个文件夹，保存所有的图片</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&#x27;./img&#x27;</span>):</span><br><span class="line">        os.mkdir(<span class="string">&#x27;./img&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># url = &#x27;https://www.qiushibaike.com/imgrank/&#x27;</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sitapix.com/search/%E5%B1%B1&#x27;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 使用通用爬虫对url对应的一整张页面进行爬取</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line">    <span class="comment"># print(page_text)</span></span><br><span class="line">    <span class="comment"># 使用聚焦爬虫将页面中所有的糗图进行解析/提取</span></span><br><span class="line">    ex = <span class="string">&#x27;&lt;div class=&quot;thumb&quot;&gt;.*?&lt;img src=&quot;(.*?)&quot; alt.*?&lt;/div&gt;&#x27;</span></span><br><span class="line">    <span class="comment"># ex = &#x27;&lt;img src=&quot;(.*?)&quot; class.*?&gt;&#x27;</span></span><br><span class="line">    img_src_list = re.findall(ex, page_text, re.S)</span><br><span class="line">    <span class="comment"># print(img_src_list)</span></span><br><span class="line">    <span class="keyword">for</span> src <span class="keyword">in</span> img_src_list:</span><br><span class="line">        <span class="comment"># 拼接出一个完整的图片url</span></span><br><span class="line">        src = <span class="string">&#x27;https:&#x27;</span> + src</span><br><span class="line">        <span class="comment"># 请求到了图片的二进制数据</span></span><br><span class="line">        img_data = requests.get(url=src, headers=headers).content</span><br><span class="line">        <span class="comment"># 生成图片名称</span></span><br><span class="line">        img_name = src.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 图片存储的路径</span></span><br><span class="line">        imgPath = <span class="string">&#x27;./img/&#x27;</span> + img_name</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(imgPath, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            fp.write(img_data)</span><br><span class="line">            <span class="built_in">print</span>(img_name, <span class="string">&#x27;下载成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>code</category>
@@ -1695,7 +1751,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </ul>
 </li>
 </ul>
-<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200317114503403.png" alt="image-20200317114503403"></p>
+<p><img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200317114503403.png" alt="image-20200317114503403"></p>
 <h2 id="Node-js是什么"><a href="#Node-js是什么" class="headerlink" title="Node.js是什么"></a>Node.js是什么</h2><ul>
 <li>Node.js是JavaScript 运行时</li>
 <li>通俗易懂的讲，Node.js是JavaScript的运行平台</li>
@@ -2043,7 +2099,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </ul>
 </li>
 <li>path.join：拼接路径</li>
-<li>path.isAbsolute：判断一个路径是否为绝对路径<img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200315150610001.png" alt="image-20200315150610001"></li>
+<li>path.isAbsolute：判断一个路径是否为绝对路径<img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200315150610001.png" alt="image-20200315150610001"></li>
 </ul>
 <h1 id="Node中的其它成员-dirname-filename"><a href="#Node中的其它成员-dirname-filename" class="headerlink" title="Node中的其它成员(__dirname,__filename)"></a>Node中的其它成员(__dirname,__filename)</h1><p>在每个模块中，除了<code>require</code>,<code>exports</code>等模块相关的API之外，还有两个特殊的成员：</p>
 <ul>
@@ -2077,7 +2133,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <li><p>```javascript<br>// 1 安装// 2 引包var express = require(‘express’);// 3 创建服务器应用程序//      也就是原来的http.createServer();var app = express();// 公开指定目录// 只要通过这样做了，就可以通过/public/xx的方式来访问public目录中的所有资源// 在Express中开放资源就是一个API的事app.use(‘/public/‘,express.static(‘/public/‘));//模板引擎在Express中开放模板也是一个API的事// 当服务器收到get请求 / 的时候，执行回调处理函数app.get(‘/‘,function(req,res){    res.send(‘hello express’);})// 相当于server.listenapp.listen(3000,function(){    console.log(‘app is runing at port 3000’);})</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### 学习Express</span><br><span class="line"></span><br><span class="line">#### 起步</span><br><span class="line"></span><br><span class="line">##### 安装：![image-20200310123723079](C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200310123723079.png)</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">cnpm install express</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h5 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world:"></a>hello world:<img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200310124850557.png" alt="image-20200310124850557"></h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 引入expressvar express = require(&#x27;express&#x27;);// 1. 创建appvar app = express();//  2. app.get(&#x27;/&#x27;,function(req,res)&#123;    // 1    // res.write(&#x27;Hello&#x27;);    // res.write(&#x27;World&#x27;);    // res.end()    // 2    // res.end(&#x27;hello world&#x27;);    // 3    res.send(&#x27;hello world&#x27;);&#125;)app.listen(3000,function()&#123;    console.log(&#x27;express app is runing...&#x27;);&#125;)</span></span><br></pre></td></tr></table></figure>
+<h5 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world:"></a>hello world:<img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200310124850557.png" alt="image-20200310124850557"></h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 引入expressvar express = require(&#x27;express&#x27;);// 1. 创建appvar app = express();//  2. app.get(&#x27;/&#x27;,function(req,res)&#123;    // 1    // res.write(&#x27;Hello&#x27;);    // res.write(&#x27;World&#x27;);    // res.end()    // 2    // res.end(&#x27;hello world&#x27;);    // 3    res.send(&#x27;hello world&#x27;);&#125;)app.listen(3000,function()&#123;    console.log(&#x27;express app is runing...&#x27;);&#125;)</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="基本路由"><a href="#基本路由" class="headerlink" title="基本路由"></a>基本路由</h5><p>路由：</p>
 <ul>
@@ -2228,7 +2284,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>find接受一个方法作为参数，方法内部返回一个条件</p>
 <p>find会便利所有的元素，执行你给定的带有条件返回值的函数</p>
 <p>符合该条件的元素会作为find方法的返回值</p>
-<p>如果遍历结束还没有符合该条件的元素，则返回undefined<img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200313103810731.png" alt="image-20200313103810731"></p>
+<p>如果遍历结束还没有符合该条件的元素，则返回undefined<img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200313103810731.png" alt="image-20200313103810731"></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/** * student.js * 数据操作文件模块 * 职责：操作文件中的数据，只处理数据，不关心业务 */</span><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>); <span class="comment">/**  * 获取所有学生列表  * return []  */</span><span class="built_in">exports</span>.find = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;    &#125; <span class="comment">/**  * 获取添加保存学生  */</span><span class="built_in">exports</span>.save = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;        &#125;<span class="comment">/** * 更新学生 */</span><span class="built_in">exports</span>.update = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;        &#125; <span class="comment">/** * 删除学生 */</span><span class="built_in">exports</span>.delete = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;        &#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ul>
@@ -2291,7 +2347,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- 继承(extend:延伸，扩展)模板也layout.html --&gt;&lt;!-- 把layout.html页面的内容都拿进来作为index.html页面的内容 --&gt;&#123;&#123;extend <span class="string">&#x27;./layout.html&#x27;</span>&#125;&#125;&lt;!-- 向模板页面填充新的数据 --&gt;&lt;!-- 填充后就会替换掉layout页面content中的数据 --&gt;&lt;!-- style样式方面的内容 --&gt;&#123;&#123; block <span class="string">&#x27;head&#x27;</span> &#125;&#125;	&lt;style type=<span class="string">&quot;text/css&quot;</span>&gt;		body&#123;			background-color: skyblue;		&#125;	&lt;<span class="regexp">/style&gt;&#123;&#123; /</span>block &#125;&#125;&#123;&#123; block <span class="string">&#x27;content&#x27;</span> &#125;&#125;	&lt;div id=<span class="string">&quot;&quot;</span>&gt;		<span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Index页面的内容<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>	&lt;<span class="regexp">/div&gt;&#123;&#123; /</span>block &#125;&#125;&lt;!-- js部分的内容 --&gt;&#123;&#123; block <span class="string">&#x27;script&#x27;</span> &#125;&#125;	&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;			&lt;<span class="regexp">/script&gt;&#123;&#123; /</span>block &#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>最终的显示效果：</p>
-<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200316134759517.png" alt="image-20200316134759517"></p>
+<p><img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200316134759517.png" alt="image-20200316134759517"></p>
 <h1 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h1><h2 id="关系型和非关系型数据库"><a href="#关系型和非关系型数据库" class="headerlink" title="关系型和非关系型数据库"></a>关系型和非关系型数据库</h2><h3 id="关系型数据库（表就是关系，或者说表与表之间存在关系）。"><a href="#关系型数据库（表就是关系，或者说表与表之间存在关系）。" class="headerlink" title="关系型数据库（表就是关系，或者说表与表之间存在关系）。"></a>关系型数据库（表就是关系，或者说表与表之间存在关系）。</h3><ul>
 <li>所有的关系型数据库都需要通过<code>sql</code>语言来操作</li>
 <li>所有的关系型数据库在操作之前都需要设计表结构</li>
@@ -2343,7 +2399,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>停止：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">在开启服务的控制台，直接Ctrl+C;或者直接关闭开启服务的控制台。</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20200314101047100.png" alt="image-20200314101047100"></p>
+<p><img src="/.cn//Users\A\AppData\Roaming\Typora\typora-user-images\image-20200314101047100.png" alt="image-20200314101047100"></p>
 <h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><p>连接：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"># 该命令默认连接本机的 MongoDB 服务mongo</span><br></pre></td></tr></table></figure>
 
@@ -3988,7 +4044,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 准备好容器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;test&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 引入依赖 ,引入的时候，必须就按照这个步骤--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../js/react.development.js&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../js/react-dom.development.js&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../js/babel.min.js&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--这里使用了babel用来解析jsx语法--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/babel&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 1.创建虚拟DOM</span></span></span><br><span class="line"><span class="javascript">        <span class="keyword">const</span> VDOM = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>  <span class="comment">//这个地方使用的是JSX语法，不需要加&quot;&quot;</span></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 2.渲染，如果有多个渲染同一个容器，后面的会将前面的覆盖掉</span></span></span><br><span class="line"><span class="javascript">        ReactDOM.render(VDOM,<span class="built_in">document</span>.getElementById(<span class="string">&quot;test&quot;</span>));        </span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>这样，就会在页面中的这个div容器上添加这个h1.</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611196030416.png" alt="渲染结果"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611196030416.png" alt="渲染结果"></p>
 <h2 id="JSX基础语法"><a href="#JSX基础语法" class="headerlink" title="JSX基础语法"></a>JSX基础语法</h2><p>1.定义虚拟DOM，不能使用“”</p>
 <p>2.标签中混入JS<strong>表达式</strong>的时候使用**{}**</p>
 <p>3.样式的类名指定不要使用class，使用className</p>
@@ -4038,7 +4094,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </blockquote>
 <h2 id="函数式组件"><a href="#函数式组件" class="headerlink" title="函数式组件"></a>函数式组件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//1.先创建函数，函数可以有参数，也可以没有，但是必须要有返回值 返回一个虚拟DOM</span><br><span class="line">function Welcome(props) &#123;</span><br><span class="line">  return &lt;h1&gt;Hello, &#123;props.name&#125;&lt;/h1&gt;;</span><br><span class="line">&#125;</span><br><span class="line">//2.进行渲染</span><br><span class="line">ReactDOM.Render(&lt;Welcom name = &quot;ss&quot; /&gt;,document.getElementById(&quot;div&quot;));</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611211670211.png" alt="结果"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611211670211.png" alt="结果"></p>
 <p>让我们来回顾一下这个例子中发生了什么：</p>
 <ol>
 <li>我们调用 <code>ReactDOM.render()</code> 函数，并传入 <code>&lt;Welcome name=&quot;Sara&quot; /&gt;</code> 作为参数。</li>
@@ -4187,7 +4243,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>如：ref里面就是一个回调函数，self就是该input标签。然后在将该DOM元素赋值给实例对象中的一个属性</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;input ref=&#123;self =&gt;&#123; this.dian = self;console.log(self)&#125;&#125;  placeholder=&quot;点击弹出&quot; /&gt;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611495051999.png" alt="input标签"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611495051999.png" alt="input标签"></p>
 <p>也可以将函数提取出来，在ref中进行调用</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">isRef = (self) =&gt;&#123;            this.dian = self;            console.log(self)        &#125;&lt;input ref=&#123;this.isRef&#125; type=&quot;text&quot; placeholder=&quot;点击弹出&quot; /&gt;</span><br></pre></td></tr></table></figure>
 
@@ -4202,7 +4258,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>通过API，创建React的容器，相当于省略了回调的中间环节。但是这个容器是专门专用的，所以每一个ref都需要创建这个。该API会将DOM元素赋值给实例对象的名称为容器名称的属性的current【这个current是固定的】</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;/*容器名称 = React.createRef()*/&#125;</span><br><span class="line">MyRef = React.createRef();</span><br><span class="line">MyRef1 = React.createRef();</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611495597978.png" alt="API"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611495597978.png" alt="API"></p>
 <p>然后就可以使用了</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">btnOnClick = () =&gt;&#123;</span><br><span class="line">    //创建之后，将自身节点，传入current中</span><br><span class="line">    console.log(this.MyRef.current.value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -4261,15 +4317,15 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>​      React组件中包含一系列钩子函数{生命周期回调函数}，会在特定的时刻调用</p>
 <p>​      我们在定义组件的时候，会在特定的声明周期回调函数中，做特定的工作</p>
 <p>如下图是旧生命周期的结构图：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611490156766.png" alt="旧生命周期"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611490156766.png" alt="旧生命周期"></p>
 <p>我们通过一个案例更详细的了解这个生命周期：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class A extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">       constructor(props)&#123;</span><br><span class="line">           console.log(&quot;A --- constructor&quot;)</span><br><span class="line">           super(props);</span><br><span class="line">           this.state = &#123;num:1&#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       add = () =&gt; &#123;</span><br><span class="line">           let &#123;num&#125; = this.state;</span><br><span class="line">           this.setState(&#123;num:num+1&#125;);</span><br><span class="line">           //强制更新</span><br><span class="line">           //this.forceUpdate();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">      render()&#123;</span><br><span class="line">          console.log(&quot;A --- render&quot;);</span><br><span class="line">           return (</span><br><span class="line">               &lt;div&gt;</span><br><span class="line">                   &lt;h1&gt;这个是第&#123;this.state.num&#125;个&lt;/h1&gt;</span><br><span class="line">                   &lt;B name = &#123;this.state.num&#125;/&gt;</span><br><span class="line">                   &lt;button onClick = &#123;this.add&#125;&gt;点击加一&lt;/button&gt;</span><br><span class="line">               &lt;/div&gt;</span><br><span class="line">           )</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      //在render之前执行</span><br><span class="line">      componentWillMount()&#123;</span><br><span class="line">           console.log(&quot;A --- componentWillMount&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      //在render之后执行</span><br><span class="line">      componentDidMount()&#123;</span><br><span class="line">       console.log(&quot;A --- componenetDidMount&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      //更新操作 setState之后执行，判断是否可以更新（true可以，false不可以）</span><br><span class="line">      shouldComponentUpdate()&#123;</span><br><span class="line">           console.log(&quot;A --- shouldComponentUpdate&quot;);</span><br><span class="line">           return true;</span><br><span class="line">      &#125;</span><br><span class="line">      // 组件将要更新之前</span><br><span class="line">      componentWillUpdate()&#123;</span><br><span class="line">           console.log(&quot;A --- componentWillUpdate&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      //组件更新之后，该函数可以接受相应的参数</span><br><span class="line">      componentDidUpdate()&#123;</span><br><span class="line">           console.log(&quot;A --- componentDidUpdate&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      //卸载组件之后</span><br><span class="line">      componentWillUnmonut()&#123;</span><br><span class="line">           console.log(&quot;A --- componentWillUnmonut&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">  class B extends React.Component&#123;</span><br><span class="line">      render()&#123;</span><br><span class="line">          return(   </span><br><span class="line">               &lt;div&gt;</span><br><span class="line">                   &lt;h1&gt;这个是B组件,传递过来的是：&#123;this.props.name&#125;&lt;/h1&gt;</span><br><span class="line">               &lt;/div&gt;</span><br><span class="line">          )</span><br><span class="line">      &#125;</span><br><span class="line">      //父组件进行了更新，子组件先执行这个【注意，第一次传递数据的时候，并不执行】</span><br><span class="line">      componentWillReceiveProps()&#123;</span><br><span class="line">       console.log(&quot;A --- componentWillReceiveProps&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   ReactDOM.render(&lt;A   /&gt;,document.getElementById(&quot;div&quot;));</span><br></pre></td></tr></table></figure>
 
 <p>我们在控制台看一下：</p>
 <p>当我们刚刚打开控制台的时候，组件第一次加载：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611568192158.png" alt="组件第一次加载"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611568192158.png" alt="组件第一次加载"></p>
 <p>当我们点击按钮更新sate的时候：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611568250881.png" alt="更新state"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611568250881.png" alt="更新state"></p>
 <h2 id="（新）"><a href="#（新）" class="headerlink" title="（新）"></a>（新）</h2><p>在最新的react版本中，有些生命周期钩子被抛弃了，在官网中是这样说的：</p>
 <p>​    我们得到最重要的经验是，过时的组件生命周期往往会带来不安全的编码实践，具体函数如下：</p>
 <ul>
@@ -4283,7 +4339,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </ul>
 <p>由此可见，新版本中并不推荐持有这三个函数，取而代之的是带有UNSAFE_ 前缀的三个函数，比如: UNSAFE_ componentWillMount。即便如此，其实React官方还是不推荐大家去使用，在以后版本中有可能会去除这几个函数。</p>
 <p>如下图是新的生命周期：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611651795885.png" alt="新生命周期"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611651795885.png" alt="新生命周期"></p>
 <p>从图上可以看出，新生命周期和旧生命周期的区别主要有：</p>
 <p>1.抛弃了上面所说的三个钩子函数【其实还可以使用】</p>
 <p>2.新添加了两个钩子函数</p>
@@ -4300,7 +4356,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </blockquote>
 <p>以上就是两个新添加的钩子函数，但是在现实开发中可能并不常用这两个。</p>
 <p>**案例：在一个区域内，定时的输出以行话，如果内容大小超过了区域大小，就出现滚动条，但是内容不进行移动 **</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\BeforeGender.gif" alt="案例"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\BeforeGender.gif" alt="案例"></p>
 <p>如上面的动图：区域内部的内容展现没有变化，但是可以看见滚动条在变化，也就是说上面依旧有内容在输出，只不过不在这个区域内部展现。</p>
 <p><strong>实现：</strong></p>
 <p>【一些css样式，就不在这展示了】</p>
@@ -4326,15 +4382,15 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">person:[    &#123;id:1,name:&quot;张三&quot;,age:18&#125;,    &#123;id:2,name:&quot;李四&quot;,age:19&#125;]this.state.person.map((preson,index)=&gt;&#123;  return  &lt;li key = &#123;index&#125;&gt;&#123;preson.name&#125;&lt;/li&gt;&#125;)</span><br></pre></td></tr></table></figure>
 
 <p>如下图展现在页面中：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611800406864.png" alt="原始对象数组"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611800406864.png" alt="原始对象数组"></p>
 <p>此时，我们想在点击按钮之后动态的添加一个对象，并且放入到li标签中，在重新渲染到页面中。</p>
 <p>我们通过修改State来控制对象的添加。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;button onClick=&#123;this.addObject&#125;&gt;点击增加对象&lt;/button&gt;</span><br><span class="line">addObject = () =&gt;&#123;</span><br><span class="line">    let &#123;person&#125; = this.state;</span><br><span class="line">    const p = &#123;id:(person.length+1),name:&quot;王五&quot;,age:20&#125;;</span><br><span class="line">    this.setState(&#123;person:[p,...person]&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如下动图所示：</p>
-<p> <img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\addObject.gif" alt="原始对象数组"> </p>
+<p> <img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\addObject.gif" alt="原始对象数组"> </p>
 <p>这样看，虽然完成了功能。但是其实存在效率上的问题，    我们先来看一下两个前后组件状态的变化：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611800988496.png" alt="组件状态的变化"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611800988496.png" alt="组件状态的变化"></p>
 <p>我们发现，组件第一个变成了王五，张三和李四都移下去了。因为我们使用Index作为Key，这三个标签的key也就发生了改变【张三原本的key是0，现在变成了1，李四的key原本是1，现在变成了2，王五变成了0】在组件更新状态重新渲染的时候，就出现了问题：</p>
 <p>因为react是通过key来比较组件标签是否一致的，拿这个案例来说：</p>
 <p>首先，状态更新导致组件标签更新，react根据Key，判断旧的虚拟DOM和新的虚拟DOM是否一致</p>
@@ -4384,7 +4440,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>在这一步，有可能会出现：</p>
 </li>
 </ol>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611803687193.png" alt="不是内部命令"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611803687193.png" alt="不是内部命令"></p>
 <p>​     这样可以直接使用：<code>npx create-react-app 项目名 </code></p>
 <ol start="3">
 <li><p>等待下载完成，进入项目文件夹，运行一下</p>
@@ -4393,16 +4449,16 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p><code>npm start </code>  //启动这个项目</p>
 </li>
 </ol>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611816095069.png" alt="启动成功"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611816095069.png" alt="启动成功"></p>
 <p>这个时会自动的打开浏览器，展现这个项目：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611816150630.png" alt="第一个脚手架项目"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611816150630.png" alt="第一个脚手架项目"></p>
 <h2 id="项目的目录结构"><a href="#项目的目录结构" class="headerlink" title="项目的目录结构"></a>项目的目录结构</h2><p>我们先来看一下public这个目录下面的结构：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611817630266.png" alt="public"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611817630266.png" alt="public"></p>
 <p>这里面最主要的还是这个Index.html文件：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;!--%PUBLIC_URL%表示public文件夹的路径--&gt;</span><br><span class="line">    &lt;link rel=&quot;icon&quot; href=&quot;%PUBLIC_URL%/favicon.ico&quot; /&gt;</span><br><span class="line">    &lt;!--用于开启理想视口，用于移动端页面的适配--&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;</span><br><span class="line">    &lt;!--用于配置浏览器地址栏的颜色（仅支持安卓手机浏览器）--&gt;</span><br><span class="line">    &lt;meta name=&quot;theme-color&quot; content=&quot;#000000&quot; /&gt;</span><br><span class="line">    &lt;!--描述网页信息的--&gt;</span><br><span class="line">    &lt;meta</span><br><span class="line">      name=&quot;description&quot;</span><br><span class="line">      content=&quot;Web site created using create-react-app&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;!--用于指定网页添加到手机主屏幕后的图标（仅仅支持ios）--&gt;</span><br><span class="line">    &lt;link rel=&quot;apple-touch-icon&quot; href=&quot;%PUBLIC_URL%/logo192.png&quot; /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!--应用加壳时候的配置文件 --&gt;</span><br><span class="line">    &lt;link rel=&quot;manifest&quot; href=&quot;%PUBLIC_URL%/manifest.json&quot; /&gt;</span><br><span class="line">  </span><br><span class="line">    &lt;title&gt;React App&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;!-- 浏览器不支持JS的运行的时候展现 --&gt;</span><br><span class="line">    &lt;noscript&gt;You need to enable JavaScript to run this app.&lt;/noscript&gt;</span><br><span class="line">    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
 <p>src文件：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611818262317.png" alt="src文件"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611818262317.png" alt="src文件"></p>
 <p>这里面其实最主要的就是App.js以及index.js，一个是组件，一个是将组件渲染到页面中的。</p>
 <h2 id="第一个脚手架应用"><a href="#第一个脚手架应用" class="headerlink" title="第一个脚手架应用"></a>第一个脚手架应用</h2><p>1.我们保持public中的Index.html不变</p>
 <p>2.修改src下面的APP.js以及index.js文件</p>
@@ -4413,7 +4469,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//引入核心库import React from &#x27;react&#x27;import ReactDOM from &#x27;react-dom&#x27;//引入组件import App from &#x27;./App&#x27;ReactDOM.render(&lt;App /&gt;,document.getElementById(&quot;root&quot;))</span><br></pre></td></tr></table></figure>
 
 <p>这样在重新启动应用，就成功了。</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1611820194124.png" alt="第一个脚手架应用"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1611820194124.png" alt="第一个脚手架应用"></p>
 <p>我们也不建议这样直接将内容放入App组件中，尽量还是用内部组件。</p>
 <p>我们在顶一个Hello组件：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React,&#123;Componet&#125; from &#x27;react&#x27;export default class Hello extends Componet&#123;    render() &#123;        return (            &lt;h1&gt;Hello&lt;/h1&gt;        )    &#125;&#125;</span><br></pre></td></tr></table></figure>
@@ -4614,15 +4670,15 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 <h2 id="样式错误"><a href="#样式错误" class="headerlink" title="样式错误"></a>样式错误</h2><p>拿上面的案例来说：</p>
 <p>这里面会有一个样式：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1612316916900.png" alt="样式表"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1612316916900.png" alt="样式表"></p>
 <p>此时，加载该样式的路径为：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1612317786643.png" alt="加载样式路径"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1612317786643.png" alt="加载样式路径"></p>
 <p>但是在写路由的时候，有的时候就会出现多级目录，</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;MyNavLink to = &quot;/cyk/about&quot; &gt;About&lt;/MyNavLink&gt;</span><br><span class="line"></span><br><span class="line">&lt;Route path=&quot;/cyk/about&quot;component=&#123;About&#125;/&gt;</span><br></pre></td></tr></table></figure>
 
 <p>这个时候就在刷新页面，就会出现问题：</p>
 <p>样式因为路径问题加载失败，此时页面返回public下面的Index.html</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\1612317880916.png" alt="加载页面失败"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\1612317880916.png" alt="加载页面失败"></p>
 <p>解决这个问题，有三个方法：</p>
 <p>1.样式加载使用绝对位置</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;link href=&quot;/css/bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt; </span><br></pre></td></tr></table></figure>
@@ -4649,12 +4705,12 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 <p>​    </p>
 <h2 id="初始化路由"><a href="#初始化路由" class="headerlink" title="初始化路由"></a>初始化路由</h2><p>在配置好路由，最开始打开页面的时候，应该是不会匹配到任意一个组件。这个时候页面就显得极其不合适，此时应该默认的匹配到一个组件。</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\RouterDef.gif" alt="空组件"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\RouterDef.gif" alt="空组件"></p>
 <p>此时就需要使用Redirect进行<strong>默认匹配</strong>了。如下的代码就是默认匹配/home路径所到的组件</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Switch&gt;    &lt;Route path=&quot;/about&quot;component=&#123;About&#125;/&gt;    &#123;/* exact=&#123;true&#125;：开启严格匹配的模式，路径必须一致 */&#125;    &lt;Route   path=&quot;/home&quot; component=&#123;Home&#125;/&gt;    &#123;/* Redirect:如果上面的都没有匹配到，就匹配到这个路径下面 */&#125;    &lt;Redirect  to = &quot;/home&quot;/&gt;&lt;/Switch&gt;</span><br></pre></td></tr></table></figure>
 
 <p>就可以做到如下的效果：</p>
-<p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\RouterSetDef.gif" alt="设置默认值"></p>
+<p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\RouterSetDef.gif" alt="设置默认值"></p>
 <h2 id="嵌套路由"><a href="#嵌套路由" class="headerlink" title="嵌套路由"></a>嵌套路由</h2><p>简单来说就是在一个路由组件中又使用了一个路由，就形成了嵌套路由。</p>
 <p>举个例子来说：</p>
 <p>我们在home这个路由组件中又添加两个组件：</p>
@@ -4676,9 +4732,9 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </ul>
 <p>2.<strong>search</strong>参数</p>
 <ul>
-<li><p>路由链接(携带参数)：&lt;Link to=’/demo/test?name=tom&amp;age=18’}&gt;详情</Link></p>
+<li><p>路由链接(携带参数)：&lt;Link to=’/demo/test?name=tom&amp;age=18’}&gt;详情</p>
 </li>
-<li><p>注册路由(无需声明，正常注册即可)：<Route path="/demo/test" component={Test}/></p>
+<li><p>注册路由(无需声明，正常注册即可)：<Route path="/demo/test" component="{Test}/"></Route></p>
 </li>
 <li><p>接收参数：<strong>this.props.location.search</strong></p>
 </li>
@@ -4689,7 +4745,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <ul>
 <li><p>路由链接(携带参数)：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Link to=&#123;&#123;pathname:&#x27;/demo/test&#x27;,state:&#123;name:&#x27;tom&#x27;,age:18&#125;&#125;&#125;&gt;详情&lt;/Link&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>注册路由(无需声明，正常注册即可)：<Route path="/demo/test" component={Test}/></p>
+<li><p>注册路由(无需声明，正常注册即可)：<Route path="/demo/test" component="{Test}/"></Route></p>
 </li>
 <li><p>接收参数：this.props.location.state</p>
 </li>
@@ -4777,7 +4833,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <li><p>总体原则：能不用就不用, 如果不用时比较吃力才考虑使用。</p>
 </li>
 </ol>
-<h3 id="redux工作流程"><a href="#redux工作流程" class="headerlink" title="redux工作流程"></a>redux工作流程</h3><p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\redux原理图.png" alt="redux原理图"></p>
+<h3 id="redux工作流程"><a href="#redux工作流程" class="headerlink" title="redux工作流程"></a>redux工作流程</h3><p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\redux原理图.png" alt="redux原理图"></p>
 <h2 id="redux的三个核心概念"><a href="#redux的三个核心概念" class="headerlink" title="redux的三个核心概念"></a>redux的三个核心概念</h2><h3 id="action"><a href="#action" class="headerlink" title="action"></a>action</h3><ol>
 <li><p>动作的对象</p>
 </li>
@@ -4873,7 +4929,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>​     3).reducer被第一次调用时，是store自动触发的，</p>
 <p>​         传递的preState是undefined,</p>
 <p>​         传递的action是:{type:‘@@REDUX/INIT_a.2.b.4}</p>
-<p>  (5).在index.js中监测store中状态的改变，一旦发生改变重新渲染<App/></p>
+<p>  (5).在index.js中监测store中状态的改变，一旦发生改变重新渲染<App></App></p>
 <p>​    备注：redux只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。</p>
 <h4 id="2-求和案例-redux完整版"><a href="#2-求和案例-redux完整版" class="headerlink" title="2.求和案例_redux完整版"></a>2.求和案例_redux完整版</h4><p>  新增文件：</p>
 <p>   1.count_action.js 专门用于创建action对象</p>
@@ -4893,7 +4949,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>​     2).创建action的函数不再返回一般对象，而是一个<strong>函数</strong>，该函数中写异步任务。</p>
 <p>​     3).异步任务有结果后，分发一个同步的action去真正操作数据。</p>
 <p>   (4).备注：异步action不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步action。</p>
-<h4 id="4-求和案例-react-redux基本使用"><a href="#4-求和案例-react-redux基本使用" class="headerlink" title="4.求和案例_react-redux基本使用"></a>4.求和案例_react-redux基本使用</h4><p><img src="C:\Users\86136\Desktop\repository\notes\FrontEnd\images\react-redux模型图.png" alt="react-redux模型图"></p>
+<h4 id="4-求和案例-react-redux基本使用"><a href="#4-求和案例-react-redux基本使用" class="headerlink" title="4.求和案例_react-redux基本使用"></a>4.求和案例_react-redux基本使用</h4><p><img src="/.cn//Users\86136\Desktop\repository\notes\FrontEnd\images\react-redux模型图.png" alt="react-redux模型图"></p>
 <p>   (1).明确两个概念：</p>
 <p>​      1).<strong>UI组件</strong>:不能使用任何redux的api，只负责页面的呈现、交互等。</p>
 <p>​      2).<strong>容器组件</strong>：负责和redux通信，将结果交给UI组件。</p>
@@ -4909,7 +4965,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </li>
 </ul>
 <h4 id="5-求和案例-react-redux优化"><a href="#5-求和案例-react-redux优化" class="headerlink" title="5.求和案例_react-redux优化"></a>5.求和案例_react-redux优化</h4><p>(1).容器组件和UI组件整合一个文件</p>
-<p>(2).无需自己给容器组件传递store，给<App/>包裹一个<Provider store={store}>即可。</p>
+<p>(2).无需自己给容器组件传递store，给<App>包裹一个<Provider store="{store}">即可。</Provider></App></p>
 <p>(3).使用了react-redux后也不用再自己检测redux中状态的改变了，容器组件可以自动完成这个工作。</p>
 <p>(4).mapDispatchToProps也可以简单的写成一个对象</p>
 <p>(5).一个组件要和redux“打交道”要经过哪几步？</p>
@@ -4969,7 +5025,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <h3 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h3><ol>
 <li><strong>Provider</strong>：让所有组件都可以得到state数据</li>
 </ol>
-<p><strong><Provider store={store}> <App/></Provider></strong>   </p>
+<p><strong><Provider store="{store}"> <App></App></Provider></strong>   </p>
 <ol start="2">
 <li><strong>connect</strong>：用于包装 UI 组件生成容器组件</li>
 </ol>
@@ -5058,7 +5114,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <p>可以不用必须有一个真实的DOM根标签了</p>
 <p>（例：最外层不用包一个div）</p>
 </blockquote>
-<hr/>
+<hr>
 
 
 
@@ -5069,7 +5125,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 <h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在应用开发中一般不用context, 一般都用它的封装react插件</span><br></pre></td></tr></table></figure>
 
-<hr/>
+<hr>
 
 
 
@@ -5089,7 +5145,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 </blockquote>
 <h5 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">办法1: 	</span><br><span class="line">	重写shouldComponentUpdate()方法	</span><br><span class="line">	比较新旧state或props数据, 如果有变化才返回true, 如果没有返回false</span><br><span class="line">办法2:  	</span><br><span class="line">	使用PureComponent	</span><br><span class="line">    PureComponent重写了shouldComponentUpdate(), 只有state或props数据有变化才返回true	</span><br><span class="line">	注意: 		</span><br><span class="line">		只是进行state和props数据的浅比较, 如果只是数据对象内部数据变了, 返回false  		不要直接修改state数据, 而是要产生新数据项目中一般使用PureComponent来优化</span><br></pre></td></tr></table></figure>
 
-<hr/>
+<hr>
 
 
 
@@ -5101,7 +5157,7 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 
 
 
-<hr/>
+<hr>
 
 <h3 id="8-错误边界"><a href="#8-错误边界" class="headerlink" title="8. 错误边界"></a>8. 错误边界</h3><h5 id="理解：-1"><a href="#理解：-1" class="headerlink" title="理解："></a>理解：</h5><p>错误边界(Error boundary)：用来捕获后代组件错误，渲染出备用页面</p>
 <h5 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h5><p>只能捕获<strong>后代组件生命周期</strong>产生的错误，不能捕获自己组件产生的错误和其他组件在合成事件、定时器中产生的错误</p>
