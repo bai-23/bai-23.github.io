@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://freepiao.cn/2021/07/25/HelloTriangle/</loc>
+    
+    <lastmod>2021-07-25</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/2021/07/25/MultiPoints/</loc>
     
     <lastmod>2021-07-25</lastmod>
@@ -249,6 +256,13 @@
   </url>
   
   <url>
+    <loc>https://freepiao.cn/tags/Javascript/</loc>
+    <lastmod>2021-07-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/tags/python/</loc>
     <lastmod>2021-07-25</lastmod>
     <changefreq>daily</changefreq>
@@ -257,13 +271,6 @@
   
   <url>
     <loc>https://freepiao.cn/tags/%E7%88%AC%E8%99%AB/</loc>
-    <lastmod>2021-07-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/tags/Javascript/</loc>
     <lastmod>2021-07-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
