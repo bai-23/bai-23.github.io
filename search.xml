@@ -860,31 +860,6 @@
       </tags>
   </entry>
   <entry>
-    <title>建站随笔</title>
-    <url>/2021/07/20/hello-world/</url>
-    <content><![CDATA[<p>…</p>
-<span id="more"></span>
-
-
-<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
-
-<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<iframe src="http://www.staggeringbeauty.com/" style="border: 1px inset #ddd" width="498" height="598"></iframe>
-
-]]></content>
-      <categories>
-        <category>essay</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7 零成本搭建web服务器【外网可访问】</title>
     <url>/2021/07/21/centosweb/</url>
     <content><![CDATA[<blockquote>
@@ -972,6 +947,31 @@ Natapp网址：[点这里](https://natapp.cn/)
       <tags>
         <tag>Linux</tag>
         <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>建站随笔</title>
+    <url>/2021/07/20/hello-world/</url>
+    <content><![CDATA[<p>…</p>
+<span id="more"></span>
+
+
+<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
+
+<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<iframe src="http://www.staggeringbeauty.com/" style="border: 1px inset #ddd" width="498" height="598"></iframe>
+
+]]></content>
+      <categories>
+        <category>essay</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1363,28 +1363,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>xpath解析58二手房的房源信息【★★】</title>
-    <url>/2021/07/23/xpath%E8%A7%A3%E6%9E%9058%E4%BA%8C%E6%89%8B%E6%88%BF%E7%9A%84%E6%88%BF%E6%BA%90%E4%BF%A1%E6%81%AF/</url>
-    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/xpath/xpath-syntax.html">XPath语法</a></p>
-<p>需求：爬取58二手房中的房源信息</p>
-<span id="more"></span>
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="comment"># 需求：爬取58二手房中的房源信息</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 爬取到页面源码数据</span></span><br><span class="line">    url = <span class="string">&#x27;https://bj.58.com/ershoufang/&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 数据解析</span></span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 存储的就是li标签对象</span></span><br><span class="line">    div_list = tree.xpath(<span class="string">&#x27;//section[@class=&quot;list&quot;]//h3/text()&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(div_list)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;58.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> div_list:</span><br><span class="line">        fp.write(item + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>小舍免费图片Api</title>
     <url>/2021/07/21/xiaoshesapi/</url>
     <content><![CDATA[<blockquote>
@@ -1455,6 +1433,28 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>图片Api</tag>
         <tag>NodeJs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>xpath解析58二手房的房源信息【★★】</title>
+    <url>/2021/07/23/xpath%E8%A7%A3%E6%9E%9058%E4%BA%8C%E6%89%8B%E6%88%BF%E7%9A%84%E6%88%BF%E6%BA%90%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/xpath/xpath-syntax.html">XPath语法</a></p>
+<p>需求：爬取58二手房中的房源信息</p>
+<span id="more"></span>
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="comment"># 需求：爬取58二手房中的房源信息</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 爬取到页面源码数据</span></span><br><span class="line">    url = <span class="string">&#x27;https://bj.58.com/ershoufang/&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 数据解析</span></span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 存储的就是li标签对象</span></span><br><span class="line">    div_list = tree.xpath(<span class="string">&#x27;//section[@class=&quot;list&quot;]//h3/text()&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(div_list)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;58.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> div_list:</span><br><span class="line">        fp.write(item + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
