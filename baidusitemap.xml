@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://freepiao.cn/2021/07/25/HelloRectangle/</loc>
-    <lastmod>2021-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/25/HelloTriangle/</loc>
-    <lastmod>2021-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/25/MultiPoints/</loc>
-    <lastmod>2021-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/24/HelloPoint-v2/</loc>
-    <lastmod>2021-07-25</lastmod>
+    <loc>https://freepiao.cn/2021/07/25/ClickedPoints-color/</loc>
+    <lastmod>2021-07-26</lastmod>
   </url>
   <url>
     <loc>https://freepiao.cn/2021/07/24/HelloPoint-v1/</loc>
-    <lastmod>2021-07-25</lastmod>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/24/HelloPoint-v2/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/25/MultiPoints/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/25/HelloTriangle/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/25/HelloRectangle/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/26/TranslatedTriangle/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/21/centosweb/</loc>
+    <lastmod>2021-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://freepiao.cn/2021/07/20/hello-world/</loc>
+    <lastmod>2021-07-26</lastmod>
   </url>
   <url>
     <loc>https://freepiao.cn/2021/07/22/HelloCanvas2d/</loc>
@@ -26,10 +42,6 @@
   </url>
   <url>
     <loc>https://freepiao.cn/2021/07/24/HellCanvas/</loc>
-    <lastmod>2021-07-25</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/25/ClickedPoints-color/</loc>
     <lastmod>2021-07-25</lastmod>
   </url>
   <url>
@@ -82,14 +94,6 @@
   </url>
   <url>
     <loc>https://freepiao.cn/2021/07/23/%E7%88%AC%E5%8F%96%E6%90%9C%E7%8B%97%E9%A1%B5%E9%9D%A2/</loc>
-    <lastmod>2021-07-23</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/20/hello-world/</loc>
-    <lastmod>2021-07-23</lastmod>
-  </url>
-  <url>
-    <loc>https://freepiao.cn/2021/07/21/centosweb/</loc>
     <lastmod>2021-07-23</lastmod>
   </url>
   <url>
