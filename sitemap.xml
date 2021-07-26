@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://freepiao.cn/2021/07/26/RotatedTriangle/</loc>
+    
+    <lastmod>2021-07-26</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://freepiao.cn/cooperation/index.html</loc>
+    
+    <lastmod>2021-07-26</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/2021/07/25/ClickedPoints-color/</loc>
     
     <lastmod>2021-07-26</lastmod>
@@ -61,13 +75,6 @@
     <loc>https://freepiao.cn/2021/07/20/hello-world/</loc>
     
     <lastmod>2021-07-26</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/cooperation/index.html</loc>
-    
-    <lastmod>2021-07-25</lastmod>
     
   </url>
   
@@ -291,13 +298,6 @@
   </url>
   
   <url>
-    <loc>https://freepiao.cn/tags/hexo/</loc>
-    <lastmod>2021-07-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://freepiao.cn/tags/Javascript/</loc>
     <lastmod>2021-07-26</lastmod>
     <changefreq>daily</changefreq>
@@ -313,6 +313,13 @@
   
   <url>
     <loc>https://freepiao.cn/tags/Nginx/</loc>
+    <lastmod>2021-07-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://freepiao.cn/tags/hexo/</loc>
     <lastmod>2021-07-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -384,14 +391,14 @@
   </url>
   
   <url>
-    <loc>https://freepiao.cn/categories/essay/</loc>
+    <loc>https://freepiao.cn/categories/code/frontend/Javascript/</loc>
     <lastmod>2021-07-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://freepiao.cn/categories/code/frontend/Javascript/</loc>
+    <loc>https://freepiao.cn/categories/essay/</loc>
     <lastmod>2021-07-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

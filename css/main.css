@@ -2025,6 +2025,18 @@ body {
   -webkit-box-shadow: 2px 2px 10px rgba(233,205,215,0.8);
   transition: 0.4s;
 }
+.use-motion 文章详情 a,
+.use-motion .post a {
+  color: #056ca8;
+  border-bottom: none;
+  border-bottom: 1px solid #056ca8;
+}
+.use-motion 文章详情 a:hover,
+.use-motion .post a:hover {
+  color: #fc6423;
+  border-bottom: none;
+  border-bottom: 1px solid #fc6423;
+}
 .use-motion .index {
   padding: 20px;
   background: rgba(255,255,255,0.9);
