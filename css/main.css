@@ -2037,6 +2037,11 @@ body {
   border-bottom: none;
   border-bottom: 1px solid #fc6423;
 }
+.use-motion 文章详情 code,
+.use-motion .post code {
+  color: #e9836e;
+  background-color: #f3f3f3;
+}
 .use-motion .index {
   padding: 20px;
   background: rgba(255,255,255,0.9);
