@@ -104,49 +104,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
-    <url>/2021/07/24/HellCanvas/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
-<li>获取<code>&lt;canvas&gt;</code>元素</li>
-<li>获取webgl绘图上下文</li>
-<li>设置背景色</li>
-<li>清空<code>&lt;canvas&gt;</code></li>
-</ol>
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>gl.cleanColor()的参数</p>
-</li>
-<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
-</li>
-<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
-</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>HelloCanvas.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】04-通过鼠标点击绘点_v1</title>
     <url>/2021/07/24/ClickedPoints/</url>
     <content><![CDATA[<blockquote>
@@ -257,40 +214,37 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
-    <url>/2021/07/22/HelloCanvas2d/</url>
+    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
+    <url>/2021/07/24/HellCanvas/</url>
     <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
+<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
 </blockquote>
 <span id="more"></span>
 
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
+<li>获取<code>&lt;canvas&gt;</code>元素</li>
+<li>获取webgl绘图上下文</li>
+<li>设置背景色</li>
+<li>清空<code>&lt;canvas&gt;</code></li>
+</ol>
 <h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
+<li><p>gl.cleanColor()的参数</p>
 </li>
-<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
+<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
 </li>
-<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
-<p>参数：x    矩形左上角的 x 坐标</p>
-<pre><code>      y    矩形左上角的 y 坐标
-      width        矩形的宽度
-      height   矩形的高度
-</code></pre>
+<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
 </li>
 </ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><code>HelloCanvas2d.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>HelloCanvas.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -460,6 +414,52 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
+    <url>/2021/07/22/HelloCanvas2d/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
+</li>
+<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
+</li>
+<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
+<p>参数：x    矩形左上角的 x 坐标</p>
+<pre><code>      y    矩形左上角的 y 坐标
+      width        矩形的宽度
+      height   矩形的高度
+</code></pre>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas2d.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>code</category>
@@ -1971,26 +1971,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>使用爬虫破解百度翻译【★★】</title>
-    <url>/2021/07/23/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
-    <content><![CDATA[<blockquote>
-<p>携带post参数的爬虫</p>
-</blockquote>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【JavaScript 随笔】DOM事件之——拖拽的实现与简单优化</title>
     <url>/2021/07/21/%E3%80%90JavaScript%20%E9%9A%8F%E7%AC%94%E3%80%91DOM%E4%BA%8B%E4%BB%B6%E4%B9%8B%E2%80%94%E2%80%94%E6%8B%96%E6%8B%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%8E%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h5 id="效果"><a href="#效果" class="headerlink" title="效果"></a><em>效果</em></h5><span id="more"></span>
@@ -2037,42 +2017,23 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>Ajax跨域解决方案</title>
-    <url>/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
-
-<hr>
-<p>当我们在做练习或者写 Demo 的时候，有访问本地文件的需求，当我们在加载的时候发现不能加载，会报如下错误： </p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/xzsj/1888303/o_210325085243filecross.png"></p>
-<p>根据错误信息大概知道原因在于使用了 File 协议，应该使用它提示的 http, data, chrome, chrome-extension, chrome-untrusted, https 这些协议，可是只是做个练习，写些小 Demo，不至于自己去创建一个服务器，开个端口。那么应该如何解决这个问题呢？各位看官，往下看。</p>
-<h2 id="1-换编辑器"><a href="#1-换编辑器" class="headerlink" title="1.换编辑器"></a>1.换编辑器</h2><hr>
-<p>使用 webstorm 或是 visual studio 这种重量级 IDE 的同学，应该不会遇到这种问题，这类 IDE 都内置了 HTTP 服务器。<br>但是对于一些喜欢使用 VSCode，Sublime Text 这类轻量级编辑器的同学，我们继续往下看。</p>
-<h2 id="2-安装Server插件"><a href="#2-安装Server插件" class="headerlink" title="2.安装Server插件"></a>2.安装Server插件</h2><hr>
-<p>这里针对 VSCode 和 Sublime 分别安利一款插件。</p>
-<h3 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h3><hr>
-<p>Live Server 插件，这个插件功能十分强大，不止可以解决 ajax 不支持 file 协议的问题，还可以实现在编辑器里保存修改后，页面自动刷新的功能。具体使用方法在插件安装的地方有说明，用起来也十分简单。<br>安装完成之后，打开 html 文件后，点击右下角的 GoLive 即可。</p>
-<h3 id="Sublime"><a href="#Sublime" class="headerlink" title="Sublime"></a>Sublime</h3><hr>
-<p>SublimeServer 插件，安装完成之后，点击 Tools-&gt;SublimeServer-&gt;Start SublimeServer，启动服务器，然后在 html 文件中，注意是文件中点击右键，选择 View in SublimeServer 即可。<br>（注意一定要以文件夹的方式打开 html 文件所在目录，否则可能失效。）</p>
-<h2 id="3-换浏览器"><a href="#3-换浏览器" class="headerlink" title="3.换浏览器"></a>3.换浏览器</h2><hr>
-<p>火狐支持 file 协议，对 Chorme 没有什么执念的童鞋，可以换成火狐。</p>
-<h2 id="4-配置Chrome浏览器支持file协议"><a href="#4-配置Chrome浏览器支持file协议" class="headerlink" title="4.配置Chrome浏览器支持file协议"></a>4.配置Chrome浏览器支持file协议</h2><hr>
-<p>如果你是那种非常喜欢 Chrome 开发者工具的人，也可以尝试如下方式。</p>
-<p>Windows：<br>设置 Chrome 的快捷方式属性，在“目标”后面加上–allow-file-access-from-files，注意前面有个空格，重新打开 Chrome 即可。</p>
-<p>Mac：<br>打开终端，输入下面命令：open -a “Google Chrome” –args –disable-web-security 然后就可以屏蔽安全访问了[ –args：此参数可有可无]</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><hr>
-<p>只是更改浏览器配置使之支持 file 协议，还是有很大的局限性的，建议最好采用前两种方式，配置 http 服务器才是长久之计。</p>
-<p>如需前端指导、前端资料、Java 指导和 Java 资料的请联系本人，感谢您的支持。</p>
-<blockquote>
-<p>WECHAT：xzsj07<br>备注：加好友请注明来源。</p>
+    <title>使用爬虫破解百度翻译【★★】</title>
+    <url>/2021/07/23/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
+    <content><![CDATA[<blockquote>
+<p>携带post参数的爬虫</p>
 </blockquote>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>code</category>
-        <category>frontend</category>
-        <category>Ajax</category>
+        <category>backend</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>Ajax</tag>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -2116,6 +2077,45 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>python</tag>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ajax跨域解决方案</title>
+    <url>/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
+
+<hr>
+<p>当我们在做练习或者写 Demo 的时候，有访问本地文件的需求，当我们在加载的时候发现不能加载，会报如下错误： </p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/xzsj/1888303/o_210325085243filecross.png"></p>
+<p>根据错误信息大概知道原因在于使用了 File 协议，应该使用它提示的 http, data, chrome, chrome-extension, chrome-untrusted, https 这些协议，可是只是做个练习，写些小 Demo，不至于自己去创建一个服务器，开个端口。那么应该如何解决这个问题呢？各位看官，往下看。</p>
+<h2 id="1-换编辑器"><a href="#1-换编辑器" class="headerlink" title="1.换编辑器"></a>1.换编辑器</h2><hr>
+<p>使用 webstorm 或是 visual studio 这种重量级 IDE 的同学，应该不会遇到这种问题，这类 IDE 都内置了 HTTP 服务器。<br>但是对于一些喜欢使用 VSCode，Sublime Text 这类轻量级编辑器的同学，我们继续往下看。</p>
+<h2 id="2-安装Server插件"><a href="#2-安装Server插件" class="headerlink" title="2.安装Server插件"></a>2.安装Server插件</h2><hr>
+<p>这里针对 VSCode 和 Sublime 分别安利一款插件。</p>
+<h3 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h3><hr>
+<p>Live Server 插件，这个插件功能十分强大，不止可以解决 ajax 不支持 file 协议的问题，还可以实现在编辑器里保存修改后，页面自动刷新的功能。具体使用方法在插件安装的地方有说明，用起来也十分简单。<br>安装完成之后，打开 html 文件后，点击右下角的 GoLive 即可。</p>
+<h3 id="Sublime"><a href="#Sublime" class="headerlink" title="Sublime"></a>Sublime</h3><hr>
+<p>SublimeServer 插件，安装完成之后，点击 Tools-&gt;SublimeServer-&gt;Start SublimeServer，启动服务器，然后在 html 文件中，注意是文件中点击右键，选择 View in SublimeServer 即可。<br>（注意一定要以文件夹的方式打开 html 文件所在目录，否则可能失效。）</p>
+<h2 id="3-换浏览器"><a href="#3-换浏览器" class="headerlink" title="3.换浏览器"></a>3.换浏览器</h2><hr>
+<p>火狐支持 file 协议，对 Chorme 没有什么执念的童鞋，可以换成火狐。</p>
+<h2 id="4-配置Chrome浏览器支持file协议"><a href="#4-配置Chrome浏览器支持file协议" class="headerlink" title="4.配置Chrome浏览器支持file协议"></a>4.配置Chrome浏览器支持file协议</h2><hr>
+<p>如果你是那种非常喜欢 Chrome 开发者工具的人，也可以尝试如下方式。</p>
+<p>Windows：<br>设置 Chrome 的快捷方式属性，在“目标”后面加上–allow-file-access-from-files，注意前面有个空格，重新打开 Chrome 即可。</p>
+<p>Mac：<br>打开终端，输入下面命令：open -a “Google Chrome” –args –disable-web-security 然后就可以屏蔽安全访问了[ –args：此参数可有可无]</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><hr>
+<p>只是更改浏览器配置使之支持 file 协议，还是有很大的局限性的，建议最好采用前两种方式，配置 http 服务器才是长久之计。</p>
+<p>如需前端指导、前端资料、Java 指导和 Java 资料的请联系本人，感谢您的支持。</p>
+<blockquote>
+<p>WECHAT：xzsj07<br>备注：加好友请注明来源。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>Ajax</category>
+      </categories>
+      <tags>
+        <tag>Ajax</tag>
       </tags>
   </entry>
   <entry>
@@ -6371,6 +6371,47 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>frontEnd</tag>
         <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】15-颜色与纹理-将非坐标数据传入顶点着色器</title>
+    <url>/2021/07/28/MultiAttributeSize/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：16-MultiAttributeSize、17-MultiAttributeSize_Interleaved</p>
+<p>要点：绘制三个不同size的点、交错组织</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、回顾—将顶点坐标传入着色器步骤"><a href="#一、回顾—将顶点坐标传入着色器步骤" class="headerlink" title="一、回顾—将顶点坐标传入着色器步骤"></a>一、回顾—将顶点坐标传入着色器步骤</h5><p>1.<a href="https://freepiao.cn/2021/07/25/MultiPoints/#1-%E5%88%9B%E5%BB%BA%E7%BC%93%E5%86%B2%E5%8C%BA%E5%AF%B9%E8%B1%A1">创建缓冲区对象</a></p>
+<p>2.<a href="https://freepiao.cn/2021/07/25/MultiPoints/#2-%E5%B0%86%E7%BC%93%E5%86%B2%E5%8C%BA%E5%AF%B9%E8%B1%A1%E4%BF%9D%E5%AD%98%E5%88%B0%E7%9B%AE%E6%A0%87%E4%B8%8A">将缓冲区对象绑定到target上</a></p>
+<p>3.<a href="https://freepiao.cn/2021/07/25/MultiPoints/#3-%E5%90%91%E7%BC%93%E5%AD%98%E5%AF%B9%E8%B1%A1%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE">向缓存对象写入数据</a></p>
+<p>4.<a href="https://freepiao.cn/2021/07/25/MultiPoints/#4-%E5%B0%86%E7%BC%93%E5%86%B2%E5%8C%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E7%BB%99a-Postion%E5%8F%98%E9%87%8F">将缓冲区对象分配给a_Postion变量(attribute变量)</a></p>
+<p>5.<a href="https://freepiao.cn/2021/07/25/MultiPoints/#5-%E8%BF%9E%E6%8E%A5a-Postion%E5%8F%98%E9%87%8F%E4%B8%8E%E5%88%86%E9%85%8D%E7%BB%99%E5%AE%83%E7%9A%84%E7%BC%93%E5%86%B2%E5%8C%BA%E5%AF%B9%E8%B1%A1-%E5%BC%80%E5%90%AFattribute%E5%8F%98%E9%87%8F">连接a_Postion变量与分配给它的缓冲区对象(开启attribute变量)</a></p>
+<h5 id="二、交错组织"><a href="#二、交错组织" class="headerlink" title="二、交错组织"></a>二、交错组织</h5><p>一般思维，通过创建多个缓冲区对象，可以实现传入顶点不同数据，但是当顶点数量庞大起来时，代码冗余增大。</p>
+<p>WebGL允许我们把顶点坐标和尺寸数据打包到同一个缓冲区对象中，并通过某种机制分别访问缓冲区对象中不同种类的数据。比如，可以将顶点的坐标和尺寸数据按照如下方式<strong>交错组织</strong>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> verticesSizes = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">10.0</span>,</span><br><span class="line">     -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">10.0</span>,</span><br><span class="line">     <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">30.0</span>]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>可见，一旦将几种顶点数据交叉存储在一个数组中，WebGL就需要有差别的从缓冲区对象中获取某种特定的数据，即使用<a href="https://freepiao.cn/2021/07/25/MultiPoints/#4-%E5%B0%86%E7%BC%93%E5%86%B2%E5%8C%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E7%BB%99a-Postion%E5%8F%98%E9%87%8F">gl.vertexAttribPointer</a>函数的第5个参数stride和第6个参数offset。</p>
+<h5 id="三、步进参数"><a href="#三、步进参数" class="headerlink" title="三、步进参数"></a>三、步进参数</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> FSIZE = verticesSizes.BYTES_PER_ELEMENT;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">3</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>参数stride表示：在缓冲区对象中，单个顶点的所有数据（坐标和大小）的字节数，也就是相邻两个顶点间的距离，即步进参数。</p>
+<p>之前的缓冲区只含有一种数据即坐标，将其设置为0即可。</p>
+<p><img src="/images/MultiAttributeSize_Interleaved.png" alt="1"></p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>rotate triangle<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">    Please use the browser supporting &quot;canvas&quot;.</span><br><span class="line"><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-matrix.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;MultiAttributeSize.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="方法一、创建多个缓冲区对象"><a href="#方法一、创建多个缓冲区对象" class="headerlink" title="方法一、创建多个缓冲区对象"></a>方法一、创建多个缓冲区对象</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//MultiAttributeSize.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span> (!gl) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">3</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> sizes = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [<span class="number">10.0</span>, <span class="number">20.0</span>, <span class="number">30.0</span>]</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建多个缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">var</span> sizeBuffer = gl.createBuffer();</span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuffer);</span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, sizes, gl.STATIC_DRAW);</span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    gl.vertexAttribPointer(a_PointSize, <span class="number">1</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_PointSize);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法二、使用交错组织配合gl-vertexAttribPointer的步进和偏移量"><a href="#方法二、使用交错组织配合gl-vertexAttribPointer的步进和偏移量" class="headerlink" title="方法二、使用交错组织配合gl.vertexAttribPointer的步进和偏移量"></a>方法二、使用交错组织配合gl.vertexAttribPointer的步进和偏移量</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by hushhw on 17/12/14.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//MultiAttributeSize.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span> (!gl) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesSizes = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">10.0</span>,</span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">20.0</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">30.0</span>]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">3</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexSizeBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexSizeBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexSizeBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesSizes, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesSizes.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.vertexAttribPointer(a_PointSize, <span class="number">1</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">3</span>, FSIZE*<span class="number">2</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_PointSize);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
       </tags>
   </entry>
 </search>
