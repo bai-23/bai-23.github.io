@@ -1,105 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>WebSocket介绍与实战开发</title>
-    <url>/2021/07/30/23-Websocket/</url>
-    <content><![CDATA[<p>思考：这种网页版的聊天功能应该如何去实现？？</p>
-<span id="more"></span>
-
-<h1 id="websocket介绍"><a href="#websocket介绍" class="headerlink" title="websocket介绍"></a>websocket介绍</h1><blockquote>
-<p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器全双工(full-duplex)通信——允许服务器主动发送信息给客户端。</p>
-<p>websocket是一种持久协议，http是非持久协议</p>
-</blockquote>
-<p><strong>现在很多网站都有实时推送的需求，比如聊天，客服咨询等</strong></p>
-<p>早期没有websocket时，通过ajax轮询，由于http请求，服务器无法给浏览器主动发送数据，因此需要浏览器定时的给服务器发送请求（比如1s一次）,服务器把最新的数据响应给浏览器。这种模式的缺点就是浪费性能和资源。</p>
-<p><img src="imgs/websocket.png"></p>
-<p>websocket是一种网络协议，允许客户端和服务端全双工的进行网络通讯，服务器可以给客户端发消息，客户端也可以给服务器发消息。</p>
-<h1 id="websocket基本使用"><a href="#websocket基本使用" class="headerlink" title="websocket基本使用"></a>websocket基本使用</h1><p>在HTML5中，浏览器已经实现了websocket的API，直接使用即可。</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket">WebSocket-MDN</a></p>
-<h2 id="创建websocket对象"><a href="#创建websocket对象" class="headerlink" title="创建websocket对象"></a>创建websocket对象</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数1： url：连接的websocket属性</span></span><br><span class="line"><span class="comment">// 参数2： protocol，可选的，指定连接的协议</span></span><br><span class="line"><span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span><br><span class="line"><span class="keyword">var</span> Socket = <span class="keyword">new</span> WebSocket(url, [protocol] );</span><br></pre></td></tr></table></figure>
-
-<h2 id="websocket事件"><a href="#websocket事件" class="headerlink" title="websocket事件"></a>websocket事件</h2><table>
-<thead>
-<tr>
-<th align="left">事件</th>
-<th align="left">事件处理程序</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">open</td>
-<td align="left">Socket.onopen</td>
-<td align="left">连接建立时触发</td>
-</tr>
-<tr>
-<td align="left">message</td>
-<td align="left">Socket.onmessage</td>
-<td align="left">客户端接收服务端数据时触发</td>
-</tr>
-<tr>
-<td align="left">error</td>
-<td align="left">Socket.onerror</td>
-<td align="left">通信发生错误时触发</td>
-</tr>
-<tr>
-<td align="left">close</td>
-<td align="left">Socket.onclose</td>
-<td align="left">连接关闭时触发</td>
-</tr>
-</tbody></table>
-<h2 id="websocket方法"><a href="#websocket方法" class="headerlink" title="websocket方法"></a>websocket方法</h2><table>
-<thead>
-<tr>
-<th align="left">方法</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Socket.send()</td>
-<td align="left">使用连接发送数据</td>
-</tr>
-<tr>
-<td align="left">Socket.close()</td>
-<td align="left">关闭连接</td>
-</tr>
-</tbody></table>
-<h1 id="使用nodejs开发websocket服务"><a href="#使用nodejs开发websocket服务" class="headerlink" title="使用nodejs开发websocket服务"></a>使用nodejs开发websocket服务</h1><blockquote>
-<p>我们刚刚使用了官网提供的echo服务，接下来我们自己通过nodejs实现一个简单的websocket服务。</p>
-</blockquote>
-<p>使用nodejs开发websocket需要依赖一个第三方包。<a href="https://github.com/sitegui/nodejs-websocket#readme">Nodejs Websocket</a></p>
-<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><p>新建一个websocket server端的项目</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir server-demo</span><br><span class="line"><span class="built_in">cd</span> server-demo</span><br><span class="line">yarn init -y</span><br><span class="line">yarn add nodejs-websocket</span><br><span class="line">touch app.js</span><br></pre></td></tr></table></figure>
-
-<h2 id="开发服务程序"><a href="#开发服务程序" class="headerlink" title="开发服务程序"></a>开发服务程序</h2><p>在app.js中</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 导入第三方模块</span></span><br><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"><span class="comment">// websocket占用的端口号</span></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;新的连接&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接收到客户端的文本内容时触发</span></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">str</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;接收:&#x27;</span> + str)</span><br><span class="line">    <span class="comment">// 把接收到的字符串转换成大写，并且给客户端响应</span></span><br><span class="line">    connect.sendText(str.toUpperCase() + <span class="string">&#x27;!!!!&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听关闭事件</span></span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接关闭了&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听错误事件， 比如浏览器关闭了连接，或者发送的数据格式不对等</span></span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接异常&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动websocket服务</span></span><br><span class="line">server.listen(PORT, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`websocket server listening on <span class="subst">$&#123;PORT&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure>
-<p>在终端中看到<code>websocket server listening on 3000</code>就说明webserver服务启动成功了</p>
-<h2 id="进行测试"><a href="#进行测试" class="headerlink" title="进行测试"></a>进行测试</h2><p>修改客户端中<code>index.js</code>文件中的连接地址,重新进行测试</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建websocket对象，地址已经修改称为了自己编写的地址</span></span><br><span class="line"><span class="keyword">const</span> URL = <span class="string">&#x27;ws://localhost:3000&#x27;</span></span><br><span class="line"><span class="keyword">const</span> websocket = <span class="keyword">new</span> WebSocket(URL)</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="websocket开发聊天室程序"><a href="#websocket开发聊天室程序" class="headerlink" title="websocket开发聊天室程序"></a>websocket开发聊天室程序</h1><p>app.js</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"><span class="keyword">const</span> TYPE_MSG = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> TYPE_ENTER = <span class="number">1</span></span><br><span class="line"><span class="keyword">const</span> TYPE_LEAVE = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userCount = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;有新用户连接了&#x27;</span>)</span><br><span class="line">  <span class="comment">// 每次有新用户连接，需要给所有用户发送一条新增用户的消息</span></span><br><span class="line">  userCount++</span><br><span class="line">  connect.userName = <span class="string">&#x27;user&#x27;</span> + userCount</span><br><span class="line">  <span class="comment">// 给所有的用户进行广播</span></span><br><span class="line">  broadcast(&#123;</span><br><span class="line">    <span class="attr">type</span>: TYPE_ENTER,</span><br><span class="line">    <span class="attr">msg</span>: connect.userName + <span class="string">&#x27;进入了聊天室&#x27;</span>,</span><br><span class="line">    <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">msg</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果接收到用户的数据， 需要发送给所有的用户</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_MSG,</span><br><span class="line">      <span class="attr">msg</span>: msg,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户断开连接&#x27;</span>)</span><br><span class="line">    userCount--</span><br><span class="line">    <span class="comment">// 给所有的用户发送一条用户离开的消息</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_LEAVE,</span><br><span class="line">      <span class="attr">msg</span>: <span class="string">`<span class="subst">$&#123;connect.userName&#125;</span>离开了聊天室`</span>,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接失败&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">broadcast</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  server.connections.forEach(<span class="function"><span class="params">conn</span> =&gt;</span> &#123;</span><br><span class="line">    conn.sendText(<span class="built_in">JSON</span>.stringify(msg))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server.listen(PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;服务器启动成功了&#x27;</span>, PORT)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>index.html</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">      <span class="comment">/* div &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">        width: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        height: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        border: 1px solid #000;</span></span></span><br><span class="line"><span class="comment"><span class="css">      &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于收集输入内容 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入需要发送的内容&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于发送websocket请求 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>websocket测试<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于显示websock服务器的响应 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;show&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> input = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;input&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;button&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 1. 创建websocket对象, 这个地址是官方提供的地址</span></span></span><br><span class="line"><span class="javascript">      <span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> socket = <span class="keyword">new</span> WebSocket(<span class="string">&#x27;ws://localhost:3000&#x27;</span>)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 2. 给websocket注册事件</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 与服务端建立连接的时候触发</span></span></span><br><span class="line"><span class="javascript">        div.innerText = <span class="string">&#x27;恭喜你，与服务端建立连接了&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如何给服务器发送消息</span></span></span><br><span class="line"><span class="javascript">      button.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        socket.send(input.value)</span></span><br><span class="line"><span class="javascript">        input.value = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如果接收服务器的数据</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(e.data)</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> dv = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">        dv.innerHTML = data.msg + <span class="string">&#x27;----&#x27;</span> + data.date</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;green&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">1</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;red&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">2</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;gray&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        div.appendChild(dv)</span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        div.innerHTML = <span class="string">&#x27;与服务器断开连接&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果使用原生的websocket进行开发，会比较麻烦，比如支持的事件太少，发送的数据只能是字符串格式的，提供的api也很少，类似于广播这种方法都没有，需要自己封装。</p>
-<h1 id="socket-io基本使用"><a href="#socket-io基本使用" class="headerlink" title="socket.io基本使用"></a>socket.io基本使用</h1><p><a href="https://socket.io/docs/">socketio</a></p>
-<h1 id="基于socket-io开发完整的聊天室"><a href="#基于socket-io开发完整的聊天室" class="headerlink" title="基于socket.io开发完整的聊天室"></a>基于socket.io开发完整的聊天室</h1>]]></content>
-      <categories>
-        <category>code</category>
-        <category>algorithm</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>websocket</tag>
-        <tag>Algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】05-通过鼠标点击绘点_v2_彩色版</title>
     <url>/2021/07/25/ClickedPoints-color/</url>
     <content><![CDATA[<blockquote>
@@ -200,6 +101,105 @@
       <tags>
         <tag>frontEnd</tag>
         <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WebSocket介绍与实战开发</title>
+    <url>/2021/07/30/23-Websocket/</url>
+    <content><![CDATA[<p>思考：这种网页版的聊天功能应该如何去实现？？</p>
+<span id="more"></span>
+
+<h1 id="websocket介绍"><a href="#websocket介绍" class="headerlink" title="websocket介绍"></a>websocket介绍</h1><blockquote>
+<p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器全双工(full-duplex)通信——允许服务器主动发送信息给客户端。</p>
+<p>websocket是一种持久协议，http是非持久协议</p>
+</blockquote>
+<p><strong>现在很多网站都有实时推送的需求，比如聊天，客服咨询等</strong></p>
+<p>早期没有websocket时，通过ajax轮询，由于http请求，服务器无法给浏览器主动发送数据，因此需要浏览器定时的给服务器发送请求（比如1s一次）,服务器把最新的数据响应给浏览器。这种模式的缺点就是浪费性能和资源。</p>
+<p><img src="imgs/websocket.png"></p>
+<p>websocket是一种网络协议，允许客户端和服务端全双工的进行网络通讯，服务器可以给客户端发消息，客户端也可以给服务器发消息。</p>
+<h1 id="websocket基本使用"><a href="#websocket基本使用" class="headerlink" title="websocket基本使用"></a>websocket基本使用</h1><p>在HTML5中，浏览器已经实现了websocket的API，直接使用即可。</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket">WebSocket-MDN</a></p>
+<h2 id="创建websocket对象"><a href="#创建websocket对象" class="headerlink" title="创建websocket对象"></a>创建websocket对象</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数1： url：连接的websocket属性</span></span><br><span class="line"><span class="comment">// 参数2： protocol，可选的，指定连接的协议</span></span><br><span class="line"><span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span><br><span class="line"><span class="keyword">var</span> Socket = <span class="keyword">new</span> WebSocket(url, [protocol] );</span><br></pre></td></tr></table></figure>
+
+<h2 id="websocket事件"><a href="#websocket事件" class="headerlink" title="websocket事件"></a>websocket事件</h2><table>
+<thead>
+<tr>
+<th align="left">事件</th>
+<th align="left">事件处理程序</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">open</td>
+<td align="left">Socket.onopen</td>
+<td align="left">连接建立时触发</td>
+</tr>
+<tr>
+<td align="left">message</td>
+<td align="left">Socket.onmessage</td>
+<td align="left">客户端接收服务端数据时触发</td>
+</tr>
+<tr>
+<td align="left">error</td>
+<td align="left">Socket.onerror</td>
+<td align="left">通信发生错误时触发</td>
+</tr>
+<tr>
+<td align="left">close</td>
+<td align="left">Socket.onclose</td>
+<td align="left">连接关闭时触发</td>
+</tr>
+</tbody></table>
+<h2 id="websocket方法"><a href="#websocket方法" class="headerlink" title="websocket方法"></a>websocket方法</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Socket.send()</td>
+<td align="left">使用连接发送数据</td>
+</tr>
+<tr>
+<td align="left">Socket.close()</td>
+<td align="left">关闭连接</td>
+</tr>
+</tbody></table>
+<h1 id="使用nodejs开发websocket服务"><a href="#使用nodejs开发websocket服务" class="headerlink" title="使用nodejs开发websocket服务"></a>使用nodejs开发websocket服务</h1><blockquote>
+<p>我们刚刚使用了官网提供的echo服务，接下来我们自己通过nodejs实现一个简单的websocket服务。</p>
+</blockquote>
+<p>使用nodejs开发websocket需要依赖一个第三方包。<a href="https://github.com/sitegui/nodejs-websocket#readme">Nodejs Websocket</a></p>
+<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><p>新建一个websocket server端的项目</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir server-demo</span><br><span class="line"><span class="built_in">cd</span> server-demo</span><br><span class="line">yarn init -y</span><br><span class="line">yarn add nodejs-websocket</span><br><span class="line">touch app.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="开发服务程序"><a href="#开发服务程序" class="headerlink" title="开发服务程序"></a>开发服务程序</h2><p>在app.js中</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 导入第三方模块</span></span><br><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"><span class="comment">// websocket占用的端口号</span></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;新的连接&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接收到客户端的文本内容时触发</span></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">str</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;接收:&#x27;</span> + str)</span><br><span class="line">    <span class="comment">// 把接收到的字符串转换成大写，并且给客户端响应</span></span><br><span class="line">    connect.sendText(str.toUpperCase() + <span class="string">&#x27;!!!!&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听关闭事件</span></span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接关闭了&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听错误事件， 比如浏览器关闭了连接，或者发送的数据格式不对等</span></span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接异常&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动websocket服务</span></span><br><span class="line">server.listen(PORT, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`websocket server listening on <span class="subst">$&#123;PORT&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>在终端中看到<code>websocket server listening on 3000</code>就说明webserver服务启动成功了</p>
+<h2 id="进行测试"><a href="#进行测试" class="headerlink" title="进行测试"></a>进行测试</h2><p>修改客户端中<code>index.js</code>文件中的连接地址,重新进行测试</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建websocket对象，地址已经修改称为了自己编写的地址</span></span><br><span class="line"><span class="keyword">const</span> URL = <span class="string">&#x27;ws://localhost:3000&#x27;</span></span><br><span class="line"><span class="keyword">const</span> websocket = <span class="keyword">new</span> WebSocket(URL)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="websocket开发聊天室程序"><a href="#websocket开发聊天室程序" class="headerlink" title="websocket开发聊天室程序"></a>websocket开发聊天室程序</h1><p>app.js</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"><span class="keyword">const</span> TYPE_MSG = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> TYPE_ENTER = <span class="number">1</span></span><br><span class="line"><span class="keyword">const</span> TYPE_LEAVE = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userCount = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;有新用户连接了&#x27;</span>)</span><br><span class="line">  <span class="comment">// 每次有新用户连接，需要给所有用户发送一条新增用户的消息</span></span><br><span class="line">  userCount++</span><br><span class="line">  connect.userName = <span class="string">&#x27;user&#x27;</span> + userCount</span><br><span class="line">  <span class="comment">// 给所有的用户进行广播</span></span><br><span class="line">  broadcast(&#123;</span><br><span class="line">    <span class="attr">type</span>: TYPE_ENTER,</span><br><span class="line">    <span class="attr">msg</span>: connect.userName + <span class="string">&#x27;进入了聊天室&#x27;</span>,</span><br><span class="line">    <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">msg</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果接收到用户的数据， 需要发送给所有的用户</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_MSG,</span><br><span class="line">      <span class="attr">msg</span>: msg,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户断开连接&#x27;</span>)</span><br><span class="line">    userCount--</span><br><span class="line">    <span class="comment">// 给所有的用户发送一条用户离开的消息</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_LEAVE,</span><br><span class="line">      <span class="attr">msg</span>: <span class="string">`<span class="subst">$&#123;connect.userName&#125;</span>离开了聊天室`</span>,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接失败&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">broadcast</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  server.connections.forEach(<span class="function"><span class="params">conn</span> =&gt;</span> &#123;</span><br><span class="line">    conn.sendText(<span class="built_in">JSON</span>.stringify(msg))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server.listen(PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;服务器启动成功了&#x27;</span>, PORT)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>index.html</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">      <span class="comment">/* div &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">        width: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        height: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        border: 1px solid #000;</span></span></span><br><span class="line"><span class="comment"><span class="css">      &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于收集输入内容 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入需要发送的内容&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于发送websocket请求 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>websocket测试<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于显示websock服务器的响应 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;show&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> input = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;input&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;button&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 1. 创建websocket对象, 这个地址是官方提供的地址</span></span></span><br><span class="line"><span class="javascript">      <span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> socket = <span class="keyword">new</span> WebSocket(<span class="string">&#x27;ws://localhost:3000&#x27;</span>)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 2. 给websocket注册事件</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 与服务端建立连接的时候触发</span></span></span><br><span class="line"><span class="javascript">        div.innerText = <span class="string">&#x27;恭喜你，与服务端建立连接了&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如何给服务器发送消息</span></span></span><br><span class="line"><span class="javascript">      button.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        socket.send(input.value)</span></span><br><span class="line"><span class="javascript">        input.value = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如果接收服务器的数据</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(e.data)</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> dv = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">        dv.innerHTML = data.msg + <span class="string">&#x27;----&#x27;</span> + data.date</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;green&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">1</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;red&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">2</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;gray&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        div.appendChild(dv)</span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        div.innerHTML = <span class="string">&#x27;与服务器断开连接&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果使用原生的websocket进行开发，会比较麻烦，比如支持的事件太少，发送的数据只能是字符串格式的，提供的api也很少，类似于广播这种方法都没有，需要自己封装。</p>
+<h1 id="socket-io基本使用"><a href="#socket-io基本使用" class="headerlink" title="socket.io基本使用"></a>socket.io基本使用</h1><p><a href="https://socket.io/docs/">socketio</a></p>
+<h1 id="基于socket-io开发完整的聊天室"><a href="#基于socket-io开发完整的聊天室" class="headerlink" title="基于socket.io开发完整的聊天室"></a>基于socket.io开发完整的聊天室</h1>]]></content>
+      <categories>
+        <category>code</category>
+        <category>algorithm</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>websocket</tag>
+        <tag>Algorithm</tag>
       </tags>
   </entry>
   <entry>
@@ -523,6 +523,31 @@
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】08-绘制一个矩形</title>
+    <url>/2021/07/25/HelloRectangle/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
+<p>要点：缓冲区对象、gl.drawArrays()参数</p>
+<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
+<p><img src="/images/HelloRectangle02.png" alt="2"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【WebGL之巅】03-绘制一个点_v2_attribute变量</title>
     <url>/2021/07/24/HelloPoint-v2/</url>
     <content><![CDATA[<blockquote>
@@ -615,31 +640,6 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】08-绘制一个矩形</title>
-    <url>/2021/07/25/HelloRectangle/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
-<p>要点：缓冲区对象、gl.drawArrays()参数</p>
-<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
-<p><img src="/images/HelloRectangle02.png" alt="2"></p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -1011,6 +1011,26 @@
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/MultiPoints.png" alt="1"></p>
 ]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】19-颜色与纹理-使用多幅纹理</title>
+    <url>/2021/07/30/MultiTexture/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：21-MultiTexture</p>
+<p>要点：纹理映射、纹理坐标</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2>]]></content>
       <categories>
         <category>code</category>
         <category>frontend</category>
@@ -1458,193 +1478,6 @@ function down(){
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】18-颜色与纹理-在矩形表面帖上图像</title>
-    <url>/2021/07/29/TexturedQuad/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：20-TexturedQuad</p>
-<p>要点：纹理映射、纹理坐标</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、纹理映射"><a href="#一、纹理映射" class="headerlink" title="一、纹理映射"></a>一、纹理映射</h5><p>​        概念：将一张图像（像帖纸）映射（帖）到一个几何图形的表面上去。此时这张图片又可以称为<strong>纹理图像</strong>或<strong>纹理</strong>(texture)。</p>
-<p>​        作用：根据纹理图像，为之前光栅化后的每个元素涂上合适的颜色。组成纹理图像的像素又被称为<strong>纹素</strong>，每一个纹素都使用RGB或RGBA格式编码。</p>
-<h5 id="二、纹理映射的步骤"><a href="#二、纹理映射的步骤" class="headerlink" title="二、纹理映射的步骤"></a>二、纹理映射的步骤</h5><p>​    1、准备好映射到几何图形上的纹理图像</p>
-<p>​    2、为几何图形配置纹理映射方式</p>
-<p>​    3、加载纹理图像，对其进行一些配置，以在WebGL中使用它</p>
-<p>​    4、在片元着色器中将相应的纹素从纹理中抽取出来，并将纹素的颜色赋值给片元</p>
-<h5 id="三、纹理坐标"><a href="#三、纹理坐标" class="headerlink" title="三、纹理坐标"></a>三、纹理坐标</h5><p>​        第2步指定映射方式，就是确定“几何图形的某个片元”的颜色如何取决于“纹理图像中那个（或哪几个）像素”的问题（即前者到后者的映射）。我们利用图形顶点坐标来确定屏幕上那部分被纹理图像覆盖，使用<strong>纹理坐标</strong>来确定纹理图像的哪部分将覆盖到几何图形上。</p>
-<p>​        <code>纹理坐标</code>是纹理图像上的坐标，通过纹理坐标可以在纹理图像上获取纹素颜色。<br>​        WebGL系统中的纹理坐标系统是<strong>二维</strong>的。<br>​        WebGL中使用<code>s</code>和<code>t</code>命名纹理坐标。（st坐标系统或uv坐标系统）</p>
-<p><img src="/images/TexturedQuad.png" alt="1"></p>
-<p>​        纹理坐标很通用，因为坐标值与图像自身尺寸无关。</p>
-<h5 id="四、将纹理图像粘贴到几何图形上"><a href="#四、将纹理图像粘贴到几何图形上" class="headerlink" title="四、将纹理图像粘贴到几何图形上"></a>四、将纹理图像粘贴到几何图形上</h5><p>​        在WebGL中，我们通过纹理图像的纹理坐标与几何图形顶点坐标间的映射关系，来确定怎样将纹理图像贴上去。</p>
-<p><img src="/images/TexturedQuad1.png" alt="2"></p>
-<p>这里的映射关系为：</p>
-<table>
-<thead>
-<tr>
-<th>纹理坐标</th>
-<th>顶点坐标</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>(0.0, 1.0)</td>
-<td>(-0.5, 0.5, 0.0)</td>
-</tr>
-<tr>
-<td>(0.0, 0.0)</td>
-<td>(-0.5, -0.5, 0.0)</td>
-</tr>
-<tr>
-<td>(1.0, 0.0)</td>
-<td>(0.5, -0.5, 0.0)</td>
-</tr>
-<tr>
-<td>(1.0, 1.0)</td>
-<td>(0.5, 0.5, 0.0)</td>
-</tr>
-</tbody></table>
-<h5 id="五、程序讲解"><a href="#五、程序讲解" class="headerlink" title="五、程序讲解"></a>五、程序讲解</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initTextures</span>(<span class="params">gl, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> texture = gl.createTexture(); <span class="comment">//创建纹理对象</span></span><br><span class="line">    <span class="keyword">if</span>(!texture)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the texture object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取u_Sampler的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_Sampler = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!u_Sampler) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of u_Sampler&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> image = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line">    <span class="keyword">if</span> (!image) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the image object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注册图像加载时间的响应函数</span></span><br><span class="line">    image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        loadTexture(gl, n, texture, u_Sampler, image);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//浏览器开始加载图像</span></span><br><span class="line">    image.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    <span class="comment">//开启0号纹理单元</span></span><br><span class="line">    gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段程序主要分五个部分：</p>
-<h6 id="1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器"><a href="#1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器" class="headerlink" title="1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器"></a>1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器</h6><h6 id="2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。"><a href="#2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。" class="headerlink" title="2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。"></a>2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。</h6><h6 id="3、设置顶点的纹理坐标（initVertexBuffers-）"><a href="#3、设置顶点的纹理坐标（initVertexBuffers-）" class="headerlink" title="3、设置顶点的纹理坐标（initVertexBuffers()）"></a>3、设置顶点的纹理坐标（<code>initVertexBuffers()</code>）</h6><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="comment">// 左上 顶点(-0.5, 0.5)对应纹理(0.0, 1.0)</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,<span class="comment">// 左下</span></span><br><span class="line">        <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,	 <span class="comment">//	右上 </span></span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="comment">// 右下</span></span><br><span class="line">    ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>将顶点坐标和纹理坐标写入缓冲区对象，将其中的顶点坐标分配给a_Position变量并开启之。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">4</span>, <span class="number">0</span>);</span><br><span class="line">gl.enableVertexAttribArray(a_Position);</span><br></pre></td></tr></table></figure>
-
-<p>获取<code>a_TexCoord</code>变量的存储位置，将缓冲区中的纹理坐标分配给该变量更开启。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a_TexCoord = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_TexCoord&#x27;</span>);</span><br><span class="line">gl.vertexAttribPointer(a_TexCoord, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">4</span>, FSIZE * <span class="number">2</span>);</span><br><span class="line">gl.enableVertexAttribArray(a_TexCoord);</span><br></pre></td></tr></table></figure>
-
-<h6 id="4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures-）"><a href="#4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures-）" class="headerlink" title="4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures()）"></a>4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（<code>initTextures()</code>）</h6><p>①<strong>取样器</strong>：u_Sampler。“Sampler”意为取样器，因为从纹理图像中获取纹素颜色的过程，相当于从纹理图像中“取样”，即输入纹理坐标，返回颜色值。实际上，由于纹理像素也是有大小的，取样处的纹理坐标很可能并不在某个像素中心，所以<strong>取样通常并不是直接取纹理图像某个像素的颜色，而是通过附近的若干个像素共同计算而得。</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> u_Sampler = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>②加载图像（异步加载）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> image = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line"><span class="comment">// 注册图像加载时间的响应函数</span></span><br><span class="line">image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 异步调用</span></span><br><span class="line">    loadTexture(gl, n, texture, u_Sampler, image);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 浏览器开始异步加载图像，程序本身执行return true语句</span></span><br><span class="line"><span class="comment">// 然后，浏览器在某个时刻完成了对图像的加载，就会调用事件响应函数loadTexture()将加载得到的图像交给WebGL系统处理</span></span><br><span class="line">image.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
-
-<p>注意：出于安全性考虑，WebGL不允许使用跨域纹理图像。</p>
-<p>异步加载图片过程：</p>
-<p>​        [1]告诉浏览器在图像加载完成后调用loadTexture()</p>
-<p>​        [2]浏览器开始加载图像</p>
-<p>​        [3]向web服务器请求纹理图像</p>
-<p>​        [4]服务器从数据库文件系统中获取图像</p>
-<p>​        [5]服务器返回图像</p>
-<p>​        [6]浏览器收到加载完成的图像</p>
-<p>​        [7]调用loadTexture()函数</p>
-<p>解析：上述步骤中，[1]和[2]是顺序执行的，而第[2]步到第[7]步不是。</p>
-<h6 id="5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture-）"><a href="#5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture-）" class="headerlink" title="5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture()）"></a>5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（<code>loadTexture()</code>）</h6><p>为WebGL配置纹理</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    <span class="comment">//开启0号纹理单元</span></span><br><span class="line">    gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>①<strong>图像Y轴反转</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-
-<p>​        在使用图像前，必须对它进行Y轴反转。（<a href="#%E4%B8%89%E3%80%81%E7%BA%B9%E7%90%86%E5%9D%90%E6%A0%87">WebGL纹理坐标</a>中的t轴的方向和PNG、BMP、JPG等格式图片的坐标系统的Y轴方向是相反的。）</p>
-<p><img src="/images/TexturedQuad2.png" alt="3"></p>
-<table>
-<thead>
-<tr>
-<th>gl.pixelStorei()参数</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pname</td>
-<td>以下二者之一</td>
-</tr>
-<tr>
-<td>gl.UNPACK_FLIP_Y_WEBGL</td>
-<td>对图像进行Y轴反转，默认值为false</td>
-</tr>
-<tr>
-<td>gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL</td>
-<td>将图像RGB颜色值的每一个分量乘以A。默认false</td>
-</tr>
-<tr>
-<td>param</td>
-<td>指定非0或0。必须为整数</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>②<strong>激活纹理单元</strong></p>
-<p>​        WebGL通过纹理单元的机制来同时使用多个纹理。每个纹理单元有一个单元编号来管理一张纹理图像。<br>​        系统支持的纹理单元格数取决于硬件和浏览器的WebGL实现，但是在默认情况下，WebGL<strong>至少支持8个</strong>纹理单元，内置变量gl.TEXTURE0、gl.TEXTURE1…gl.TEXTURE7各表示一个纹理单元<br>​        在使用纹理单元之前，还需要调用<code>gl.aactiveTexture()</code>来激活它。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.activeTexture(gl.TEXTURE0);</span><br></pre></td></tr></table></figure>
-
-<p>③<strong>绑定纹理对象</strong>（设置纹理的类型）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意：该方法完成了两个任务：开启纹理对象，以及将纹理对象绑定到纹理单元上。</span></span><br><span class="line">gl.bindTexture(gl.TEXTURE_2D, texture);</span><br></pre></td></tr></table></figure>
-
-<p>​        解析：告诉WebGL系统纹理对象使用的是哪种类型的纹理。在对纹理对象进行操作之前，需要绑定纹理对象，这一点与缓冲区很像：在对缓冲区对象进行操作（写入数据）之前，也需要绑定缓冲区对象。如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">gl.bindBuffer(gl.ARRAY_BUFFER, vertexTexCoordBuffer);</span><br><span class="line"><span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">gl.bufferData(gl.ARRAY_BUFFER, verticesTexCoords, gl.STATIC_DRAW);</span><br></pre></td></tr></table></figure>
-
-<p>WebGL支持两种类型的纹理：</p>
-<p>​        gl.TEXTURE_2D：二维纹理</p>
-<p>​        gl.TEXTURE_CUBE_MAP：立方体纹理</p>
-<p>补充：在WebGL中，你没法直接操作纹理对象，必须<strong>通过将纹理对象绑定到纹理单元上，然后通过操作纹理单元来操作纹理对象。</strong></p>
-<p>④<strong>配置纹理对象的参数</strong></p>
-<p>​        即设置纹理图像映射到图形上的具体方式：如何根据纹理坐标获取纹素颜色、按哪种方式重复填充纹理。</p>
-<table>
-<thead>
-<tr>
-<th>gl.texParameteri()</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>参数1：target</td>
-<td>gl.TEXTURE_2D或gl.TEXTURE_CUBE_MAP</td>
-</tr>
-<tr>
-<td>参数 2：pname</td>
-<td>纹理参数(<a href="">参见</a>)</td>
-</tr>
-<tr>
-<td>参数3：param</td>
-<td>纹理参数的值</td>
-</tr>
-</tbody></table>
-<p>纹理参数：</p>
-<table>
-<thead>
-<tr>
-<th>纹理参数</th>
-<th>描述</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>gl.TEXTURE_MAX_FILTER</td>
-<td><strong>纹理放大</strong>。当纹理的绘制范围比较纹理本身更大时，如何获取纹素颜色。（图像比空间小）</td>
-<td></td>
-</tr>
-<tr>
-<td>gl.TEXTURE_MIN_FILTER</td>
-<td><strong>纹理缩小</strong>。当纹理的绘制范围比较纹理本身更小时，如何获取纹素颜色。（图像比空间大）</td>
-<td></td>
-</tr>
-<tr>
-<td>gl.TEXTURE_WRAP_S</td>
-<td><strong>纹理水平填充</strong></td>
-<td></td>
-</tr>
-<tr>
-<td>gl.TEXTURE_WRAP_T</td>
-<td><strong>纹理垂直填充</strong></td>
-<td></td>
-</tr>
-</tbody></table>
-<p><img src="/images/TexturedQuad3.png" alt="4"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】09-仿射变换之平移三角形</title>
     <url>/2021/07/26/TranslatedTriangle/</url>
     <content><![CDATA[<blockquote>
@@ -1717,27 +1550,6 @@ function down(){
       </tags>
   </entry>
   <entry>
-    <title>bs4解析爬取三国演义所有章节及内容【★★★】</title>
-    <url>/2021/07/23/bs4%E8%A7%A3%E6%9E%90%E7%88%AC%E5%8F%96%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89%E6%89%80%E6%9C%89%E7%AB%A0%E8%8A%82%E5%8F%8A%E5%86%85%E5%AE%B9/</url>
-    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/w3cnote/python-spider-intro.html">Python爬虫介绍</a></p>
-<p>需求：爬取三国演义小说所有的章节标题和章节内容</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">http://www.shicimingju.com/book/sanguoyanyi.html</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 对首页的页面数据进行爬取</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    url = <span class="string">&#x27;http://www.shicimingju.com/book/sanguoyanyi.html&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers)</span><br><span class="line">    page_text.encoding = <span class="string">&#x27;utf-8&#x27;</span>    <span class="comment"># 解决乱码问题</span></span><br><span class="line">    page_text = page_text.text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在首页中解析出章节的标题和详情页的url</span></span><br><span class="line">    <span class="comment"># 1.实例化BeautifulSoup对象，需要将页面源码数据加载到该对象中</span></span><br><span class="line">    soup = BeautifulSoup(page_text, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">    <span class="comment"># 解析章节标题和详情页的url</span></span><br><span class="line">    li_list = soup.select(<span class="string">&#x27;.book-mulu &gt; ul &gt; li&#x27;</span>)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./sanguo.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">        title = li.a.string</span><br><span class="line">        detail_url = <span class="string">&#x27;http://www.shicimingju.com&#x27;</span>+li.a[<span class="string">&#x27;href&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对详情页发起请求，解析出章节内容</span></span><br><span class="line">        detail_page_text = requests.get(url=detail_url, headers=headers)</span><br><span class="line">        detail_page_text.encoding = <span class="string">&#x27;utf-8&#x27;</span>  <span class="comment"># 解决乱码问题</span></span><br><span class="line">        detail_page_text = detail_page_text.text</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 解析出详情页中相关的章节内容</span></span><br><span class="line">        detail_soup = BeautifulSoup(detail_page_text, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">        div_tag = detail_soup.find(<span class="string">&#x27;div&#x27;</span>, class_=<span class="string">&#x27;chapter_content&#x27;</span>)</span><br><span class="line">        <span class="comment"># 解析到了章节的内容</span></span><br><span class="line">        content = div_tag.text</span><br><span class="line">        fp.write(<span class="string">&#x27;《&#x27;</span>+title+<span class="string">&#x27;》\n&#x27;</span>+content+<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(title, <span class="string">&#x27;爬取成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Javascript动态显示时间</title>
     <url>/2021/07/21/%5B%20JavaScript%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E6%98%BE%E7%A4%BA%E6%97%B6%E9%97%B4%E6%95%88%E6%9E%9C%EF%BC%9AsetInterval%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8%20%5D/</url>
     <content><![CDATA[<p><strong>知识点</strong></p>
@@ -1757,6 +1569,27 @@ function down(){
       </categories>
       <tags>
         <tag>Javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bs4解析爬取三国演义所有章节及内容【★★★】</title>
+    <url>/2021/07/23/bs4%E8%A7%A3%E6%9E%90%E7%88%AC%E5%8F%96%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89%E6%89%80%E6%9C%89%E7%AB%A0%E8%8A%82%E5%8F%8A%E5%86%85%E5%AE%B9/</url>
+    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/w3cnote/python-spider-intro.html">Python爬虫介绍</a></p>
+<p>需求：爬取三国演义小说所有的章节标题和章节内容</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">http://www.shicimingju.com/book/sanguoyanyi.html</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 对首页的页面数据进行爬取</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    url = <span class="string">&#x27;http://www.shicimingju.com/book/sanguoyanyi.html&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers)</span><br><span class="line">    page_text.encoding = <span class="string">&#x27;utf-8&#x27;</span>    <span class="comment"># 解决乱码问题</span></span><br><span class="line">    page_text = page_text.text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在首页中解析出章节的标题和详情页的url</span></span><br><span class="line">    <span class="comment"># 1.实例化BeautifulSoup对象，需要将页面源码数据加载到该对象中</span></span><br><span class="line">    soup = BeautifulSoup(page_text, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">    <span class="comment"># 解析章节标题和详情页的url</span></span><br><span class="line">    li_list = soup.select(<span class="string">&#x27;.book-mulu &gt; ul &gt; li&#x27;</span>)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./sanguo.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">        title = li.a.string</span><br><span class="line">        detail_url = <span class="string">&#x27;http://www.shicimingju.com&#x27;</span>+li.a[<span class="string">&#x27;href&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对详情页发起请求，解析出章节内容</span></span><br><span class="line">        detail_page_text = requests.get(url=detail_url, headers=headers)</span><br><span class="line">        detail_page_text.encoding = <span class="string">&#x27;utf-8&#x27;</span>  <span class="comment"># 解决乱码问题</span></span><br><span class="line">        detail_page_text = detail_page_text.text</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 解析出详情页中相关的章节内容</span></span><br><span class="line">        detail_soup = BeautifulSoup(detail_page_text, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">        div_tag = detail_soup.find(<span class="string">&#x27;div&#x27;</span>, class_=<span class="string">&#x27;chapter_content&#x27;</span>)</span><br><span class="line">        <span class="comment"># 解析到了章节的内容</span></span><br><span class="line">        content = div_tag.text</span><br><span class="line">        fp.write(<span class="string">&#x27;《&#x27;</span>+title+<span class="string">&#x27;》\n&#x27;</span>+content+<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(title, <span class="string">&#x27;爬取成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -2444,26 +2277,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>使用爬虫破解百度翻译【★★】</title>
-    <url>/2021/07/23/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
-    <content><![CDATA[<blockquote>
-<p>携带post参数的爬虫</p>
-</blockquote>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ajax跨域解决方案</title>
     <url>/2021/07/21/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
@@ -2500,6 +2313,26 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </categories>
       <tags>
         <tag>Ajax</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用爬虫破解百度翻译【★★】</title>
+    <url>/2021/07/23/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
+    <content><![CDATA[<blockquote>
+<p>携带post参数的爬虫</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -2565,13 +2398,17 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>爬取搜狗页面【★】</title>
-    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E6%90%9C%E7%8B%97%E9%A1%B5%E9%9D%A2/</url>
-    <content><![CDATA[<p>复习：<a href="https://freepiao.cn/2021/07/21/spider/#%E4%BA%8C%E3%80%81requests%E6%A8%A1%E5%9D%97">request模块讲解</a></p>
+    <title>爬取药监局相关数据【★★】</title>
+    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E8%8D%AF%E7%9B%91%E5%B1%80%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>携带post参数的爬虫</li>
+<li>子链爬取</li>
+</ul>
+</blockquote>
 <span id="more"></span>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># - 需求：爬取搜狗首页的页面数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># step_1:指定url</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/&#x27;</span></span><br><span class="line">    <span class="comment"># step_2:发起请求</span></span><br><span class="line">    <span class="comment"># get方法会返回一个响应对象</span></span><br><span class="line">    response = requests.get(url=url)</span><br><span class="line">    <span class="comment"># step_3:获取响应数据.text返回的是字符串形式的响应数据</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    <span class="built_in">print</span>(page_text)</span><br><span class="line">    <span class="comment"># step_4:持久化存储</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./sogou.html&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;#########CRAWLING END#########&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id_list = []  <span class="comment"># 存储企业的id</span></span><br><span class="line">    all_data_list = []  <span class="comment"># 存储所有的企业详情数据</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1.批量获取不同企业的id值</span></span><br><span class="line">    url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsList&#x27;</span></span><br><span class="line">    <span class="comment"># 参数的封装</span></span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">        <span class="comment"># 获取前5页所有企业数据</span></span><br><span class="line">        page = <span class="built_in">str</span>(page)</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;on&#x27;</span>: <span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;page&#x27;</span>: page,</span><br><span class="line">            <span class="string">&#x27;pageSize&#x27;</span>: <span class="string">&#x27;15&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;productName&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;conditionType&#x27;</span>: <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applyname&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applysn&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        json_ids = requests.post(url=url, headers=headers, data=data).json()</span><br><span class="line">        <span class="keyword">for</span> dic <span class="keyword">in</span> json_ids[<span class="string">&#x27;list&#x27;</span>]:</span><br><span class="line">            <span class="comment"># 批量获取id保存到数组</span></span><br><span class="line">            id_list.append(dic[<span class="string">&#x27;ID&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.获取企业详情数据</span></span><br><span class="line">    post_url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">id</span> <span class="keyword">in</span> id_list:</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: <span class="built_in">id</span></span><br><span class="line">        &#125;</span><br><span class="line">        detail_json = requests.post(url=post_url, headers=headers, data=data).json()</span><br><span class="line">        <span class="built_in">print</span>(detail_json, <span class="string">&#x27;\n-------------ending-----------&#x27;</span>)</span><br><span class="line">        all_data_list.append(detail_json)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.持久化存储all_data_list</span></span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./allData.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(all_data_list, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n\n****************************完毕***************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>code</category>
@@ -2584,17 +2421,13 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>爬取药监局相关数据【★★】</title>
-    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E8%8D%AF%E7%9B%91%E5%B1%80%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE/</url>
-    <content><![CDATA[<blockquote>
-<ul>
-<li>携带post参数的爬虫</li>
-<li>子链爬取</li>
-</ul>
-</blockquote>
+    <title>爬取搜狗页面【★】</title>
+    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E6%90%9C%E7%8B%97%E9%A1%B5%E9%9D%A2/</url>
+    <content><![CDATA[<p>复习：<a href="https://freepiao.cn/2021/07/21/spider/#%E4%BA%8C%E3%80%81requests%E6%A8%A1%E5%9D%97">request模块讲解</a></p>
 <span id="more"></span>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id_list = []  <span class="comment"># 存储企业的id</span></span><br><span class="line">    all_data_list = []  <span class="comment"># 存储所有的企业详情数据</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1.批量获取不同企业的id值</span></span><br><span class="line">    url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsList&#x27;</span></span><br><span class="line">    <span class="comment"># 参数的封装</span></span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">        <span class="comment"># 获取前5页所有企业数据</span></span><br><span class="line">        page = <span class="built_in">str</span>(page)</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;on&#x27;</span>: <span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;page&#x27;</span>: page,</span><br><span class="line">            <span class="string">&#x27;pageSize&#x27;</span>: <span class="string">&#x27;15&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;productName&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;conditionType&#x27;</span>: <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applyname&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applysn&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        json_ids = requests.post(url=url, headers=headers, data=data).json()</span><br><span class="line">        <span class="keyword">for</span> dic <span class="keyword">in</span> json_ids[<span class="string">&#x27;list&#x27;</span>]:</span><br><span class="line">            <span class="comment"># 批量获取id保存到数组</span></span><br><span class="line">            id_list.append(dic[<span class="string">&#x27;ID&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.获取企业详情数据</span></span><br><span class="line">    post_url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">id</span> <span class="keyword">in</span> id_list:</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: <span class="built_in">id</span></span><br><span class="line">        &#125;</span><br><span class="line">        detail_json = requests.post(url=post_url, headers=headers, data=data).json()</span><br><span class="line">        <span class="built_in">print</span>(detail_json, <span class="string">&#x27;\n-------------ending-----------&#x27;</span>)</span><br><span class="line">        all_data_list.append(detail_json)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.持久化存储all_data_list</span></span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./allData.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(all_data_list, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n\n****************************完毕***************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># - 需求：爬取搜狗首页的页面数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># step_1:指定url</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/&#x27;</span></span><br><span class="line">    <span class="comment"># step_2:发起请求</span></span><br><span class="line">    <span class="comment"># get方法会返回一个响应对象</span></span><br><span class="line">    response = requests.get(url=url)</span><br><span class="line">    <span class="comment"># step_3:获取响应数据.text返回的是字符串形式的响应数据</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    <span class="built_in">print</span>(page_text)</span><br><span class="line">    <span class="comment"># step_4:持久化存储</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./sogou.html&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;#########CRAWLING END#########&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>code</category>
@@ -3058,6 +2891,252 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>frontEnd</tag>
         <tag>Browser</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】18-颜色与纹理-在矩形表面帖上图像</title>
+    <url>/2021/07/29/TexturedQuad/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：20-TexturedQuad</p>
+<p>要点：纹理映射、纹理坐标</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、纹理映射"><a href="#一、纹理映射" class="headerlink" title="一、纹理映射"></a>一、纹理映射</h3><p>​        概念：将一张图像（像帖纸）映射（帖）到一个几何图形的表面上去。此时这张图片又可以称为<strong>纹理图像</strong>或<strong>纹理</strong>(texture)。</p>
+<p>​        作用：根据纹理图像，为之前光栅化后的每个元素涂上合适的颜色。组成纹理图像的像素又被称为<strong>纹素</strong>，每一个纹素都使用RGB或RGBA格式编码。</p>
+<h3 id="二、纹理映射的步骤"><a href="#二、纹理映射的步骤" class="headerlink" title="二、纹理映射的步骤"></a>二、纹理映射的步骤</h3><p>​    1、准备好映射到几何图形上的纹理图像</p>
+<p>​    2、为几何图形配置纹理映射方式</p>
+<p>​    3、加载纹理图像，对其进行一些配置，以在WebGL中使用它</p>
+<p>​    4、在片元着色器中将相应的纹素从纹理中抽取出来，并将纹素的颜色赋值给片元</p>
+<h3 id="三、纹理坐标"><a href="#三、纹理坐标" class="headerlink" title="三、纹理坐标"></a>三、纹理坐标</h3><p>​        第2步指定映射方式，就是确定“几何图形的某个片元”的颜色如何取决于“纹理图像中那个（或哪几个）像素”的问题（即前者到后者的映射）。我们利用图形顶点坐标来确定屏幕上那部分被纹理图像覆盖，使用<strong>纹理坐标</strong>来确定纹理图像的哪部分将覆盖到几何图形上。</p>
+<p>​        <code>纹理坐标</code>是纹理图像上的坐标，通过纹理坐标可以在纹理图像上获取纹素颜色。<br>​        WebGL系统中的纹理坐标系统是<strong>二维</strong>的。<br>​        WebGL中使用<code>s</code>和<code>t</code>命名纹理坐标。（st坐标系统或uv坐标系统）</p>
+<p><img src="/images/TexturedQuad.png" alt="1"></p>
+<p>​        纹理坐标很通用，因为坐标值与图像自身尺寸无关。</p>
+<h3 id="四、将纹理图像粘贴到几何图形上"><a href="#四、将纹理图像粘贴到几何图形上" class="headerlink" title="四、将纹理图像粘贴到几何图形上"></a>四、将纹理图像粘贴到几何图形上</h3><p>​        在WebGL中，我们通过纹理图像的纹理坐标与几何图形顶点坐标间的映射关系，来确定怎样将纹理图像贴上去。</p>
+<p><img src="/images/TexturedQuad1.png" alt="2"></p>
+<p>​        这里的映射关系为：</p>
+<table>
+<thead>
+<tr>
+<th>纹理坐标</th>
+<th>顶点坐标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(0.0, 1.0)</td>
+<td>(-0.5, 0.5, 0.0)</td>
+</tr>
+<tr>
+<td>(0.0, 0.0)</td>
+<td>(-0.5, -0.5, 0.0)</td>
+</tr>
+<tr>
+<td>(1.0, 0.0)</td>
+<td>(0.5, -0.5, 0.0)</td>
+</tr>
+<tr>
+<td>(1.0, 1.0)</td>
+<td>(0.5, 0.5, 0.0)</td>
+</tr>
+</tbody></table>
+<h3 id="五、程序讲解"><a href="#五、程序讲解" class="headerlink" title="五、程序讲解"></a>五、程序讲解</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initTextures</span>(<span class="params">gl, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> texture = gl.createTexture(); <span class="comment">//创建纹理对象</span></span><br><span class="line">    <span class="keyword">if</span>(!texture)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the texture object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取u_Sampler的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_Sampler = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!u_Sampler) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of u_Sampler&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> image = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line">    <span class="keyword">if</span> (!image) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the image object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注册图像加载时间的响应函数</span></span><br><span class="line">    image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        loadTexture(gl, n, texture, u_Sampler, image);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//浏览器开始加载图像</span></span><br><span class="line">    image.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    <span class="comment">//开启0号纹理单元</span></span><br><span class="line">    gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段程序主要分五个部分：</p>
+<h4 id="1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器"><a href="#1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器" class="headerlink" title="1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器"></a>1、顶点着色器中接收顶点的纹理坐标，光栅化后传递给片元着色器</h4><h4 id="2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。"><a href="#2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。" class="headerlink" title="2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。"></a>2、片元着色器根据片元的纹理坐标，从纹理图像中抽取出纹素颜色，赋给当前片元。</h4><h4 id="3、设置顶点的纹理坐标（initVertexBuffers-）"><a href="#3、设置顶点的纹理坐标（initVertexBuffers-）" class="headerlink" title="3、设置顶点的纹理坐标（initVertexBuffers()）"></a>3、设置顶点的纹理坐标（<code>initVertexBuffers()</code>）</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="comment">// 左上 顶点(-0.5, 0.5)对应纹理(0.0, 1.0)</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,<span class="comment">// 左下</span></span><br><span class="line">        <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,	 <span class="comment">//	右上 </span></span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="comment">// 右下</span></span><br><span class="line">    ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>​        将顶点坐标和纹理坐标写入缓冲区对象，将其中的顶点坐标分配给a_Position变量并开启之。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">4</span>, <span class="number">0</span>);</span><br><span class="line">gl.enableVertexAttribArray(a_Position);</span><br></pre></td></tr></table></figure>
+
+<p>​        获取<code>a_TexCoord</code>变量的存储位置，将缓冲区中的纹理坐标分配给该变量更开启。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a_TexCoord = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_TexCoord&#x27;</span>);</span><br><span class="line">gl.vertexAttribPointer(a_TexCoord, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">4</span>, FSIZE * <span class="number">2</span>);</span><br><span class="line">gl.enableVertexAttribArray(a_TexCoord);</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures-）"><a href="#4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures-）" class="headerlink" title="4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（initTextures()）"></a>4、配置和加载纹理，准备待加载的纹理图像，令浏览器读取它（<code>initTextures()</code>）</h4><h5 id="①取样器"><a href="#①取样器" class="headerlink" title="①取样器"></a>①取样器</h5><p>​        u_Sampler。“Sampler”意为取样器，因为从纹理图像中获取纹素颜色的过程，相当于从纹理图像中“取样”，即输入纹理坐标，返回颜色值。实际上，由于纹理像素也是有大小的，取样处的纹理坐标很可能并不在某个像素中心，所以<strong>取样通常并不是直接取纹理图像某个像素的颜色，而是通过附近的若干个像素共同计算而得。</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> u_Sampler = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="②加载图像（异步加载）"><a href="#②加载图像（异步加载）" class="headerlink" title="②加载图像（异步加载）"></a>②加载图像（异步加载）</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> image = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line"><span class="comment">// 注册图像加载时间的响应函数</span></span><br><span class="line">image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 异步调用</span></span><br><span class="line">    loadTexture(gl, n, texture, u_Sampler, image);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 浏览器开始异步加载图像，程序本身执行return true语句</span></span><br><span class="line"><span class="comment">// 然后，浏览器在某个时刻完成了对图像的加载，就会调用事件响应函数loadTexture()将加载得到的图像交给WebGL系统处理</span></span><br><span class="line">image.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：出于安全性考虑，WebGL不允许使用跨域纹理图像。</p>
+</blockquote>
+<p>异步加载图片过程：</p>
+<p>​        [1]告诉浏览器在图像加载完成后调用loadTexture()</p>
+<p>​        [2]浏览器开始加载图像</p>
+<p>​        [3]向web服务器请求纹理图像</p>
+<p>​        [4]服务器从数据库文件系统中获取图像</p>
+<p>​        [5]服务器返回图像</p>
+<p>​        [6]浏览器收到加载完成的图像</p>
+<p>​        [7]调用loadTexture()函数</p>
+<p>解析：上述步骤中，[1]和[2]是顺序执行的，而第[2]步到第[7]步不是。</p>
+<h4 id="5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture-）"><a href="#5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture-）" class="headerlink" title="5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（loadTexture()）"></a>5、监听纹理图像的加载事件，一旦加载完成，就在WebGL系统中使用纹理（<code>loadTexture()</code>）</h4><p>​        为WebGL配置纹理</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    <span class="comment">//开启0号纹理单元</span></span><br><span class="line">    gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="①图像Y轴反转"><a href="#①图像Y轴反转" class="headerlink" title="①图像Y轴反转"></a>①图像Y轴反转</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​        在使用图像前，必须对它进行Y轴反转。（<a href="#%E4%B8%89%E3%80%81%E7%BA%B9%E7%90%86%E5%9D%90%E6%A0%87">WebGL纹理坐标</a>中的t轴的方向和PNG、BMP、JPG等格式图片的坐标系统的Y轴方向是相反的。）</p>
+<p><img src="/images/TexturedQuad2.png" alt="3"></p>
+<table>
+<thead>
+<tr>
+<th>gl.pixelStorei()参数</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pname</td>
+<td>以下二者之一</td>
+</tr>
+<tr>
+<td>gl.UNPACK_FLIP_Y_WEBGL</td>
+<td>对图像进行Y轴反转，默认值为false</td>
+</tr>
+<tr>
+<td>gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL</td>
+<td>将图像RGB颜色值的每一个分量乘以A。默认false</td>
+</tr>
+<tr>
+<td>param</td>
+<td>指定非0或0。必须为整数</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="②激活纹理单元"><a href="#②激活纹理单元" class="headerlink" title="②激活纹理单元"></a>②激活纹理单元</h5><p>​        WebGL通过纹理单元的机制来同时使用多个纹理。每个纹理单元有一个单元编号来管理一张纹理图像。<br>​        系统支持的纹理单元格数取决于硬件和浏览器的WebGL实现，但是在默认情况下，WebGL<strong>至少支持8个</strong>纹理单元，内置变量gl.TEXTURE0、gl.TEXTURE1…gl.TEXTURE7各表示一个纹理单元<br>​        在使用纹理单元之前，还需要调用<code>gl.aactiveTexture()</code>来激活它。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.activeTexture(gl.TEXTURE0);</span><br></pre></td></tr></table></figure>
+
+<h5 id="③绑定纹理对象（设置纹理的类型）"><a href="#③绑定纹理对象（设置纹理的类型）" class="headerlink" title="③绑定纹理对象（设置纹理的类型）"></a>③绑定纹理对象（设置纹理的类型）</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意：该方法完成了两个任务：开启纹理对象，以及将纹理对象绑定到纹理单元上。</span></span><br><span class="line">gl.bindTexture(gl.TEXTURE_2D, texture);</span><br></pre></td></tr></table></figure>
+
+<p>​        解析：告诉WebGL系统纹理对象使用的是哪种类型的纹理。在对纹理对象进行操作之前，需要绑定纹理对象，这一点与缓冲区很像：在对缓冲区对象进行操作（写入数据）之前，也需要绑定缓冲区对象。如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">gl.bindBuffer(gl.ARRAY_BUFFER, vertexTexCoordBuffer);</span><br><span class="line"><span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">gl.bufferData(gl.ARRAY_BUFFER, verticesTexCoords, gl.STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+
+<p>WebGL支持两种类型的纹理：</p>
+<p>​        gl.TEXTURE_2D：二维纹理</p>
+<p>​        gl.TEXTURE_CUBE_MAP：立方体纹理</p>
+<blockquote>
+<p>补充：在WebGL中，你没法直接操作纹理对象，必须<strong>通过将纹理对象绑定到纹理单元上，然后通过操作纹理单元来操作纹理对象。</strong></p>
+</blockquote>
+<h5 id="④配置纹理对象的参数"><a href="#④配置纹理对象的参数" class="headerlink" title="④配置纹理对象的参数"></a>④配置纹理对象的参数</h5><p>​        即设置纹理图像映射到图形上的具体方式：如何根据纹理坐标获取纹素颜色、按哪种方式重复填充纹理。</p>
+<table>
+<thead>
+<tr>
+<th>gl.texParameteri()</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数1：target</td>
+<td>gl.TEXTURE_2D或gl.TEXTURE_CUBE_MAP</td>
+</tr>
+<tr>
+<td>参数 2：pname</td>
+<td>纹理参数(<a href="">参见</a>)</td>
+</tr>
+<tr>
+<td>参数3：param</td>
+<td>纹理参数的值</td>
+</tr>
+</tbody></table>
+<p>纹理参数：</p>
+<p><img src="/images/TexturedQuad3.png" alt="4"></p>
+<table>
+<thead>
+<tr>
+<th>纹理参数</th>
+<th>描述</th>
+<th>默认值</th>
+<th>其他值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gl.TEXTURE_MAX_FILTER</td>
+<td><strong>纹理放大</strong>。当纹理的绘制范围比较纹理本身更大时，如何获取纹素颜色。（图像比空间小）</td>
+<td>gl.LINEAR：</td>
+<td>见下图</td>
+</tr>
+<tr>
+<td>gl.TEXTURE_MIN_FILTER</td>
+<td><strong>纹理缩小</strong>。当纹理的绘制范围比较纹理本身更小时，如何获取纹素颜色。（图像比空间大）</td>
+<td>gl.NEAREST_MIPMAP_LINEAR</td>
+<td></td>
+</tr>
+<tr>
+<td>gl.TEXTURE_WRAP_S</td>
+<td><strong>纹理水平填充</strong></td>
+<td>gl.REPEAT</td>
+<td></td>
+</tr>
+<tr>
+<td>gl.TEXTURE_WRAP_T</td>
+<td><strong>纹理垂直填充</strong></td>
+<td>gl.REPAET</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="/images/TexturedQuad4.png" alt="5"></p>
+<p>​        每个纹理参数都有一个默认值，不调用<code>gl.texParameteri</code>就使用默认值。本例修改了<code>gl.TEXTURE_MIN_FILTER</code>参数，它的默认值是一种特殊的、被称为MIPMAP（也称金字塔）的纹理类型。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：曼哈顿距离，即直角距离，棋盘距离。如（x1，y1）和（x2，y2）的曼哈顿距离为|x1-x2|+|y1-y2|。</p>
+</blockquote>
+<h5 id="⑤将纹理图像分配给纹理对象（gl-texImage2D），同时允许你告诉WebGL系统关于该图像的一些特性。"><a href="#⑤将纹理图像分配给纹理对象（gl-texImage2D），同时允许你告诉WebGL系统关于该图像的一些特性。" class="headerlink" title="⑤将纹理图像分配给纹理对象（gl.texImage2D），同时允许你告诉WebGL系统关于该图像的一些特性。"></a>⑤将纹理图像分配给纹理对象（gl.texImage2D），同时允许你告诉WebGL系统关于该图像的一些特性。</h5><p><img src="/images/TexturedQuad5.png" alt="6"></p>
+<p>​        这时，Image对象中的图像就从JavaScript传入WebGL系统中，并存储在纹理对象中。</p>
+<p>​        纹理数据的格式：</p>
+<p><img src="/images/TexturedQuad6.png" alt="7"></p>
+<blockquote>
+<p>format标示纹理数据的格式，必须根据纹理图像的格式来选择这个参数：<br>        JPG =&gt; gl.RGB<br>         PNG =&gt; gl.RGBA<br>         BMP =&gt; gl.RGB</p>
+</blockquote>
+<p>补充：</p>
+<p>​        1.在webgl中，<code>internalformat</code>必须和<code>format</code>一样。</p>
+<p>​        2.<code>gl.LUMUNANCE</code> 和 <code>gl.LUMINANCE_ALPHA</code> 通常用在灰度图像上等等</p>
+<p>​        3.<code>流明</code>（luminance）标示我们感知到的物体表面的<strong>亮度</strong>。通常使用物体表面红、蓝        颜色分量指的加权平均来计算流明。</p>
+<p>​        </p>
+<p>​        纹理数据的数据格式：    </p>
+<p>​            <code>type</code>参数制定了纹理数据类型。通常使用<code>gl.UNSIGNED_BYTE</code>数据类型。</p>
+<p><img src="/images/TexturedQuad7.png" alt="8"></p>
+<h5 id="⑥将纹理单元传递给片元着色器"><a href="#⑥将纹理单元传递给片元着色器" class="headerlink" title="⑥将纹理单元传递给片元着色器"></a>⑥将纹理单元传递给片元着色器</h5><p>一旦将纹理图像传入了WebGL系统，就必须将其传入片元着色器并映射到图形的表面上去。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler;\n&#x27;</span> +</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>用于纹理对象的数据类型：</p>
+<ul>
+<li>sampler2D：绑定到gl.TEXTURE_2D上的纹理数据类型</li>
+<li>samplerCube：gl.TEXTURE_CUBE_MAP</li>
+</ul>
+<p>通过<strong>纹理单元编号</strong>（gl.TEXTUREn中的n）将纹理对象传给u_Sampler</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>执行完后，片元着色器就能够访问纹理图像了。</p>
+<h5 id="⑦从顶点着色器向片元着色器传输纹理坐标"><a href="#⑦从顶点着色器向片元着色器传输纹理坐标" class="headerlink" title="⑦从顶点着色器向片元着色器传输纹理坐标"></a>⑦从顶点着色器向片元着色器传输纹理坐标</h5><p>通过同名的<code>varying变量</code>传输数据：</p>
+<p>​        通过attribute变量<code>a_TexCoord</code>接收顶点的纹理坐标，将数据赋值给varying变量<code>v_TexCoord</code>并将纹理坐标传入片元着色器。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">  <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;  gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;  v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="⑧在片元着色器中获取纹理像素颜色（texture2D-）"><a href="#⑧在片元着色器中获取纹理像素颜色（texture2D-）" class="headerlink" title="⑧在片元着色器中获取纹理像素颜色（texture2D()）"></a>⑧在片元着色器中获取纹理像素颜色（texture2D()）</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl_FragColor = texture2D(u_Sampler, v_TexCoord);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/TexturedQuad8.png" alt="9"></p>
+<p>​        纹理放大和缩小方法的参数将决定WebGL系统将以何种方式内插出片元。我们将texture2D函数返回值赋给了gl_FragColor变量，然后片元着色器就将当前片元染成这个颜色。</p>
+<h2 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// TexturedQuad.js</span></span><br><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = texture2D(u_Sampler, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span>  <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span> (!gl) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Specify the color for clearing &lt;canvas&gt;</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置纹理</span></span><br><span class="line">    <span class="keyword">if</span> (!initTextures(gl, n)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to intialize the texture.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [</span><br><span class="line">           -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,</span><br><span class="line">           -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,</span><br><span class="line">           <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,</span><br><span class="line">           <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">0.0</span>,</span><br><span class="line">            <span class="comment">// -0.5, 0.5, -0.3, 1.7,</span></span><br><span class="line">            <span class="comment">// -0.5, -0.5, -0.3, -0.2,</span></span><br><span class="line">            <span class="comment">// 0.5, 0.5, 1.7, 1.7,</span></span><br><span class="line">            <span class="comment">// 0.5, -0.5, 1.7, -0.2</span></span><br><span class="line">        ]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>;<span class="comment">// 顶点数目</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexTexCoordBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexTexCoordBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点坐标和纹理坐标写入缓冲区对象</span></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexTexCoordBuffer);</span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesTexCoords, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesTexCoords.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">4</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将纹理坐标分配给a_TexCoord并开启它</span></span><br><span class="line">    <span class="keyword">var</span> a_TexCoord = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_TexCoord&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_TexCoord &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_TexCoord&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.vertexAttribPointer(a_TexCoord, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">4</span>, FSIZE*<span class="number">2</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_TexCoord);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置和加载纹理，准备待加载的纹理图像，令浏览器读取它</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initTextures</span>(<span class="params">gl, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> texture = gl.createTexture(); <span class="comment">//创建纹理对象</span></span><br><span class="line">    <span class="keyword">if</span>(!texture)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the texture object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从片元着色器中获取uniform变量u_Sampler（取样器）的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_Sampler = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!u_Sampler) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of u_Sampler&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> image = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line">    <span class="comment">//注册图像加载时间的响应函数</span></span><br><span class="line">    image.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        loadTexture(gl, n, texture, u_Sampler, image);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//浏览器开始加载图像</span></span><br><span class="line">    image.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    <span class="comment">//开启0号纹理单元</span></span><br><span class="line">    gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    <span class="comment">// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span></span><br><span class="line">    <span class="comment">// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span></span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/images/TexturedQuad9.png" alt="10"></p>
+<h2 id="实例2"><a href="#实例2" class="headerlink" title="实例2"></a>实例2</h2><h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><p><em>TexturedQuad_Repeat</em></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">仅修改此处：</span><br><span class="line"><span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="comment">//    -0.5, 0.5, 0.0, 1.0,</span></span><br><span class="line">        <span class="comment">//    -0.5, -0.5, 0.0, 0.0,</span></span><br><span class="line">        <span class="comment">//    0.5, 0.5, 1.0, 1.0,</span></span><br><span class="line">        <span class="comment">//    0.5, -0.5, 1.0, 0.0,</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.3</span>, <span class="number">1.7</span>,</span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.3</span>, -<span class="number">0.2</span>,</span><br><span class="line">        <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.7</span>, <span class="number">1.7</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.7</span>, -<span class="number">0.2</span></span><br><span class="line">    ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>​        由于纹理图像不足以覆盖整个矩形，所以可以看到在本该空白的区域，纹理重复出现了，因为<code>gl.TEXTURE_WRAP_S</code>和<code>gl.TEXTURE_WRAP_T</code>都默认值为<code>gl.REPEAT</code>。</p>
+<p><img src="/images/TexturedQuad10.png" alt="11"></p>
+<h2 id="实例3"><a href="#实例3" class="headerlink" title="实例3"></a>实例3</h2><h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><p><em>TexturedQuad_Clamp_Mirror</em></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">修改<span class="number">1</span>：</span><br><span class="line"><span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="comment">//    -0.5, 0.5, 0.0, 1.0,</span></span><br><span class="line">        <span class="comment">//    -0.5, -0.5, 0.0, 0.0,</span></span><br><span class="line">        <span class="comment">//    0.5, 0.5, 1.0, 1.0,</span></span><br><span class="line">        <span class="comment">//    0.5, -0.5, 1.0, 0.0,</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.3</span>, <span class="number">1.7</span>,</span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.3</span>, -<span class="number">0.2</span>,</span><br><span class="line">        <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.7</span>, <span class="number">1.7</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.7</span>, -<span class="number">0.2</span></span><br><span class="line">    ]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">修改<span class="number">2</span>：</span><br><span class="line"><span class="comment">//配置纹理参数</span></span><br><span class="line">gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span><br></pre></td></tr></table></figure>
+
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p>​        修改纹理参数，可见s轴（水平轴）上，纹理外填充了最边缘纹素的颜色，而t轴（垂直轴）上镜像的重复填充纹理。</p>
+<p><img src="/images/TexturedQuad11.png" alt="12"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
       </tags>
   </entry>
   <entry>
