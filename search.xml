@@ -1,105 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>WebSocket介绍与实战开发</title>
-    <url>/2021/07/30/23-Websocket/</url>
-    <content><![CDATA[<p>思考：这种网页版的聊天功能应该如何去实现？？</p>
-<span id="more"></span>
-
-<h1 id="websocket介绍"><a href="#websocket介绍" class="headerlink" title="websocket介绍"></a>websocket介绍</h1><blockquote>
-<p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器全双工(full-duplex)通信——允许服务器主动发送信息给客户端。</p>
-<p>websocket是一种持久协议，http是非持久协议</p>
-</blockquote>
-<p><strong>现在很多网站都有实时推送的需求，比如聊天，客服咨询等</strong></p>
-<p>早期没有websocket时，通过ajax轮询，由于http请求，服务器无法给浏览器主动发送数据，因此需要浏览器定时的给服务器发送请求（比如1s一次）,服务器把最新的数据响应给浏览器。这种模式的缺点就是浪费性能和资源。</p>
-<p><img src="imgs/websocket.png"></p>
-<p>websocket是一种网络协议，允许客户端和服务端全双工的进行网络通讯，服务器可以给客户端发消息，客户端也可以给服务器发消息。</p>
-<h1 id="websocket基本使用"><a href="#websocket基本使用" class="headerlink" title="websocket基本使用"></a>websocket基本使用</h1><p>在HTML5中，浏览器已经实现了websocket的API，直接使用即可。</p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket">WebSocket-MDN</a></p>
-<h2 id="创建websocket对象"><a href="#创建websocket对象" class="headerlink" title="创建websocket对象"></a>创建websocket对象</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数1： url：连接的websocket属性</span></span><br><span class="line"><span class="comment">// 参数2： protocol，可选的，指定连接的协议</span></span><br><span class="line"><span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span><br><span class="line"><span class="keyword">var</span> Socket = <span class="keyword">new</span> WebSocket(url, [protocol] );</span><br></pre></td></tr></table></figure>
-
-<h2 id="websocket事件"><a href="#websocket事件" class="headerlink" title="websocket事件"></a>websocket事件</h2><table>
-<thead>
-<tr>
-<th align="left">事件</th>
-<th align="left">事件处理程序</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">open</td>
-<td align="left">Socket.onopen</td>
-<td align="left">连接建立时触发</td>
-</tr>
-<tr>
-<td align="left">message</td>
-<td align="left">Socket.onmessage</td>
-<td align="left">客户端接收服务端数据时触发</td>
-</tr>
-<tr>
-<td align="left">error</td>
-<td align="left">Socket.onerror</td>
-<td align="left">通信发生错误时触发</td>
-</tr>
-<tr>
-<td align="left">close</td>
-<td align="left">Socket.onclose</td>
-<td align="left">连接关闭时触发</td>
-</tr>
-</tbody></table>
-<h2 id="websocket方法"><a href="#websocket方法" class="headerlink" title="websocket方法"></a>websocket方法</h2><table>
-<thead>
-<tr>
-<th align="left">方法</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Socket.send()</td>
-<td align="left">使用连接发送数据</td>
-</tr>
-<tr>
-<td align="left">Socket.close()</td>
-<td align="left">关闭连接</td>
-</tr>
-</tbody></table>
-<h1 id="使用nodejs开发websocket服务"><a href="#使用nodejs开发websocket服务" class="headerlink" title="使用nodejs开发websocket服务"></a>使用nodejs开发websocket服务</h1><blockquote>
-<p>我们刚刚使用了官网提供的echo服务，接下来我们自己通过nodejs实现一个简单的websocket服务。</p>
-</blockquote>
-<p>使用nodejs开发websocket需要依赖一个第三方包。<a href="https://github.com/sitegui/nodejs-websocket#readme">Nodejs Websocket</a></p>
-<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><p>新建一个websocket server端的项目</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir server-demo</span><br><span class="line"><span class="built_in">cd</span> server-demo</span><br><span class="line">yarn init -y</span><br><span class="line">yarn add nodejs-websocket</span><br><span class="line">touch app.js</span><br></pre></td></tr></table></figure>
-
-<h2 id="开发服务程序"><a href="#开发服务程序" class="headerlink" title="开发服务程序"></a>开发服务程序</h2><p>在app.js中</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 导入第三方模块</span></span><br><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"><span class="comment">// websocket占用的端口号</span></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;新的连接&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接收到客户端的文本内容时触发</span></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">str</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;接收:&#x27;</span> + str)</span><br><span class="line">    <span class="comment">// 把接收到的字符串转换成大写，并且给客户端响应</span></span><br><span class="line">    connect.sendText(str.toUpperCase() + <span class="string">&#x27;!!!!&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听关闭事件</span></span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接关闭了&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听错误事件， 比如浏览器关闭了连接，或者发送的数据格式不对等</span></span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接异常&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动websocket服务</span></span><br><span class="line">server.listen(PORT, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`websocket server listening on <span class="subst">$&#123;PORT&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure>
-<p>在终端中看到<code>websocket server listening on 3000</code>就说明webserver服务启动成功了</p>
-<h2 id="进行测试"><a href="#进行测试" class="headerlink" title="进行测试"></a>进行测试</h2><p>修改客户端中<code>index.js</code>文件中的连接地址,重新进行测试</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建websocket对象，地址已经修改称为了自己编写的地址</span></span><br><span class="line"><span class="keyword">const</span> URL = <span class="string">&#x27;ws://localhost:3000&#x27;</span></span><br><span class="line"><span class="keyword">const</span> websocket = <span class="keyword">new</span> WebSocket(URL)</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="websocket开发聊天室程序"><a href="#websocket开发聊天室程序" class="headerlink" title="websocket开发聊天室程序"></a>websocket开发聊天室程序</h1><p>app.js</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"><span class="keyword">const</span> TYPE_MSG = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> TYPE_ENTER = <span class="number">1</span></span><br><span class="line"><span class="keyword">const</span> TYPE_LEAVE = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userCount = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;有新用户连接了&#x27;</span>)</span><br><span class="line">  <span class="comment">// 每次有新用户连接，需要给所有用户发送一条新增用户的消息</span></span><br><span class="line">  userCount++</span><br><span class="line">  connect.userName = <span class="string">&#x27;user&#x27;</span> + userCount</span><br><span class="line">  <span class="comment">// 给所有的用户进行广播</span></span><br><span class="line">  broadcast(&#123;</span><br><span class="line">    <span class="attr">type</span>: TYPE_ENTER,</span><br><span class="line">    <span class="attr">msg</span>: connect.userName + <span class="string">&#x27;进入了聊天室&#x27;</span>,</span><br><span class="line">    <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">msg</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果接收到用户的数据， 需要发送给所有的用户</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_MSG,</span><br><span class="line">      <span class="attr">msg</span>: msg,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户断开连接&#x27;</span>)</span><br><span class="line">    userCount--</span><br><span class="line">    <span class="comment">// 给所有的用户发送一条用户离开的消息</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_LEAVE,</span><br><span class="line">      <span class="attr">msg</span>: <span class="string">`<span class="subst">$&#123;connect.userName&#125;</span>离开了聊天室`</span>,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接失败&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">broadcast</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  server.connections.forEach(<span class="function"><span class="params">conn</span> =&gt;</span> &#123;</span><br><span class="line">    conn.sendText(<span class="built_in">JSON</span>.stringify(msg))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server.listen(PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;服务器启动成功了&#x27;</span>, PORT)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>index.html</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">      <span class="comment">/* div &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">        width: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        height: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        border: 1px solid #000;</span></span></span><br><span class="line"><span class="comment"><span class="css">      &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于收集输入内容 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入需要发送的内容&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于发送websocket请求 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>websocket测试<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于显示websock服务器的响应 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;show&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> input = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;input&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;button&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 1. 创建websocket对象, 这个地址是官方提供的地址</span></span></span><br><span class="line"><span class="javascript">      <span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> socket = <span class="keyword">new</span> WebSocket(<span class="string">&#x27;ws://localhost:3000&#x27;</span>)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 2. 给websocket注册事件</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 与服务端建立连接的时候触发</span></span></span><br><span class="line"><span class="javascript">        div.innerText = <span class="string">&#x27;恭喜你，与服务端建立连接了&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如何给服务器发送消息</span></span></span><br><span class="line"><span class="javascript">      button.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        socket.send(input.value)</span></span><br><span class="line"><span class="javascript">        input.value = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如果接收服务器的数据</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(e.data)</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> dv = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">        dv.innerHTML = data.msg + <span class="string">&#x27;----&#x27;</span> + data.date</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;green&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">1</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;red&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">2</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;gray&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        div.appendChild(dv)</span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        div.innerHTML = <span class="string">&#x27;与服务器断开连接&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果使用原生的websocket进行开发，会比较麻烦，比如支持的事件太少，发送的数据只能是字符串格式的，提供的api也很少，类似于广播这种方法都没有，需要自己封装。</p>
-<h1 id="socket-io基本使用"><a href="#socket-io基本使用" class="headerlink" title="socket.io基本使用"></a>socket.io基本使用</h1><p><a href="https://socket.io/docs/">socketio</a></p>
-<h1 id="基于socket-io开发完整的聊天室"><a href="#基于socket-io开发完整的聊天室" class="headerlink" title="基于socket.io开发完整的聊天室"></a>基于socket.io开发完整的聊天室</h1>]]></content>
-      <categories>
-        <category>code</category>
-        <category>algorithm</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>websocket</tag>
-        <tag>Algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】05-通过鼠标点击绘点_v2_彩色版</title>
     <url>/2021/07/25/ClickedPoints-color/</url>
     <content><![CDATA[<blockquote>
@@ -200,6 +101,105 @@
       <tags>
         <tag>frontEnd</tag>
         <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WebSocket介绍与实战开发</title>
+    <url>/2021/07/30/23-Websocket/</url>
+    <content><![CDATA[<p>思考：这种网页版的聊天功能应该如何去实现？？</p>
+<span id="more"></span>
+
+<h1 id="websocket介绍"><a href="#websocket介绍" class="headerlink" title="websocket介绍"></a>websocket介绍</h1><blockquote>
+<p>WebSocket协议是基于TCP的一种新的网络协议。它实现了浏览器与服务器全双工(full-duplex)通信——允许服务器主动发送信息给客户端。</p>
+<p>websocket是一种持久协议，http是非持久协议</p>
+</blockquote>
+<p><strong>现在很多网站都有实时推送的需求，比如聊天，客服咨询等</strong></p>
+<p>早期没有websocket时，通过ajax轮询，由于http请求，服务器无法给浏览器主动发送数据，因此需要浏览器定时的给服务器发送请求（比如1s一次）,服务器把最新的数据响应给浏览器。这种模式的缺点就是浪费性能和资源。</p>
+<p><img src="imgs/websocket.png"></p>
+<p>websocket是一种网络协议，允许客户端和服务端全双工的进行网络通讯，服务器可以给客户端发消息，客户端也可以给服务器发消息。</p>
+<h1 id="websocket基本使用"><a href="#websocket基本使用" class="headerlink" title="websocket基本使用"></a>websocket基本使用</h1><p>在HTML5中，浏览器已经实现了websocket的API，直接使用即可。</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket">WebSocket-MDN</a></p>
+<h2 id="创建websocket对象"><a href="#创建websocket对象" class="headerlink" title="创建websocket对象"></a>创建websocket对象</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参数1： url：连接的websocket属性</span></span><br><span class="line"><span class="comment">// 参数2： protocol，可选的，指定连接的协议</span></span><br><span class="line"><span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span><br><span class="line"><span class="keyword">var</span> Socket = <span class="keyword">new</span> WebSocket(url, [protocol] );</span><br></pre></td></tr></table></figure>
+
+<h2 id="websocket事件"><a href="#websocket事件" class="headerlink" title="websocket事件"></a>websocket事件</h2><table>
+<thead>
+<tr>
+<th align="left">事件</th>
+<th align="left">事件处理程序</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">open</td>
+<td align="left">Socket.onopen</td>
+<td align="left">连接建立时触发</td>
+</tr>
+<tr>
+<td align="left">message</td>
+<td align="left">Socket.onmessage</td>
+<td align="left">客户端接收服务端数据时触发</td>
+</tr>
+<tr>
+<td align="left">error</td>
+<td align="left">Socket.onerror</td>
+<td align="left">通信发生错误时触发</td>
+</tr>
+<tr>
+<td align="left">close</td>
+<td align="left">Socket.onclose</td>
+<td align="left">连接关闭时触发</td>
+</tr>
+</tbody></table>
+<h2 id="websocket方法"><a href="#websocket方法" class="headerlink" title="websocket方法"></a>websocket方法</h2><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Socket.send()</td>
+<td align="left">使用连接发送数据</td>
+</tr>
+<tr>
+<td align="left">Socket.close()</td>
+<td align="left">关闭连接</td>
+</tr>
+</tbody></table>
+<h1 id="使用nodejs开发websocket服务"><a href="#使用nodejs开发websocket服务" class="headerlink" title="使用nodejs开发websocket服务"></a>使用nodejs开发websocket服务</h1><blockquote>
+<p>我们刚刚使用了官网提供的echo服务，接下来我们自己通过nodejs实现一个简单的websocket服务。</p>
+</blockquote>
+<p>使用nodejs开发websocket需要依赖一个第三方包。<a href="https://github.com/sitegui/nodejs-websocket#readme">Nodejs Websocket</a></p>
+<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><p>新建一个websocket server端的项目</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir server-demo</span><br><span class="line"><span class="built_in">cd</span> server-demo</span><br><span class="line">yarn init -y</span><br><span class="line">yarn add nodejs-websocket</span><br><span class="line">touch app.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="开发服务程序"><a href="#开发服务程序" class="headerlink" title="开发服务程序"></a>开发服务程序</h2><p>在app.js中</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 导入第三方模块</span></span><br><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"><span class="comment">// websocket占用的端口号</span></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;新的连接&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接收到客户端的文本内容时触发</span></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">str</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;接收:&#x27;</span> + str)</span><br><span class="line">    <span class="comment">// 把接收到的字符串转换成大写，并且给客户端响应</span></span><br><span class="line">    connect.sendText(str.toUpperCase() + <span class="string">&#x27;!!!!&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听关闭事件</span></span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接关闭了&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 监听错误事件， 比如浏览器关闭了连接，或者发送的数据格式不对等</span></span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接异常&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动websocket服务</span></span><br><span class="line">server.listen(PORT, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`websocket server listening on <span class="subst">$&#123;PORT&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>在终端中看到<code>websocket server listening on 3000</code>就说明webserver服务启动成功了</p>
+<h2 id="进行测试"><a href="#进行测试" class="headerlink" title="进行测试"></a>进行测试</h2><p>修改客户端中<code>index.js</code>文件中的连接地址,重新进行测试</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建websocket对象，地址已经修改称为了自己编写的地址</span></span><br><span class="line"><span class="keyword">const</span> URL = <span class="string">&#x27;ws://localhost:3000&#x27;</span></span><br><span class="line"><span class="keyword">const</span> websocket = <span class="keyword">new</span> WebSocket(URL)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="websocket开发聊天室程序"><a href="#websocket开发聊天室程序" class="headerlink" title="websocket开发聊天室程序"></a>websocket开发聊天室程序</h1><p>app.js</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ws = <span class="built_in">require</span>(<span class="string">&#x27;nodejs-websocket&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">3000</span></span><br><span class="line"><span class="keyword">const</span> TYPE_MSG = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> TYPE_ENTER = <span class="number">1</span></span><br><span class="line"><span class="keyword">const</span> TYPE_LEAVE = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userCount = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> server = ws.createServer(<span class="function"><span class="params">connect</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;有新用户连接了&#x27;</span>)</span><br><span class="line">  <span class="comment">// 每次有新用户连接，需要给所有用户发送一条新增用户的消息</span></span><br><span class="line">  userCount++</span><br><span class="line">  connect.userName = <span class="string">&#x27;user&#x27;</span> + userCount</span><br><span class="line">  <span class="comment">// 给所有的用户进行广播</span></span><br><span class="line">  broadcast(&#123;</span><br><span class="line">    <span class="attr">type</span>: TYPE_ENTER,</span><br><span class="line">    <span class="attr">msg</span>: connect.userName + <span class="string">&#x27;进入了聊天室&#x27;</span>,</span><br><span class="line">    <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  connect.on(<span class="string">&#x27;text&#x27;</span>, <span class="function"><span class="params">msg</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果接收到用户的数据， 需要发送给所有的用户</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_MSG,</span><br><span class="line">      <span class="attr">msg</span>: msg,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;用户断开连接&#x27;</span>)</span><br><span class="line">    userCount--</span><br><span class="line">    <span class="comment">// 给所有的用户发送一条用户离开的消息</span></span><br><span class="line">    broadcast(&#123;</span><br><span class="line">      <span class="attr">type</span>: TYPE_LEAVE,</span><br><span class="line">      <span class="attr">msg</span>: <span class="string">`<span class="subst">$&#123;connect.userName&#125;</span>离开了聊天室`</span>,</span><br><span class="line">      <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  connect.on(<span class="string">&#x27;error&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;连接失败&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">broadcast</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">  server.connections.forEach(<span class="function"><span class="params">conn</span> =&gt;</span> &#123;</span><br><span class="line">    conn.sendText(<span class="built_in">JSON</span>.stringify(msg))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server.listen(PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;服务器启动成功了&#x27;</span>, PORT)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>index.html</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">      <span class="comment">/* div &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">        width: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        height: 200px;</span></span></span><br><span class="line"><span class="comment"><span class="css">        border: 1px solid #000;</span></span></span><br><span class="line"><span class="comment"><span class="css">      &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于收集输入内容 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入需要发送的内容&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于发送websocket请求 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>websocket测试<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 用于显示websock服务器的响应 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;show&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> input = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;input&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;button&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 1. 创建websocket对象, 这个地址是官方提供的地址</span></span></span><br><span class="line"><span class="javascript">      <span class="comment">// var socket = new WebSocket(&#x27;ws://echo.websocket.org&#x27;)</span></span></span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> socket = <span class="keyword">new</span> WebSocket(<span class="string">&#x27;ws://localhost:3000&#x27;</span>)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 2. 给websocket注册事件</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 与服务端建立连接的时候触发</span></span></span><br><span class="line"><span class="javascript">        div.innerText = <span class="string">&#x27;恭喜你，与服务端建立连接了&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如何给服务器发送消息</span></span></span><br><span class="line"><span class="javascript">      button.addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        socket.send(input.value)</span></span><br><span class="line"><span class="javascript">        input.value = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 如果接收服务器的数据</span></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(e.data)</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> dv = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span></span><br><span class="line"><span class="javascript">        dv.innerHTML = data.msg + <span class="string">&#x27;----&#x27;</span> + data.date</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;green&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">1</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;red&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (data.type === <span class="number">2</span>) &#123;</span></span><br><span class="line"><span class="javascript">          dv.style.color = <span class="string">&#x27;gray&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        div.appendChild(dv)</span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      socket.addEventListener(<span class="string">&#x27;close&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        div.innerHTML = <span class="string">&#x27;与服务器断开连接&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果使用原生的websocket进行开发，会比较麻烦，比如支持的事件太少，发送的数据只能是字符串格式的，提供的api也很少，类似于广播这种方法都没有，需要自己封装。</p>
+<h1 id="socket-io基本使用"><a href="#socket-io基本使用" class="headerlink" title="socket.io基本使用"></a>socket.io基本使用</h1><p><a href="https://socket.io/docs/">socketio</a></p>
+<h1 id="基于socket-io开发完整的聊天室"><a href="#基于socket-io开发完整的聊天室" class="headerlink" title="基于socket.io开发完整的聊天室"></a>基于socket.io开发完整的聊天室</h1>]]></content>
+      <categories>
+        <category>code</category>
+        <category>algorithm</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>websocket</tag>
+        <tag>Algorithm</tag>
       </tags>
   </entry>
   <entry>
@@ -395,13 +395,91 @@
 <h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>​    单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
 <h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><code>GLSL ES</code>支持两种数据值类型：</p>
 <ol>
-<li><p>1、<strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
+<li><p><strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
 </li>
-<li><p>2、<strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
+<li><p><strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
 </li>
 </ol>
+<blockquote>
 <p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
-<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3>]]></content>
+</blockquote>
+<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="变量名规则"><a href="#变量名规则" class="headerlink" title="变量名规则"></a>变量名规则</h4><p>1、只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
+<p>2、变量名的第一个字符不能为数字</p>
+<p>3、不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
+<p>4、不能是下表中所列出的关键字</p>
+<p>![1](/images/GLSL ES1.jpg)</p>
+<p>​        GLSL ES保留字：</p>
+<p>![2](/images/GLSL ES2.jpg)</p>
+<h4 id="GLSL-ES是强类型语言"><a href="#GLSL-ES是强类型语言" class="headerlink" title="GLSL ES是强类型语言"></a>GLSL ES是强类型语言</h4><p>​        声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> a_Position</span><br></pre></td></tr></table></figure>
+
+<p>​        进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
+<h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>float</td>
+<td>单精度浮点类型</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型数</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>布尔值</td>
+</tr>
+</tbody></table>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">float</span> fnumber = <span class="number">1.1</span>;	<span class="comment">// 浮点数</span></span><br><span class="line"><span class="type">int</span> inumber = <span class="number">1</span>;	<span class="comment">// 整型</span></span><br><span class="line"><span class="type">bool</span> blogic = <span class="literal">true</span>;	<span class="comment">// 布尔型</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="赋值和类型转换"><a href="#赋值和类型转换" class="headerlink" title="赋值和类型转换"></a>赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>GLSL ES数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-  *  /  +</td>
+<td>加减乘除</td>
+</tr>
+<tr>
+<td>++  –</td>
+<td>自增、自减</td>
+</tr>
+<tr>
+<td>=  +=  -=  *=  /=</td>
+<td>赋值、算术赋值</td>
+</tr>
+<tr>
+<td>&lt;  &gt;  &lt;=  &gt;=  ==  !=</td>
+<td>比较</td>
+</tr>
+<tr>
+<td>!</td>
+<td>取反</td>
+</tr>
+<tr>
+<td>&amp;&amp;  ||  ^^</td>
+<td>逻辑与、或、异或</td>
+</tr>
+<tr>
+<td>?  :</td>
+<td>三元运算符</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>逻辑与（&amp;&amp;）：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
+<p>逻辑或（||）：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
+<p>逻辑异或（^^）：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
+</blockquote>
+<h4 id="矢量和矩阵"><a href="#矢量和矩阵" class="headerlink" title="矢量和矩阵"></a>矢量和矩阵</h4>]]></content>
       <categories>
         <category>code</category>
         <category>frontend</category>
@@ -444,52 +522,6 @@
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
 <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
-    <url>/2021/07/22/HelloCanvas2d/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
-</li>
-<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
-</li>
-<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
-<p>参数：x    矩形左上角的 x 坐标</p>
-<pre><code>      y    矩形左上角的 y 坐标
-      width        矩形的宽度
-      height   矩形的高度
-</code></pre>
-</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>HelloCanvas2d.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
 ]]></content>
       <categories>
         <category>code</category>
@@ -555,6 +587,52 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint1.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = vec4(-0.5, -0.5, 0.0, 1.0);\n&#x27;</span> + <span class="comment">//设置坐标：顶点位置</span></span><br><span class="line">        <span class="string">&#x27;gl_PointSize = 10.0;\n&#x27;</span> +                    <span class="comment">//设置尺寸（px数），默认值1.0</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">//设置颜色，RGBA格式</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>( !gl )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v1-03.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
+    <url>/2021/07/22/HelloCanvas2d/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
+</li>
+<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
+</li>
+<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
+<p>参数：x    矩形左上角的 x 坐标</p>
+<pre><code>      y    矩形左上角的 y 坐标
+      width        矩形的宽度
+      height   矩形的高度
+</code></pre>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas2d.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>code</category>
@@ -1599,6 +1677,28 @@ function down(){
       </tags>
   </entry>
   <entry>
+    <title>Javascript动态显示时间</title>
+    <url>/2021/07/21/%5B%20JavaScript%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E6%98%BE%E7%A4%BA%E6%97%B6%E9%97%B4%E6%95%88%E6%9E%9C%EF%BC%9AsetInterval%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8%20%5D/</url>
+    <content><![CDATA[<p><strong>知识点</strong></p>
+<span id="more"></span>
+
+<blockquote>
+<p>Timing事件之 setInterval()方法：<img src="https://img-blog.csdnimg.cn/20200809150657625.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ3NjU0MDEw,size_16,color_FFFFFF,t_70"></p>
+</blockquote>
+<p><strong>效果</strong><br><img src="https://img-blog.csdnimg.cn/20200809150619988.jpg"></p>
+<p><strong>上代码</strong></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;time&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;开始&quot;</span> <span class="attr">id</span>=<span class="string">&quot;start&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;结束&quot;</span> <span class="attr">id</span>=<span class="string">&quot;end&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">    </span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> start = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;start&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> end = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;end&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> time1 = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;time&#x27;</span>);</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">        start.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">            </span></span><br><span class="line"><span class="javascript">            <span class="comment">// clearInterval(timer);</span></span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                </span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>();</span></span><br><span class="line"><span class="javascript">                <span class="comment">//  年月日</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> year = d.getFullYear();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> month = d.getMonth()+<span class="number">1</span>;</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> day = d.getDate();</span></span><br><span class="line"><span class="javascript">                <span class="comment">//  时分秒</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> h = d.getHours();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> m = d.getMinutes();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> s = d.getSeconds();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">if</span>(s&lt;<span class="number">10</span>)&#123;</span></span><br><span class="line"><span class="javascript">                    s = <span class="string">&quot;0&quot;</span>+s;</span></span><br><span class="line"><span class="javascript">                &#125;</span></span><br><span class="line"><span class="javascript">                <span class="comment">// time1.innerHTML = s;</span></span></span><br><span class="line"><span class="javascript">                time1.innerHTML = <span class="string">&quot;当前时间：&quot;</span>+year+<span class="string">&quot;-&quot;</span>+month+<span class="string">&quot;-&quot;</span>+day+<span class="string">&quot; &quot;</span>+h+<span class="string">&quot;:&quot;</span>+m+<span class="string">&quot;:&quot;</span>+s;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            &#125;,<span class="number">100</span>);</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            end.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">clearInterval</span>(timer);</span></span><br><span class="line"><span class="javascript">                <span class="comment">// alert(&#x27;stop&#x27;);</span></span></span><br><span class="line"><span class="javascript">            &#125;;</span></span><br><span class="line"><span class="javascript">        &#125;;</span></span><br><span class="line"><span class="javascript">        </span></span><br><span class="line"><span class="javascript">    &#125;;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>Javascript</category>
+      </categories>
+      <tags>
+        <tag>Javascript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UA伪装爬取网页【★】</title>
     <url>/2021/07/23/UA%E4%BC%AA%E8%A3%85%E7%88%AC%E5%8F%96%E7%BD%91%E9%A1%B5/</url>
     <content><![CDATA[<p>复习：<strong>UA检测</strong></p>
@@ -1619,28 +1719,6 @@ function down(){
       <tags>
         <tag>python</tag>
         <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Javascript动态显示时间</title>
-    <url>/2021/07/21/%5B%20JavaScript%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E6%98%BE%E7%A4%BA%E6%97%B6%E9%97%B4%E6%95%88%E6%9E%9C%EF%BC%9AsetInterval%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8%20%5D/</url>
-    <content><![CDATA[<p><strong>知识点</strong></p>
-<span id="more"></span>
-
-<blockquote>
-<p>Timing事件之 setInterval()方法：<img src="https://img-blog.csdnimg.cn/20200809150657625.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ3NjU0MDEw,size_16,color_FFFFFF,t_70"></p>
-</blockquote>
-<p><strong>效果</strong><br><img src="https://img-blog.csdnimg.cn/20200809150619988.jpg"></p>
-<p><strong>上代码</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;time&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;开始&quot;</span> <span class="attr">id</span>=<span class="string">&quot;start&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;结束&quot;</span> <span class="attr">id</span>=<span class="string">&quot;end&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">    </span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> start = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;start&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> end = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;end&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> time1 = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;time&#x27;</span>);</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">        start.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">            </span></span><br><span class="line"><span class="javascript">            <span class="comment">// clearInterval(timer);</span></span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                </span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>();</span></span><br><span class="line"><span class="javascript">                <span class="comment">//  年月日</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> year = d.getFullYear();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> month = d.getMonth()+<span class="number">1</span>;</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> day = d.getDate();</span></span><br><span class="line"><span class="javascript">                <span class="comment">//  时分秒</span></span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> h = d.getHours();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> m = d.getMinutes();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> s = d.getSeconds();</span></span><br><span class="line"><span class="javascript">                <span class="keyword">if</span>(s&lt;<span class="number">10</span>)&#123;</span></span><br><span class="line"><span class="javascript">                    s = <span class="string">&quot;0&quot;</span>+s;</span></span><br><span class="line"><span class="javascript">                &#125;</span></span><br><span class="line"><span class="javascript">                <span class="comment">// time1.innerHTML = s;</span></span></span><br><span class="line"><span class="javascript">                time1.innerHTML = <span class="string">&quot;当前时间：&quot;</span>+year+<span class="string">&quot;-&quot;</span>+month+<span class="string">&quot;-&quot;</span>+day+<span class="string">&quot; &quot;</span>+h+<span class="string">&quot;:&quot;</span>+m+<span class="string">&quot;:&quot;</span>+s;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            &#125;,<span class="number">100</span>);</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">            end.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">clearInterval</span>(timer);</span></span><br><span class="line"><span class="javascript">                <span class="comment">// alert(&#x27;stop&#x27;);</span></span></span><br><span class="line"><span class="javascript">            &#125;;</span></span><br><span class="line"><span class="javascript">        &#125;;</span></span><br><span class="line"><span class="javascript">        </span></span><br><span class="line"><span class="javascript">    &#125;;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>Javascript</tag>
       </tags>
   </entry>
   <entry>
@@ -2470,13 +2548,17 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>爬取搜狗页面【★】</title>
-    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E6%90%9C%E7%8B%97%E9%A1%B5%E9%9D%A2/</url>
-    <content><![CDATA[<p>复习：<a href="https://freepiao.cn/2021/07/21/spider/#%E4%BA%8C%E3%80%81requests%E6%A8%A1%E5%9D%97">request模块讲解</a></p>
+    <title>爬取药监局相关数据【★★】</title>
+    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E8%8D%AF%E7%9B%91%E5%B1%80%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>携带post参数的爬虫</li>
+<li>子链爬取</li>
+</ul>
+</blockquote>
 <span id="more"></span>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># - 需求：爬取搜狗首页的页面数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># step_1:指定url</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/&#x27;</span></span><br><span class="line">    <span class="comment"># step_2:发起请求</span></span><br><span class="line">    <span class="comment"># get方法会返回一个响应对象</span></span><br><span class="line">    response = requests.get(url=url)</span><br><span class="line">    <span class="comment"># step_3:获取响应数据.text返回的是字符串形式的响应数据</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    <span class="built_in">print</span>(page_text)</span><br><span class="line">    <span class="comment"># step_4:持久化存储</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./sogou.html&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;#########CRAWLING END#########&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id_list = []  <span class="comment"># 存储企业的id</span></span><br><span class="line">    all_data_list = []  <span class="comment"># 存储所有的企业详情数据</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1.批量获取不同企业的id值</span></span><br><span class="line">    url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsList&#x27;</span></span><br><span class="line">    <span class="comment"># 参数的封装</span></span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">        <span class="comment"># 获取前5页所有企业数据</span></span><br><span class="line">        page = <span class="built_in">str</span>(page)</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;on&#x27;</span>: <span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;page&#x27;</span>: page,</span><br><span class="line">            <span class="string">&#x27;pageSize&#x27;</span>: <span class="string">&#x27;15&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;productName&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;conditionType&#x27;</span>: <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applyname&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applysn&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        json_ids = requests.post(url=url, headers=headers, data=data).json()</span><br><span class="line">        <span class="keyword">for</span> dic <span class="keyword">in</span> json_ids[<span class="string">&#x27;list&#x27;</span>]:</span><br><span class="line">            <span class="comment"># 批量获取id保存到数组</span></span><br><span class="line">            id_list.append(dic[<span class="string">&#x27;ID&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.获取企业详情数据</span></span><br><span class="line">    post_url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">id</span> <span class="keyword">in</span> id_list:</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: <span class="built_in">id</span></span><br><span class="line">        &#125;</span><br><span class="line">        detail_json = requests.post(url=post_url, headers=headers, data=data).json()</span><br><span class="line">        <span class="built_in">print</span>(detail_json, <span class="string">&#x27;\n-------------ending-----------&#x27;</span>)</span><br><span class="line">        all_data_list.append(detail_json)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.持久化存储all_data_list</span></span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./allData.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(all_data_list, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n\n****************************完毕***************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>code</category>
@@ -2489,17 +2571,13 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>爬取药监局相关数据【★★】</title>
-    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E8%8D%AF%E7%9B%91%E5%B1%80%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE/</url>
-    <content><![CDATA[<blockquote>
-<ul>
-<li>携带post参数的爬虫</li>
-<li>子链爬取</li>
-</ul>
-</blockquote>
+    <title>爬取搜狗页面【★】</title>
+    <url>/2021/07/23/%E7%88%AC%E5%8F%96%E6%90%9C%E7%8B%97%E9%A1%B5%E9%9D%A2/</url>
+    <content><![CDATA[<p>复习：<a href="https://freepiao.cn/2021/07/21/spider/#%E4%BA%8C%E3%80%81requests%E6%A8%A1%E5%9D%97">request模块讲解</a></p>
 <span id="more"></span>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    id_list = []  <span class="comment"># 存储企业的id</span></span><br><span class="line">    all_data_list = []  <span class="comment"># 存储所有的企业详情数据</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1.批量获取不同企业的id值</span></span><br><span class="line">    url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsList&#x27;</span></span><br><span class="line">    <span class="comment"># 参数的封装</span></span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">        <span class="comment"># 获取前5页所有企业数据</span></span><br><span class="line">        page = <span class="built_in">str</span>(page)</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;on&#x27;</span>: <span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;page&#x27;</span>: page,</span><br><span class="line">            <span class="string">&#x27;pageSize&#x27;</span>: <span class="string">&#x27;15&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;productName&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;conditionType&#x27;</span>: <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applyname&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;applysn&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        json_ids = requests.post(url=url, headers=headers, data=data).json()</span><br><span class="line">        <span class="keyword">for</span> dic <span class="keyword">in</span> json_ids[<span class="string">&#x27;list&#x27;</span>]:</span><br><span class="line">            <span class="comment"># 批量获取id保存到数组</span></span><br><span class="line">            id_list.append(dic[<span class="string">&#x27;ID&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.获取企业详情数据</span></span><br><span class="line">    post_url = <span class="string">&#x27;http://scxk.nmpa.gov.cn:81/xk/itownet/portalAction.do?method=getXkzsById&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">id</span> <span class="keyword">in</span> id_list:</span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: <span class="built_in">id</span></span><br><span class="line">        &#125;</span><br><span class="line">        detail_json = requests.post(url=post_url, headers=headers, data=data).json()</span><br><span class="line">        <span class="built_in">print</span>(detail_json, <span class="string">&#x27;\n-------------ending-----------&#x27;</span>)</span><br><span class="line">        all_data_list.append(detail_json)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.持久化存储all_data_list</span></span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;./allData.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(all_data_list, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n\n****************************完毕***************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># - 需求：爬取搜狗首页的页面数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># step_1:指定url</span></span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/&#x27;</span></span><br><span class="line">    <span class="comment"># step_2:发起请求</span></span><br><span class="line">    <span class="comment"># get方法会返回一个响应对象</span></span><br><span class="line">    response = requests.get(url=url)</span><br><span class="line">    <span class="comment"># step_3:获取响应数据.text返回的是字符串形式的响应数据</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    <span class="built_in">print</span>(page_text)</span><br><span class="line">    <span class="comment"># step_4:持久化存储</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./sogou.html&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;#########CRAWLING END#########&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>code</category>

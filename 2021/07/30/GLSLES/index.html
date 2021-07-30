@@ -29,7 +29,7 @@
 <meta property="og:description" content="对应《WebGL编程指南》第六章 要点：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-30T07:08:20.000Z">
-<meta property="article:modified_time" content="2021-07-30T07:46:33.116Z">
+<meta property="article:modified_time" content="2021-07-30T12:50:37.587Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="frontEnd">
 <meta property="article:tag" content="WebGL">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE"><span class="nav-text">回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">基本着色器代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81GLSL-ES%E6%A6%82%E8%BF%B0"><span class="nav-text">一、GLSL ES概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Hello-GLSL-ES%EF%BC%81"><span class="nav-text">二、Hello GLSL ES！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-text">基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%AC%A1%E5%BA%8F"><span class="nav-text">执行次序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-text">注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%95%B0%E5%80%BC%E9%A2%9D%E5%B8%83%E5%B0%94%E5%80%BC%EF%BC%89"><span class="nav-text">三、数据值类型（数值额布尔值）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%98%E9%87%8F"><span class="nav-text">四、变量</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE"><span class="nav-text">回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">基本着色器代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81GLSL-ES%E6%A6%82%E8%BF%B0"><span class="nav-text">一、GLSL ES概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Hello-GLSL-ES%EF%BC%81"><span class="nav-text">二、Hello GLSL ES！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-text">基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%AC%A1%E5%BA%8F"><span class="nav-text">执行次序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-text">注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%95%B0%E5%80%BC%E9%A2%9D%E5%B8%83%E5%B0%94%E5%80%BC%EF%BC%89"><span class="nav-text">三、数据值类型（数值额布尔值）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%98%E9%87%8F"><span class="nav-text">四、变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-text">变量名规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GLSL-ES%E6%98%AF%E5%BC%BA%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-text">GLSL ES是强类型语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-text">基本类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">赋值和类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5"><span class="nav-text">矢量和矩阵</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -294,7 +294,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-30 15:08:20 / 修改时间：15:46:33" itemprop="dateCreated datePublished" datetime="2021-07-30T15:08:20+08:00">2021-07-30</time>
+      <time title="创建时间：2021-07-30 15:08:20 / 修改时间：20:50:37" itemprop="dateCreated datePublished" datetime="2021-07-30T15:08:20+08:00">2021-07-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -345,14 +345,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -387,13 +387,91 @@
 <h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>​    单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
 <h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><code>GLSL ES</code>支持两种数据值类型：</p>
 <ol>
-<li><p>1、<strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
+<li><p><strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
 </li>
-<li><p>2、<strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
+<li><p><strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
 </li>
 </ol>
+<blockquote>
 <p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
-<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3>
+</blockquote>
+<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="变量名规则"><a href="#变量名规则" class="headerlink" title="变量名规则"></a>变量名规则</h4><p>1、只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
+<p>2、变量名的第一个字符不能为数字</p>
+<p>3、不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
+<p>4、不能是下表中所列出的关键字</p>
+<p>![1](/images/GLSL ES1.jpg)</p>
+<p>​        GLSL ES保留字：</p>
+<p>![2](/images/GLSL ES2.jpg)</p>
+<h4 id="GLSL-ES是强类型语言"><a href="#GLSL-ES是强类型语言" class="headerlink" title="GLSL ES是强类型语言"></a>GLSL ES是强类型语言</h4><p>​        声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> a_Position</span><br></pre></td></tr></table></figure>
+
+<p>​        进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
+<h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>float</td>
+<td>单精度浮点类型</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型数</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>布尔值</td>
+</tr>
+</tbody></table>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">float</span> fnumber = <span class="number">1.1</span>;	<span class="comment">// 浮点数</span></span><br><span class="line"><span class="type">int</span> inumber = <span class="number">1</span>;	<span class="comment">// 整型</span></span><br><span class="line"><span class="type">bool</span> blogic = <span class="literal">true</span>;	<span class="comment">// 布尔型</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="赋值和类型转换"><a href="#赋值和类型转换" class="headerlink" title="赋值和类型转换"></a>赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>GLSL ES数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-  *  /  +</td>
+<td>加减乘除</td>
+</tr>
+<tr>
+<td>++  –</td>
+<td>自增、自减</td>
+</tr>
+<tr>
+<td>=  +=  -=  *=  /=</td>
+<td>赋值、算术赋值</td>
+</tr>
+<tr>
+<td>&lt;  &gt;  &lt;=  &gt;=  ==  !=</td>
+<td>比较</td>
+</tr>
+<tr>
+<td>!</td>
+<td>取反</td>
+</tr>
+<tr>
+<td>&amp;&amp;  ||  ^^</td>
+<td>逻辑与、或、异或</td>
+</tr>
+<tr>
+<td>?  :</td>
+<td>三元运算符</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>逻辑与（&amp;&amp;）：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
+<p>逻辑或（||）：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
+<p>逻辑异或（^^）：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
+</blockquote>
+<h4 id="矢量和矩阵"><a href="#矢量和矩阵" class="headerlink" title="矢量和矩阵"></a>矢量和矩阵</h4>
     </div>
 
     
@@ -491,14 +569,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">247k</span>
+    <span title="站点总字数">248k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:45</span>
+    <span title="站点阅读时长">3:46</span>
   </span>
 </div>
 
