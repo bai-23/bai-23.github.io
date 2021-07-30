@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"freepiao.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":true,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="要点：浏览器渲染原理（简介、渲染机制）、浏览器存储（cookie、LocalStorage、sessionStorage、IndexedDB）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器渲染原理及浏览器存储">
+<meta property="og:url" content="https://freepiao.cn/2021/07/30/10-Browser/index.html">
+<meta property="og:site_name" content="盘码">
+<meta property="og:description" content="要点：浏览器渲染原理（简介、渲染机制）、浏览器存储（cookie、LocalStorage、sessionStorage、IndexedDB）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/88a1801d209eabf4b1db25fed4ab204c.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c897430d72b08689ed182f9f18f89654.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/367a3e55cd823fa8c6490a8bbe3d47f8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/c2b2ddaa96d796e5305a99a1d826ef0a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/d08269c01185f35b26be3750c8be86f2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/766e8aa98048064132011e2f3683bcd1.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/30482461b261171ee843eb9f98c6b30d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a442775ca09c62b34a95977420a6a14d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/07eb89f08b4feb1b018735dc77e3f75a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/3af7807f9d0222b50d94a1afa72070b9.png">
+<meta property="article:published_time" content="2021-07-30T01:54:25.000Z">
+<meta property="article:modified_time" content="2021-07-30T01:54:42.433Z">
+<meta property="article:author" content="Song木头">
+<meta property="article:tag" content="frontEnd">
+<meta property="article:tag" content="Browser">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/88a1801d209eabf4b1db25fed4ab204c.png">
+
+
+<link rel="canonical" href="https://freepiao.cn/2021/07/30/10-Browser/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/2021/07/30/10-Browser/","path":"2021/07/30/10-Browser/","title":"浏览器渲染原理及浏览器存储"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>浏览器渲染原理及浏览器存储 | 盘码</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?c8b0778ca062f7721fa47eddb1ebf49c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盘码</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">43</span></a></li>
+        <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
+        <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
+        <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
+        <li class="menu-item menu-item-webgl"><a href="/categories/code/frontend/webgl" rel="section"><i class="fa fa-file-code fa-fw"></i>WebGL</a></li>
+        <li class="menu-item menu-item-爬虫"><a href="/categories/code/backend/Python" rel="section"><i class="fa fa-bug fa-fw"></i>爬虫</a></li>
+        <li class="menu-item menu-item-api"><a href="/apis/" rel="section"><i class="fa fa-star-half-alt fa-fw"></i>API</a></li>
+        <li class="menu-item menu-item-合作"><a href="/cooperation/" rel="section"><i class="fa fa-user-friends fa-fw"></i>合作</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86"><span class="nav-text">浏览器渲染原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5"><span class="nav-text">引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85"><span class="nav-text">知识补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6"><span class="nav-text">浏览器渲染机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-text">过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%A7%A3%E5%89%96%E6%9E%90"><span class="nav-text">分解剖析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%B5%85%E8%B0%88"><span class="nav-text">性能优化浅谈</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8"><span class="nav-text">浏览器存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Cookie"><span class="nav-text">一、Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Cookie%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="nav-text">1.Cookie的来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AFCookie%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.什么是Cookie及应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Cookie%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E7%94%9F%E6%88%90%E6%96%B9%E5%BC%8F"><span class="nav-text">3.Cookie的原理及生成方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Cookie%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-text">4.Cookie的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Cookie%E4%B8%8E%E5%AE%89%E5%85%A8"><span class="nav-text">5.Cookie与安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81LocalStorage"><span class="nav-text">二、LocalStorage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-LocalStorage%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-text">1.LocalStorage的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AD%98%E5%85%A5-%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-text">2.存入&#x2F;读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">3.使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81sessionStorage"><span class="nav-text">三、sessionStorage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-sessionStorage%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-text">1.sessionStorage的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">2.使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-sessionStorage-%E3%80%81localStorage-%E5%92%8C-cookie-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">3.sessionStorage 、localStorage 和 cookie 之间的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81IndexedDB"><span class="nav-text">四、IndexedDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-IndexedDB%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-text">1.IndexedDB的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-IndexedDB%E7%9A%84%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="nav-text">2.IndexedDB的常见操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-WebStorage%E3%80%81cookie-%E5%92%8C-IndexedDB%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">3.WebStorage、cookie 和 IndexedDB之间的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-text">扩展阅读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song木头"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Song木头</p>
+  <div class="site-description" itemprop="description">民以食为天</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bai-23" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bai-23" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2421662954@qq.com" title="E-Mail → mailto:2421662954@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/xxg0" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;xxg0" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.aoau.top/" title="http:&#x2F;&#x2F;www.aoau.top" rel="noopener" target="_blank">myself</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://show.aoau.top/" title="http:&#x2F;&#x2F;show.aoau.top" rel="noopener" target="_blank">mySourse</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://italk.aoau.top/" title="http:&#x2F;&#x2F;italk.aoau.top" rel="noopener" target="_blank">myApp</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width=100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">19</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">23</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+      
+
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/bai-23" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/2021/07/30/10-Browser/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Song木头">
+      <meta itemprop="description" content="民以食为天">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盘码">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浏览器渲染原理及浏览器存储<a href="https://github.com/bai-23/bai-23.github.io_posts/10-Browser.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-07-30 09:54:25 / 修改时间：09:54:42" itemprop="dateCreated datePublished" datetime="2021-07-30T09:54:25+08:00">2021-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/browser/" itemprop="url" rel="index"><span itemprop="name">browser</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2021/07/30/10-Browser/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/07/30/10-Browser/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>要点：浏览器渲染原理（简介、渲染机制）、浏览器存储（cookie、LocalStorage、sessionStorage、IndexedDB）</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="浏览器渲染原理"><a href="#浏览器渲染原理" class="headerlink" title="浏览器渲染原理"></a>浏览器渲染原理</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><ul>
+<li><p>输入网址进入网页的三个阶段</p>
+<ul>
+<li>http请求阶段</li>
+<li>http响应阶段</li>
+<li>浏览器渲染阶段</li>
+</ul>
+</li>
+</ul>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ul>
+<li><p>进程Process</p>
+<ul>
+<li>一个运行的程序/浏览器页面</li>
+</ul>
+</li>
+<li><p>线程Thread</p>
+<ul>
+<li><p>进程内的子任务</p>
+<ul>
+<li>可多个线程同时进行，实际是轮流执行</li>
+</ul>
+</li>
+<li><p>程序做的不同的事</p>
+</li>
+</ul>
+</li>
+<li><p>栈内存Stack</p>
+<ul>
+<li>提供一个环境执行代码</li>
+</ul>
+</li>
+<li><p>堆内存Heap</p>
+</li>
+<li><p>cpu</p>
+<ul>
+<li><p>单核cpu执行多任务</p>
+<ul>
+<li>操作系统轮流让各个任务交替执行</li>
+</ul>
+</li>
+<li><p>多核cpu执行多任务</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="知识补充"><a href="#知识补充" class="headerlink" title="知识补充"></a>知识补充</h3><h2 id="浏览器渲染机制"><a href="#浏览器渲染机制" class="headerlink" title="浏览器渲染机制"></a>浏览器渲染机制</h2><h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><ul>
+<li><p>DOM树渲染</p>
+<ul>
+<li>①输入网址→②发送请求Request→③服务器返回index源代码→④Response响应阶段→⑤浏览器拿到代码→⑥在内存条开辟一块栈内存，提供执行环境；同时分配一个主线程，从上到下执行代码（进栈执行，执行完毕出栈）→⑦浏览器开辟等待队列</li>
+<li>第一次自上而下执行完，只生成DOM树</li>
+</ul>
+</li>
+<li><p>解析CSS，生成CSSOM树</p>
+</li>
+<li><p>结合DOM树与CSSOM树，生成 Render Tree渲染树</p>
+</li>
+<li><p>Layout回流</p>
+<ul>
+<li>根据生成的渲染数，计算它们在设备视口内的确切位置和大小</li>
+</ul>
+</li>
+<li><p>Painting重绘</p>
+<ul>
+<li>根据渲染树以及回流得到的几何信息，得到节点的绝对像素</li>
+</ul>
+</li>
+<li><p>Display</p>
+<ul>
+<li>将像素发送给GPU，展示在页面上</li>
+</ul>
+</li>
+</ul>
+<h3 id="分解剖析"><a href="#分解剖析" class="headerlink" title="分解剖析"></a>分解剖析</h3><ul>
+<li><p>②Request请求阶段</p>
+<ul>
+<li>DNS解析、TCP协议三次握手，四次挥手，Https与http区别</li>
+</ul>
+</li>
+<li><p>④Response响应阶段</p>
+<ul>
+<li>HTTP状态码，304缓存，HTTP报名</li>
+</ul>
+</li>
+<li><p>⑥</p>
+<ul>
+<li><p>link、img、script等情况</p>
+<ul>
+<li>需要额外加载外部资源请求时</li>
+<li>都会单独开辟新的子线程去加载资源文件，主线程继续向下执行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>⑦TASK QUEUE任务队列</p>
+<ul>
+<li><p>存放子线程</p>
+</li>
+<li><p>事件循环  event loop</p>
+<ul>
+<li>主任务执行完后，到任务队列中找子线程，执行，执行完毕后，又到任务队列找下一个子线程，直到全部完成</li>
+<li>微任务</li>
+<li>宏任务</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>回流</p>
+<ul>
+<li><p>定义</p>
+<ul>
+<li>根据生成的渲染数，计算它们在设备视口内的确切位置和大小</li>
+</ul>
+</li>
+<li><p>触发</p>
+<ul>
+<li>元素的大小或位置发生了变化（当页面布局和几何信息发生变化的时候），触发了重新布局，导致渲染树重新计算布局和渲染</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>重绘</p>
+<ul>
+<li><p>定义</p>
+<ul>
+<li>根据渲染树以及回流得到的几何信息，得到节点的绝对像素</li>
+</ul>
+</li>
+<li><p>触发</p>
+<ul>
+<li>如outline、visbility、color、bg-color</li>
+<li>元素样式的改变，但宽高、大小、位置都不变</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>l问题</p>
+<ul>
+<li>link与@import的区别</li>
+<li>事件循环机制下的js同步异步编程（宏任务与微任务）</li>
+</ul>
+</li>
+</ul>
+<h3 id="性能优化浅谈"><a href="#性能优化浅谈" class="headerlink" title="性能优化浅谈"></a>性能优化浅谈</h3><ul>
+<li><p>一、减少http请求次数和大小</p>
+<ul>
+<li>如：link（css）</li>
+<li>资源合并压缩</li>
+<li>图片懒加载</li>
+<li>所有音视频走流文件</li>
+</ul>
+</li>
+<li><p>二、DNS缓存</p>
+</li>
+<li><p>三、避免回流和重绘</p>
+<ul>
+<li><p>样式集中改变</p>
+<ul>
+<li><p>box.style.cssText = ..</p>
+</li>
+<li><p>创建一个类</p>
+<ul>
+<li>box.className = ‘newclass’</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分离读写操作</p>
+<ul>
+<li><p>原理</p>
+<ul>
+<li>将 操作 与 获取 节点分离，减少破坏渲染等待队列</li>
+</ul>
+</li>
+<li><p>现代的浏览器都有渲染队列的机制</p>
+</li>
+<li><p>offsetTop、clientTop、scrollTop、</p>
+</li>
+</ul>
+</li>
+<li><p>避免操作DOM</p>
+<ul>
+<li><p>vue、react</p>
+<ul>
+<li>数据影响视图</li>
+<li>mvvm、mvc、virtual dom、dom diff</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缓存布局信息</p>
+<ul>
+<li>本质：分离读写</li>
+</ul>
+</li>
+<li><p>批量处理</p>
+<ul>
+<li><p>文档碎片</p>
+<ul>
+<li>frg = document.createDocumentFragment（）</li>
+<li>容器</li>
+</ul>
+</li>
+<li><p>实例</p>
+<ul>
+<li><p>用js添加li节点</p>
+<ul>
+<li><p>原方法</p>
+<ul>
+<li>多次循环遍历创建，循环一次触发一次回流</li>
+</ul>
+</li>
+<li><p>新方法</p>
+<ul>
+<li><p>将创建的li放到文档碎片中</p>
+</li>
+<li><p>循环结束后通过文档碎片一次性将节点添加到文档中</p>
+</li>
+<li><p>最后销毁容器</p>
+<ul>
+<li>frg = null</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>新新方法</p>
+<ul>
+<li><p>摸板字符串</p>
+<ul>
+<li>拼串</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>动画效果应用到position属性为absolute或fixed的元素上（脱离文档流）</p>
+<ul>
+<li><p>本质</p>
+<ul>
+<li>并未脱离回流，只是在另一层进行小回流</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CSS3硬件加速（GPU加速）</p>
+<ul>
+<li>transform、opacity、filters这些属性会触发硬件加速，不引发回流和重绘</li>
+</ul>
+</li>
+<li><p>⑧   牺牲平滑度换取</p>
+</li>
+<li><p>⑨  避免table布局和使用css的JavaScript表达式</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="浏览器存储"><a href="#浏览器存储" class="headerlink" title="浏览器存储"></a>浏览器存储</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着移动网络的发展与演化，我们手机上现在除了有原生 App，还能跑“WebApp”——它即开即用，用完即走。一个优秀的 WebApp 甚至可以拥有和原生 App 媲美的功能和体验。WebApp 优异的性能表现，有一部分原因要归功于浏览器存储技术的提升。cookie存储数据的功能已经很难满足开发所需，逐渐被WebStorage、IndexedDB所取代，本文将介绍这几种存储方式的差异和优缺点。</p>
+<h2 id="一、Cookie"><a href="#一、Cookie" class="headerlink" title="一、Cookie"></a>一、Cookie</h2><h3 id="1-Cookie的来源"><a href="#1-Cookie的来源" class="headerlink" title="1.Cookie的来源"></a>1.Cookie的来源</h3><p><strong>Cookie 的本职工作并非本地存储，而是“维持状态”</strong>。<br>因为<strong>HTTP协议是无状态的，HTTP协议自身不对请求和响应之间的通信状态进行保存</strong>，通俗来说，服务器不知道用户上一次做了什么，这严重阻碍了交互式Web应用程序的实现。在典型的网上购物场景中，用户浏览了几个页面，买了一盒饼干和两瓶饮料。最后结帐时，由于HTTP的无状态性，不通过额外的手段，服务器并不知道用户到底买了什么，于是就诞生了Cookie。它就是用来绕开HTTP的无状态性的“额外手段”之一。服务器可以设置或读取Cookies中包含信息，借此维护用户跟服务器会话中的状态。</p>
+<p>我们可以把Cookie 理解为一个存储在浏览器里的一个小小的文本文件，它附着在 HTTP 请求上，在浏览器和服务器之间“飞来飞去”。它可以携带用户信息，当服务器检查 Cookie 的时候，便可以获取到客户端的状态。</p>
+<p>在刚才的购物场景中，当用户选购了第一项商品，服务器在向用户发送网页的同时，还发送了一段Cookie，记录着那项商品的信息。当用户访问另一个页面，浏览器会把Cookie发送给服务器，于是服务器知道他之前选购了什么。用户继续选购饮料，服务器就在原来那段Cookie里追加新的商品信息。结帐时，服务器读取发送来的Cookie就行了。</p>
+<h3 id="2-什么是Cookie及应用场景"><a href="#2-什么是Cookie及应用场景" class="headerlink" title="2.什么是Cookie及应用场景"></a>2.什么是Cookie及应用场景</h3><p><strong>Cookie指某些网站为了辨别用户身份而储存在用户本地终端上的数据(通常经过加密)。 cookie是服务端生成，客户端进行维护和存储</strong>。通过cookie,可以让服务器知道请求是来源哪个客户端，就可以进行客户端状态的维护，比如登陆后刷新，请求头就会携带登陆时response header中的set-cookie,Web服务器接到请求时也能读出cookie的值，根据cookie值的内容就可以判断和恢复一些用户的信息状态。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/88a1801d209eabf4b1db25fed4ab204c.png"></p>
+<p>如上图所示，<strong>Cookie 以键值对的形式存在</strong>。</p>
+<p>典型的应用场景有：</p>
+<ul>
+<li><p>  记住密码，下次自动登录。</p>
+</li>
+<li><p>  购物车功能。</p>
+</li>
+<li><p>  记录用户浏览数据，进行商品（广告）推荐。</p>
+</li>
+</ul>
+<h3 id="3-Cookie的原理及生成方式"><a href="#3-Cookie的原理及生成方式" class="headerlink" title="3.Cookie的原理及生成方式"></a>3.Cookie的原理及生成方式</h3><p>Cookie的原理<br><img src="https://img-blog.csdnimg.cn/img_convert/c897430d72b08689ed182f9f18f89654.png"></p>
+<p>第一次访问网站的时候，浏览器发出请求，服务器响应请求后，会在响应头里面添加一个Set-Cookie选项，将cookie放入到响应请求中，在浏览器第二次发请求的时候，会通过Cookie请求头部将Cookie信息发送给服务器，服务端会辨别用户身份，另外，Cookie的过期时间、域、路径、有效期、适用站点都可以根据需要来指定。</p>
+<p>Cookie的生成方式主要有两种：</p>
+<ul>
+<li>  生成方式一：http response header中的set-cookie</li>
+</ul>
+<p>我们可以通过响应头里的 Set-Cookie 指定要存储的 Cookie 值。默认情况下，domain 被设置为设置 Cookie 页面的主机名，我们也可以手动设置 domain 的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Set</span>-Cookie: id=a3fWa; Expires=Wed, <span class="number">21</span> Oct <span class="number">2018</span> <span class="number">07</span>:<span class="number">28</span>:<span class="number">00</span> GMT;<span class="comment">//可以指定一个特定的过期时间（Expires）或有效期（Max-Age）</span></span><br></pre></td></tr></table></figure>
+
+<p>当Cookie的过期时间被设定时，设定的日期和时间只与客户端相关，而不是服务端。</p>
+<ul>
+<li>  生成方式二：js中可以通过document.cookie可以读写cookie，以键值对的形式展示</li>
+</ul>
+<p>例如我们在掘金社区控制台输入以下三句代码，便可以在Chrome 的 Application 面板查看生成的cookie:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.cookie=&quot;userName=hello&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.cookie=&quot;gender=male&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.cookie=&#x27;age=20;domain=.baidu.com&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/367a3e55cd823fa8c6490a8bbe3d47f8.png"></p>
+<p>从上图中我们可以得出：</p>
+<p><strong>Domain 标识指定了哪些域名可以接受Cookie</strong>。如果没有设置domain，就会自动绑定到执行语句的当前域。<br>如果设置为”.baidu.com”,则所有以”baidu.com”结尾的域名都可以访问该Cookie，所以在掘金社区上读取不到第三条代码存储Cookie值。</p>
+<h3 id="4-Cookie的缺陷"><a href="#4-Cookie的缺陷" class="headerlink" title="4.Cookie的缺陷"></a>4.Cookie的缺陷</h3><ul>
+<li>  Cookie 不够大</li>
+</ul>
+<p>Cookie的大小限制在4KB左右，对于复杂的存储需求来说是不够用的。当 Cookie 超过 4KB 时，它将面临被裁切的命运。这样看来，Cookie 只能用来存取少量的信息。此外很多浏览器对一个站点的cookie个数也是有限制的。</p>
+<p>这里需注意：各浏览器的cookie每一个<code>name=value</code>的value值大概在4k，所以4k并不是一个域名下所有的cookie共享的,而是一个name的大小。</p>
+<ul>
+<li>  过多的 Cookie 会带来巨大的性能浪费</li>
+</ul>
+<p>Cookie 是紧跟域名的。同一个域名下的所有请求，都会携带 Cookie。大家试想，如果我们此刻仅仅是请求一张图片或者一个 CSS 文件，我们也要携带一个 Cookie 跑来跑去（关键是 Cookie 里存储的信息并不需要），这是一件多么劳民伤财的事情。Cookie 虽然小，请求却可以有很多，随着请求的叠加，这样的不必要的 Cookie 带来的开销将是无法想象的。</p>
+<p>cookie是用来维护用户信息的，而域名(domain)下所有请求都会携带cookie，但对于静态文件的请求，携带cookie信息根本没有用，此时可以通过cdn（存储静态文件的）的域名和主站的域名分开来解决。</p>
+<ul>
+<li>  由于在HTTP请求中的Cookie是明文传递的，所以安全性成问题，除非用HTTPS。</li>
+</ul>
+<h3 id="5-Cookie与安全"><a href="#5-Cookie与安全" class="headerlink" title="5.Cookie与安全"></a>5.Cookie与安全</h3><p>对于 cookie 来说，我们还需要注意安全性。<br><img src="https://img-blog.csdnimg.cn/img_convert/c2b2ddaa96d796e5305a99a1d826ef0a.png"></p>
+<p>HttpOnly 不支持读写，浏览器不允许脚本操作document.cookie去更改cookie，<br>所以为避免跨域脚本 (XSS) 攻击，通过JavaScript的 Document.cookie API无法访问带有 HttpOnly 标记的Cookie，它们只应该发送给服务端。如果包含服务端 Session 信息的 Cookie 不想被客户端 JavaScript 脚本调用，那么就应该为其设置 HttpOnly 标记。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly</span><br></pre></td></tr></table></figure>
+
+<p>标记为 Secure 的Cookie只应通过被HTTPS协议加密过的请求发送给服务端。但即便设置了 Secure 标记，敏感信息也不应该通过Cookie传输，因为Cookie有其固有的不安全性，Secure 标记也无法提供确实的安全保障。</p>
+<p>为了弥补 Cookie 的局限性，让“专业的人做专业的事情”，Web Storage 出现了。</p>
+<p><strong>HTML5中新增了本地存储的解决方案—-Web Storage，它分成两类：sessionStorage和localStorage</strong>。这样有了WebStorage后，cookie能只做它应该做的事情了——作为客户端与服务器交互的通道，保持客户端状态。</p>
+<h2 id="二、LocalStorage"><a href="#二、LocalStorage" class="headerlink" title="二、LocalStorage"></a>二、LocalStorage</h2><h3 id="1-LocalStorage的特点"><a href="#1-LocalStorage的特点" class="headerlink" title="1.LocalStorage的特点"></a>1.LocalStorage的特点</h3><ul>
+<li>  保存的数据长期存在，下一次访问该网站的时候，网页可以直接读取以前保存的数据。</li>
+<li>  大小为5M左右</li>
+<li>  仅在客户端使用，不和服务端进行通信</li>
+<li>  接口封装较好</li>
+</ul>
+<p>基于上面的特点，LocalStorage可以作为浏览器本地缓存方案，用来提升网页首屏渲染速度(根据第一请求返回时，将一些不变信息直接存储在本地)。</p>
+<h3 id="2-存入-读取数据"><a href="#2-存入-读取数据" class="headerlink" title="2.存入/读取数据"></a>2.存入/读取数据</h3><p>localStorage保存的数据，以“键值对”的形式存在。也就是说，每一项数据都有一个键名和对应的值。所有的数据都是以文本格式保存。<br>存入数据使用setItem方法。它接受两个参数，第一个是键名，第二个是保存的数据。<br><code>localStorage.setItem(&quot;key&quot;,&quot;value&quot;);</code><br>读取数据使用getItem方法。它只有一个参数，就是键名。<br><code>var valueLocal = localStorage.getItem(&quot;key&quot;);</code></p>
+<p>具体步骤，请看下面的例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line">if(window.localStorage)&#123;</span><br><span class="line">  localStorage.setItem（&#x27;name&#x27;,&#x27;world&#x27;）</span><br><span class="line">  localStorage.setItem（“gender&#x27;,&#x27;female&#x27;）</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;name&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;gender&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> name=<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;name&#x27;</span>)</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> gender=<span class="built_in">localStorage</span>.getItem(<span class="string">&#x27;gender&#x27;</span>)</span></span><br><span class="line"><span class="javascript"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;name&#x27;</span>).innerHTML=name</span></span><br><span class="line"><span class="javascript"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;gender&#x27;</span>).innerHTML=gender</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用场景"><a href="#3-使用场景" class="headerlink" title="3.使用场景"></a>3.使用场景</h3><p>LocalStorage在存储方面没有什么特别的限制，理论上 Cookie 无法胜任的、可以用简单的键值对来存取的数据存储任务，都可以交给 LocalStorage 来做。</p>
+<p>这里给大家举个例子，考虑到 LocalStorage 的特点之一是持久，有时我们更倾向于用它来存储一些内容稳定的资源。比如图片内容丰富的电商网站会用它来存储 Base64 格式的图片字符串：<br><img src="https://img-blog.csdnimg.cn/img_convert/d08269c01185f35b26be3750c8be86f2.png"></p>
+<h2 id="三、sessionStorage"><a href="#三、sessionStorage" class="headerlink" title="三、sessionStorage"></a>三、sessionStorage</h2><p>sessionStorage保存的数据用于浏览器的一次会话，当会话结束（通常是该窗口关闭），数据被清空；sessionStorage 特别的一点在于，<strong>即便是相同域名下的两个页面，只要它们不在同一个浏览器窗口中打开，那么它们的 sessionStorage 内容便无法共享</strong>；localStorage 在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。除了保存期限的长短不同，SessionStorage的属性和方法与LocalStorage完全一样。</p>
+<h3 id="1-sessionStorage的特点"><a href="#1-sessionStorage的特点" class="headerlink" title="1.sessionStorage的特点"></a>1.sessionStorage的特点</h3><ul>
+<li>  会话级别的浏览器存储</li>
+<li>  大小为5M左右</li>
+<li>  仅在客户端使用，不和服务端进行通信</li>
+<li>  接口封装较好</li>
+</ul>
+<p>基于上面的特点，sessionStorage 可以有效对表单信息进行维护，比如刷新时，表单信息不丢失。</p>
+<h3 id="2-使用场景"><a href="#2-使用场景" class="headerlink" title="2.使用场景"></a>2.使用场景</h3><p>sessionStorage 更适合用来存储生命周期和它同步的会话级别的信息。这些信息只适用于当前会话，当你开启新的会话时，它也需要相应的更新或释放。比如微博的 sessionStorage就主要是存储你本次会话的浏览足迹：<br><img src="https://img-blog.csdnimg.cn/img_convert/766e8aa98048064132011e2f3683bcd1.png"></p>
+<p>lasturl 对应的就是你上一次访问的 URL 地址，这个地址是即时的。当你切换 URL 时，它随之更新，当你关闭页面时，留着它也确实没有什么意义了，干脆释放吧。这样的数据用 sessionStorage 来处理再合适不过。</p>
+<h3 id="3-sessionStorage-、localStorage-和-cookie-之间的区别"><a href="#3-sessionStorage-、localStorage-和-cookie-之间的区别" class="headerlink" title="3.sessionStorage 、localStorage 和 cookie 之间的区别"></a>3.sessionStorage 、localStorage 和 cookie 之间的区别</h3><ul>
+<li>  共同点：都是保存在浏览器端，且都遵循同源策略。</li>
+<li>  不同点：在于生命周期与作用域的不同</li>
+</ul>
+<p>作用域：localStorage只要在相同的协议、相同的主机名、相同的端口下，就能读取/修改到同一份localStorage数据。sessionStorage比localStorage更严苛一点，除了协议、主机名、端口外，还要求在同一窗口（也就是浏览器的标签页）下<br><img src="https://img-blog.csdnimg.cn/img_convert/30482461b261171ee843eb9f98c6b30d.png"></p>
+<p>生命周期：localStorage 是持久化的本地存储，存储在其中的数据是永远不会过期的，使其消失的唯一办法是手动删除；而 sessionStorage 是临时性的本地存储，它是会话级别的存储，当会话结束（页面被关闭）时，存储内容也随之被释放。</p>
+<p>Web Storage 是一个从定义到使用都非常简单的东西。它使用键值对的形式进行存储，这种模式有点类似于对象，却甚至连对象都不是——<strong>它只能存储字符串</strong>，要想得到对象，我们还需要先对字符串进行一轮解析。</p>
+<p>说到底，Web Storage 是对 Cookie 的拓展，它只能用于存储少量的简单数据。当遇到大规模的、结构复杂的数据时，Web Storage 也爱莫能助了。这时候我们就要清楚我们的终极大 boss——IndexedDB！</p>
+<h2 id="四、IndexedDB"><a href="#四、IndexedDB" class="headerlink" title="四、IndexedDB"></a>四、IndexedDB</h2><p>IndexedDB 是一种低级API，**用于客户端存储大量结构化数据(包括文件和blobs)**。该API使用索引来实现对该数据的高性能搜索。IndexedDB 是一个运行在浏览器上的非关系型数据库。既然是数据库了，那就不是 5M、10M 这样小打小闹级别了。理论上来说，IndexedDB 是没有存储上限的（一般来说不会小于 250M）。它不仅可以存储字符串，还可以存储二进制数据。</p>
+<h3 id="1-IndexedDB的特点"><a href="#1-IndexedDB的特点" class="headerlink" title="1.IndexedDB的特点"></a>1.IndexedDB的特点</h3><ul>
+<li>  键值对储存。</li>
+</ul>
+<p>IndexedDB 内部采用对象仓库（object store）存放数据。所有类型的数据都可以直接存入，包括 JavaScript 对象。对象仓库中，数据以”键值对”的形式保存，每一个数据记录都有对应的主键，主键是独一无二的，不能有重复，否则会抛出一个错误。</p>
+<ul>
+<li>  异步</li>
+</ul>
+<p>IndexedDB 操作时不会锁死浏览器，用户依然可以进行其他操作，这与 LocalStorage 形成对比，后者的操作是同步的。异步设计是为了防止大量数据的读写，拖慢网页的表现。</p>
+<ul>
+<li>  支持事务。</li>
+</ul>
+<p>IndexedDB 支持事务（transaction），这意味着一系列操作步骤之中，只要有一步失败，整个事务就都取消，数据库回滚到事务发生之前的状态，不存在只改写一部分数据的情况。</p>
+<ul>
+<li>  同源限制</li>
+</ul>
+<p>IndexedDB 受到同源限制，每一个数据库对应创建它的域名。网页只能访问自身域名下的数据库，而不能访问跨域的数据库。</p>
+<ul>
+<li>  储存空间大</li>
+</ul>
+<p>IndexedDB 的储存空间比 LocalStorage 大得多，一般来说不少于 250MB，甚至没有上限。</p>
+<ul>
+<li>  支持二进制储存。</li>
+</ul>
+<p>IndexedDB 不仅可以储存字符串，还可以储存二进制数据（ArrayBuffer 对象和 Blob 对象）。</p>
+<h3 id="2-IndexedDB的常见操作"><a href="#2-IndexedDB的常见操作" class="headerlink" title="2.IndexedDB的常见操作"></a>2.IndexedDB的常见操作</h3><p>在IndexedDB大部分操作并不是我们常用的调用方法，返回结果的模式，而是请求——响应的模式。</p>
+<ul>
+<li>  建立打开IndexedDB —-<code>window.indexedDB.open(&quot;testDB&quot;)</code></li>
+</ul>
+<p>这条指令并不会返回一个DB对象的句柄，我们得到的是一个<code>IDBOpenDBRequest</code>对象，而我们希望得到的DB对象在其result属性中<br><img src="https://img-blog.csdnimg.cn/img_convert/a442775ca09c62b34a95977420a6a14d.png"></p>
+<p>除了result，IDBOpenDBRequest接口定义了几个重要属性:</p>
+<p>onerror: 请求失败的回调函数句柄</p>
+<p>onsuccess:请求成功的回调函数句柄</p>
+<p>onupgradeneeded:请求数据库版本变化句柄</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">openDB</span>(<span class="params">name</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> request=<span class="built_in">window</span>.indexedDB.open(name)<span class="comment">//建立打开IndexedDB</span></span></span><br><span class="line"><span class="javascript">request.onerror=<span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript"><span class="built_in">console</span>.log(<span class="string">&#x27;open indexdb error&#x27;</span>)</span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript">request.onsuccess=<span class="function"><span class="keyword">function</span> (<span class="params">e</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">myDB.db=e.target.result<span class="comment">//这是一个 IDBDatabase对象，这就是IndexedDB对象</span></span></span><br><span class="line"><span class="javascript"><span class="built_in">console</span>.log(myDB.db)<span class="comment">//此处就可以获取到db实例</span></span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> myDB=&#123;</span></span><br><span class="line"><span class="javascript"><span class="attr">name</span>:<span class="string">&#x27;testDB&#x27;</span>,</span></span><br><span class="line"><span class="javascript"><span class="attr">version</span>:<span class="string">&#x27;1&#x27;</span>,</span></span><br><span class="line"><span class="javascript"><span class="attr">db</span>:<span class="literal">null</span></span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript">openDB(myDB.name)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>控制台得到一个 IDBDatabase对象，这就是IndexedDB对象<br><img src="https://img-blog.csdnimg.cn/img_convert/07eb89f08b4feb1b018735dc77e3f75a.png"></p>
+<ul>
+<li>  关闭IndexedDB—-<code>indexdb.close()</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function closeDB(db)&#123;</span><br><span class="line">    db.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  删除IndexedDB—-<code>window.indexedDB.deleteDatabase(indexdb)</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteDB</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  indexedDB.deleteDatabase(name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-WebStorage、cookie-和-IndexedDB之间的区别"><a href="#3-WebStorage、cookie-和-IndexedDB之间的区别" class="headerlink" title="3.WebStorage、cookie 和 IndexedDB之间的区别"></a>3.WebStorage、cookie 和 IndexedDB之间的区别</h3><p><img src="https://img-blog.csdnimg.cn/img_convert/3af7807f9d0222b50d94a1afa72070b9.png"></p>
+<p>从上表可以看到，cookie 已经不建议用于存储。如果没有大量数据存储需求的话，可以使用 localStorage 和 sessionStorage 。对于不怎么改变的数据尽量使用 localStorage 存储，否则可以用 sessionStorage 存储。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>正是浏览器存储、缓存技术的出现和发展，为我们的前端应用带来了无限的转机。近年来基于存储、缓存技术的第三方库层出不绝，此外还衍生出了 PWA 这样优秀的 Web 应用模型。总结下本文几个核心观点：</p>
+<ul>
+<li>  Cookie 的本职工作并非本地存储，而是“维持状态”</li>
+<li>  Web Storage 是 HTML5 专门为浏览器存储而提供的数据存储机制，不与服务端发生通信</li>
+<li>  IndexedDB 用于客户端存储大量结构化数据</li>
+</ul>
+<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><ul>
+<li>  <a target="_blank" rel="noopener" href="https://juejin.im/post/59d1f59bf265da06700b0934">把cookie聊清楚</a></li>
+<li>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/dolphinX/p/3415761.html">HTML5本地存储——IndexedDB（一：基本使用）</a></li>
+<li>  <a target="_blank" rel="noopener" href="http://jerryzou.com/posts/cookie-and-web-storage/">详说 Cookie, LocalStorage 与 SessionStorage</a></li>
+<li>  <a target="_blank" rel="noopener" href="https://juejin.im/book/5b936540f265da0a9624b04b/section/5ba5bb16f265da0ae92a6cfc">前端性能优化原理与实践</a></li>
+<li>  <a target="_blank" rel="noopener" href="https://juejin.im/post/5a9fcc5e51882555602074e3">localstorage 必知必会</a></li>
+<li>  <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/07/indexeddb.html">浏览器数据库 IndexedDB 入门教程</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Song木头
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freepiao.cn/2021/07/30/10-Browser/" title="浏览器渲染原理及浏览器存储">https://freepiao.cn/2021/07/30/10-Browser/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/frontEnd/" rel="tag"><i class="fa fa-tag"></i> frontEnd</a>
+              <a href="/tags/Browser/" rel="tag"><i class="fa fa-tag"></i> Browser</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/29/TexturedQuad/" rel="prev" title="【WebGL之巅】18-颜色与纹理-在矩形表面帖上图像">
+                  <i class="fa fa-chevron-left"></i> 【WebGL之巅】18-颜色与纹理-在矩形表面帖上图像
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/30/23-Websocket/" rel="next" title="WebSocket介绍与实战开发">
+                  WebSocket介绍与实战开发 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS"></div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-egg"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song木头</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner"></i></span>人次
+      </span>
+    </span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">233k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+
+<!-- 网站运行时间的设置 -->
+<div> 
+<i class="fa fa-dog"></i>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+</div>
+
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/10/2021 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "与她在一起的: -"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒 ";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyvziwLag","appkey":"f5ce9fdbdde2fbdd4dc9fde273e34b2b"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
