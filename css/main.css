@@ -1931,41 +1931,6 @@ pre code {
     transform: scale(1.1);
   }
 }
-.back-to-top {
-  font-size: 12px;
-}
-.back-to-top {
-  bottom: -100px;
-  box-sizing: border-box;
-  color: #fff;
-  padding: 0 6px;
-  transition: bottom 0.2s ease-in-out;
-  background: #222;
-  cursor: pointer;
-  opacity: 0.6;
-  position: fixed;
-  z-index: 1300;
-  right: 30px;
-}
-@media (max-width: 991px) {
-  .back-to-top {
-    right: 20px;
-  }
-}
-.back-to-top:hover {
-  opacity: 0.8;
-}
-@media (max-width: 991px) {
-  .back-to-top {
-    opacity: 0.8;
-  }
-}
-.back-to-top:hover {
-  color: #fc6423;
-}
-.back-to-top.back-to-top-on {
-  bottom: 30px;
-}
 .noscript-warning {
   background-color: #f55;
   color: #fff;
@@ -1978,16 +1943,6 @@ pre code {
   top: 0;
   width: 100%;
   z-index: 1500;
-}
-.reading-progress-bar {
-  --progress: 0;
-  background: #37c6c0;
-  height: 3px;
-  position: fixed;
-  z-index: 1500;
-  width: var(--progress);
-  left: 0;
-  top: 0;
 }
 body {
   background-color: rgba(233,205,215,0.6);
@@ -2028,26 +1983,26 @@ body {
   -webkit-box-shadow: 2px 2px 10px rgba(233,205,215,0.8);
   transition: 0.4s;
 }
-.use-motion 文章详情 a,
 .use-motion .post a {
   color: #55b9f3;
   border-bottom: none;
   border-bottom: 1px solid #55b9f3;
 }
-.use-motion 文章详情 a:hover,
 .use-motion .post a:hover {
   color: #fc6423;
   border-bottom: none;
   border-bottom: 1px solid #fc6423;
 }
-.use-motion 文章详情 code,
 .use-motion .post code {
   color: #e9836e;
   background-color: #f3f3f3;
 }
+.use-motion .post .post-wrap-main {
+  background: #fff;
+}
 .use-motion .index {
-  padding: 20px;
-  background: rgba(255,255,255,0.9);
+  padding: 18px;
+  background: rgba(255,255,255,0.8);
 }
 .use-motion .index .post-block {
   border-radius: 8px;
@@ -2940,6 +2895,24 @@ mark.search-keyword {
   border-bottom: 1px dashed #ff2a2a;
   color: #ff2a2a;
   font-weight: bold;
+}
+.popular-posts-header {
+  border-bottom: 1px solid #eee;
+  font-size: 1.125em;
+  margin-bottom: 10px;
+  margin-top: 60px;
+}
+.popular-posts {
+  padding: 0;
+}
+.popular-posts .popular-posts-item {
+  margin-left: 2em;
+}
+.popular-posts .popular-posts-item .popular-posts-title {
+  font-size: 0.875em;
+  font-weight: normal;
+  line-height: 2.4;
+  margin: 0;
 }
 mjx-container[jax="CHTML"][display="true"],
 .has-jax {

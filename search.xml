@@ -369,6 +369,50 @@
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】20-GLSL ES着色器语言语法详解</title>
+    <url>/2021/07/30/GLSLES/</url>
+    <content><![CDATA[<p>对应《WebGL编程指南》第六章</p>
+<p>要点：</p>
+<span id="more"></span>
+
+<h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p>本章知识点：</p>
+<p>1、数据、变量和变量类型</p>
+<p>2、矢量、矩阵、结构体、数组、采样器（纹理）</p>
+<p>3、运算、程序流、函数</p>
+<p>4、attribute、uniform和varying变量</p>
+<p>5、精度限定词</p>
+<p>6、预处理和指令</p>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><h3 id="基本着色器代码"><a href="#基本着色器代码" class="headerlink" title="基本着色器代码"></a>基本着色器代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler1;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color0 = texture2D(u_Sampler0, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color1 = texture2D(u_Sampler1, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = color0 * color1;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、GLSL-ES概述"><a href="#一、GLSL-ES概述" class="headerlink" title="一、GLSL ES概述"></a>一、GLSL ES概述</h3><p>​        <code>GLSL ES</code>编程语言是在<code>OpenGL</code>着色器语言（GLSL）基础上，删除和简化一部分功能后形成的。各位看到<code>ES</code>版本应该会想到<code>GLSL ES</code>应用在手机、游戏主机等设备上，这样可以<strong>降低硬件的功耗，同时也能减少性能开销</strong>。</p>
+<p>​        <code>GLSL ES</code>的语法与C语言类似。此外，着色器语言也开始被用来完成一些通用的任务，如图像处理和数据运算（所谓的GPGPU）。</p>
+<h3 id="二、Hello-GLSL-ES！"><a href="#二、Hello-GLSL-ES！" class="headerlink" title="二、Hello GLSL ES！"></a>二、Hello GLSL ES！</h3><h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>​    1、<code>GLSL ES</code>对大小写是敏感的，例如：<code>Niuniu</code>和<code>niuniu</code>这就对应的是两个不同的变量；</p>
+<p>​    2、每条语句都要有<code>;</code>结束</p>
+<h4 id="执行次序"><a href="#执行次序" class="headerlink" title="执行次序"></a>执行次序</h4><p>​    1、每个着色器程序都要有<code>main()</code>函数，就像<code>C语言</code>一样，每个着色器程序都从<code>main</code>开始执行，但是<code>GLSL ES</code>中的<code>main()</code>函数并<strong>不接收任何参数</strong>，并且必须是<code>void</code>类型；</p>
+<p>​    2、<code>void</code>表示函数没有返回值，若有返回值，需明确返回值类型。</p>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>​    单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
+<h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><code>GLSL ES</code>支持两种数据值类型：</p>
+<ol>
+<li><p>1、<strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
+</li>
+<li><p>2、<strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
+</li>
+</ol>
+<p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
+<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3>]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【WebGL之巅】01-使用webgl清空绘图区</title>
     <url>/2021/07/24/HellCanvas/</url>
     <content><![CDATA[<blockquote>
