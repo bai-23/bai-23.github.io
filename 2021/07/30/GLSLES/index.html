@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://freepiao.cn/images/glsles1.jpg">
 <meta property="og:image" content="https://freepiao.cn/images/glsles2.jpg">
 <meta property="article:published_time" content="2021-07-30T07:08:20.000Z">
-<meta property="article:modified_time" content="2021-07-30T12:56:35.159Z">
+<meta property="article:modified_time" content="2021-07-31T03:48:41.630Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="frontEnd">
 <meta property="article:tag" content="WebGL">
@@ -159,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE"><span class="nav-text">回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">基本着色器代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81GLSL-ES%E6%A6%82%E8%BF%B0"><span class="nav-text">一、GLSL ES概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Hello-GLSL-ES%EF%BC%81"><span class="nav-text">二、Hello GLSL ES！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-text">基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%AC%A1%E5%BA%8F"><span class="nav-text">执行次序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-text">注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%95%B0%E5%80%BC%E9%A2%9D%E5%B8%83%E5%B0%94%E5%80%BC%EF%BC%89"><span class="nav-text">三、数据值类型（数值额布尔值）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%98%E9%87%8F"><span class="nav-text">四、变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-text">变量名规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GLSL-ES%E6%98%AF%E5%BC%BA%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-text">GLSL ES是强类型语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-text">基本类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">赋值和类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5"><span class="nav-text">矢量和矩阵</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE"><span class="nav-text">回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%A3%E7%A0%81"><span class="nav-text">基本着色器代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81GLSL-ES%E6%A6%82%E8%BF%B0"><span class="nav-text">一、GLSL ES概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-text">二、基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E5%9F%BA%E7%A1%80"><span class="nav-text">2.1 基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E6%89%A7%E8%A1%8C%E6%AC%A1%E5%BA%8F"><span class="nav-text">2.2 执行次序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E6%B3%A8%E9%87%8A"><span class="nav-text">2.3 注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%88%E6%95%B0%E5%80%BC%E9%A2%9D%E5%B8%83%E5%B0%94%E5%80%BC%EF%BC%89"><span class="nav-text">三、数据值类型（数值额布尔值）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%98%E9%87%8F"><span class="nav-text">四、变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%8F%98%E9%87%8F%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-text">4.1 变量名规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-GLSL-ES%E6%98%AF%E5%BC%BA%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-text">4.2 GLSL ES是强类型语言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-text">五、基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-%E8%B5%8B%E5%80%BC%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">5.1 赋值和类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">5.2 运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5"><span class="nav-text">六、矢量和矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5%E4%B8%BE%E4%BE%8B"><span class="nav-text">6.1 矢量和矩阵举例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">6.2 矢量和矩阵的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-%E8%B5%8B%E5%80%BC%E5%92%8C%E6%9E%84%E9%80%A0"><span class="nav-text">6.3 赋值和构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-4-%E7%9F%A2%E9%87%8F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">6.4 矢量构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-%E7%9F%A9%E9%98%B5%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">6.5 矩阵构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#6-5-1-%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="nav-text">6.5.1 方式一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-5-2-%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="nav-text">6.5.2 方式二</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-5-3-%E6%96%B9%E5%BC%8F%E4%B8%89"><span class="nav-text">6.5.3 方式三</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-5-4-%E6%96%B9%E5%BC%8F%E5%9B%9B"><span class="nav-text">6.5.4 方式四</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-6-%E8%AE%BF%E9%97%AE%E7%9F%A2%E9%87%8F%E5%92%8C%E7%9F%A9%E9%98%B5%E7%9A%84%E5%85%83%E7%B4%A0"><span class="nav-text">6.6 访问矢量和矩阵的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#6-6-1-%E8%AE%BF%E9%97%AE%E7%9F%A2%E9%87%8F%E5%85%83%E7%B4%A0"><span class="nav-text">6.6.1 访问矢量元素</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">.运算符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%B7%B7%E5%90%88"><span class="nav-text">混合</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-6-2-%E8%AE%BF%E9%97%AE%E7%9F%A9%E9%98%B5%E5%85%83%E7%B4%A0"><span class="nav-text">6.6.2 访问矩阵元素</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6-1"><span class="nav-text">[]运算符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E7%B4%A2%E5%BC%95%E5%80%BC"><span class="nav-text">常量索引值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-7-%E8%BF%90%E7%AE%97"><span class="nav-text">6.7 运算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#6-7-1-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">6.7.1 运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-7-2-%E7%9F%A2%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-text">6.7.2 矢量运算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-7-3-%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97"><span class="nav-text">6.7.3 矩阵运算</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E5%92%8C%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BF%90%E7%AE%97"><span class="nav-text">矩阵和浮点数运算</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E5%8F%B3%E4%B9%98%E7%9F%A2%E9%87%8F"><span class="nav-text">矩阵右乘矢量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E5%B7%A6%E4%B9%98%E7%9F%A2%E9%87%8F"><span class="nav-text">矩阵左乘矢量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9B%B8%E4%B9%98"><span class="nav-text">矩阵与矩阵相乘</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">七、结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-%E7%BB%93%E6%9E%84%E4%BD%93%E5%AE%9A%E4%B9%89"><span class="nav-text">7.1 结构体定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-%E8%B5%8B%E5%80%BC%E5%92%8C%E6%9E%84%E9%80%A0"><span class="nav-text">7.2 赋值和构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-%E8%AE%BF%E9%97%AE%E6%88%90%E5%91%98"><span class="nav-text">7.3 访问成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">7.4 运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E6%95%B0%E7%BB%84"><span class="nav-text">八、数组</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -295,10 +295,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-07-30 15:08:20 / 修改时间：20:56:35" itemprop="dateCreated datePublished" datetime="2021-07-30T15:08:20+08:00">2021-07-30</time>
+      <time title="创建时间：2021-07-30 15:08:20" itemprop="dateCreated datePublished" datetime="2021-07-30T15:08:20+08:00">2021-07-30</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-31 11:48:41" itemprop="dateModified" datetime="2021-07-31T11:48:41+08:00">2021-07-31</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -348,14 +354,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
+      <span>7.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -383,33 +389,31 @@
 
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、GLSL-ES概述"><a href="#一、GLSL-ES概述" class="headerlink" title="一、GLSL ES概述"></a>一、GLSL ES概述</h3><p>​        <code>GLSL ES</code>编程语言是在<code>OpenGL</code>着色器语言（GLSL）基础上，删除和简化一部分功能后形成的。各位看到<code>ES</code>版本应该会想到<code>GLSL ES</code>应用在手机、游戏主机等设备上，这样可以<strong>降低硬件的功耗，同时也能减少性能开销</strong>。</p>
 <p>​        <code>GLSL ES</code>的语法与C语言类似。此外，着色器语言也开始被用来完成一些通用的任务，如图像处理和数据运算（所谓的GPGPU）。</p>
-<h3 id="二、Hello-GLSL-ES！"><a href="#二、Hello-GLSL-ES！" class="headerlink" title="二、Hello GLSL ES！"></a>二、Hello GLSL ES！</h3><h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>​    1、<code>GLSL ES</code>对大小写是敏感的，例如：<code>Niuniu</code>和<code>niuniu</code>这就对应的是两个不同的变量；</p>
-<p>​    2、每条语句都要有<code>;</code>结束</p>
-<h4 id="执行次序"><a href="#执行次序" class="headerlink" title="执行次序"></a>执行次序</h4><p>​    1、每个着色器程序都要有<code>main()</code>函数，就像<code>C语言</code>一样，每个着色器程序都从<code>main</code>开始执行，但是<code>GLSL ES</code>中的<code>main()</code>函数并<strong>不接收任何参数</strong>，并且必须是<code>void</code>类型；</p>
-<p>​    2、<code>void</code>表示函数没有返回值，若有返回值，需明确返回值类型。</p>
-<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>​    单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
-<h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><code>GLSL ES</code>支持两种数据值类型：</p>
-<ol>
-<li><p><strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
-</li>
-<li><p><strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
-</li>
-</ol>
+<h3 id="二、基础语法"><a href="#二、基础语法" class="headerlink" title="二、基础语法"></a>二、基础语法</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>​    <strong>2.1.1</strong> <code>GLSL ES</code>对大小写是敏感的，例如：<code>Niuniu</code>和<code>niuniu</code>这就对应的是两个不同的变量；</p>
+<p>​    <strong>2.1.2</strong> 每条语句都要有<code>;</code>结束</p>
+<h4 id="2-2-执行次序"><a href="#2-2-执行次序" class="headerlink" title="2.2 执行次序"></a>2.2 执行次序</h4><p>​    <strong>2.2.1</strong> 每个着色器程序都要有<code>main()</code>函数，就像<code>C语言</code>一样，每个着色器程序都从<code>main</code>开始执行，但是<code>GLSL ES</code>中的<code>main()</code>函数并<strong>不接收任何参数</strong>，并且必须是<code>void</code>类型；</p>
+<p>​    <strong>2.2.2</strong> <code>void</code>表示函数没有返回值，若有返回值，需明确返回值类型。</p>
+<h4 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3 注释"></a>2.3 注释</h4><p>​    2.3.1 单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
+<h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><strong>3.1</strong> <code>GLSL ES</code>支持两种数据值类型：</p>
+<p>​    <strong>3.1.1</strong> <strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
+<p>​    <strong>3.1.2</strong> <strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
 <blockquote>
 <p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
 </blockquote>
-<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="变量名规则"><a href="#变量名规则" class="headerlink" title="变量名规则"></a>变量名规则</h4><p>1、只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
-<p>2、变量名的第一个字符不能为数字</p>
-<p>3、不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
-<p>4、不能是下表中所列出的关键字</p>
+<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="4-1-变量名规则"><a href="#4-1-变量名规则" class="headerlink" title="4.1 变量名规则"></a>4.1 变量名规则</h4><p><strong>4.1.1</strong> 只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
+<p><strong>4.1.2</strong> 变量名的第一个字符不能为数字</p>
+<p><strong>4.1.3</strong> 不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
+<p><strong>4.1.4</strong> 不能是下表中所列出的关键字</p>
 <p><img src="/images/glsles1.jpg" alt="1"></p>
 <p>​        GLSL ES保留字：</p>
 <p><img src="/images/glsles2.jpg" alt="2"></p>
-<h4 id="GLSL-ES是强类型语言"><a href="#GLSL-ES是强类型语言" class="headerlink" title="GLSL ES是强类型语言"></a>GLSL ES是强类型语言</h4><p>​        声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
+<h4 id="4-2-GLSL-ES是强类型语言"><a href="#4-2-GLSL-ES是强类型语言" class="headerlink" title="4.2 GLSL ES是强类型语言"></a>4.2 GLSL ES是强类型语言</h4><p>4.2.1 声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> a_Position</span><br></pre></td></tr></table></figure>
 
-<p>​        进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
-<h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><table>
+<blockquote>
+<p>进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
+</blockquote>
+<h3 id="五、基本类型"><a href="#五、基本类型" class="headerlink" title="五、基本类型"></a>五、基本类型</h3><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -431,9 +435,9 @@
 </tbody></table>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">float</span> fnumber = <span class="number">1.1</span>;	<span class="comment">// 浮点数</span></span><br><span class="line"><span class="type">int</span> inumber = <span class="number">1</span>;	<span class="comment">// 整型</span></span><br><span class="line"><span class="type">bool</span> blogic = <span class="literal">true</span>;	<span class="comment">// 布尔型</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="赋值和类型转换"><a href="#赋值和类型转换" class="headerlink" title="赋值和类型转换"></a>赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-1-赋值和类型转换"><a href="#5-1-赋值和类型转换" class="headerlink" title="5.1 赋值和类型转换"></a>5.1 赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><table>
+<h4 id="5-2-运算符"><a href="#5-2-运算符" class="headerlink" title="5.2 运算符"></a>5.2 运算符</h4><table>
 <thead>
 <tr>
 <th>类别</th>
@@ -470,11 +474,186 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p>逻辑与（&amp;&amp;）：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
-<p>逻辑或（||）：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
-<p>逻辑异或（^^）：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
+<p><strong>逻辑与（&amp;&amp;）</strong>：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
+<p><strong>逻辑或（||）</strong>：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
+<p><strong>逻辑异或（^^）</strong>：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
 </blockquote>
-<h4 id="矢量和矩阵"><a href="#矢量和矩阵" class="headerlink" title="矢量和矩阵"></a>矢量和矩阵</h4>
+<h3 id="六、矢量和矩阵"><a href="#六、矢量和矩阵" class="headerlink" title="六、矢量和矩阵"></a>六、矢量和矩阵</h3><h4 id="6-1-矢量和矩阵举例"><a href="#6-1-矢量和矩阵举例" class="headerlink" title="6.1 矢量和矩阵举例"></a>6.1 矢量和矩阵举例</h4><p>矢量 $\begin{pmatrix}<br>    8 &amp; 3 &amp; 0<br>\end{pmatrix}<br>$        矩阵$<br>\begin{bmatrix}<br>    8 &amp; 3 &amp; 0 \\<br>    4 &amp; 3 &amp; 6 \\<br>    3 &amp; 2 &amp; 6<br>\end{bmatrix}<br>$​</p>
+<h4 id="6-2-矢量和矩阵的类型"><a href="#6-2-矢量和矩阵的类型" class="headerlink" title="6.2 矢量和矩阵的类型"></a>6.2 矢量和矩阵的类型</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>GLSL ES</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>矢量</td>
+<td>vec2、vec3、vec4</td>
+<td>具有2/3/4个浮点数元素的矢量</td>
+</tr>
+<tr>
+<td></td>
+<td>ivec2、ivec3、ivec4</td>
+<td>具有2/3/4个整型数元素的矢量</td>
+</tr>
+<tr>
+<td></td>
+<td>bvec2、bvec3、bvec4</td>
+<td>具有2/3/4个布尔值元素的矢量</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>mat2、mat3、mat4</td>
+<td>2x2、3x3、4x4的浮点数元素的矩阵</td>
+</tr>
+</tbody></table>
+<h4 id="6-3-赋值和构造"><a href="#6-3-赋值和构造" class="headerlink" title="6.3 赋值和构造"></a>6.3 赋值和构造</h4><p><strong>6.3.1</strong> 通常使用与数据类型同名的内置构造函数来生成变量，对于vec4类型，就可以使用内置的<code>vec4()</code>函数，如：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>6.3.2</strong> 构造函数</p>
+<p>概念：专门创建指定类型的变量的函数被称为<strong>构造函数</strong>，构造函数的名称和其创建的变量的类型名称总数一致的。</p>
+<h4 id="6-4-矢量构造函数"><a href="#6-4-矢量构造函数" class="headerlink" title="6.4 矢量构造函数"></a>6.4 矢量构造函数</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec3</span> v3 = <span class="type">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>);	<span class="comment">// 将矢量v3设为(1.0, 0.0, 0.5)</span></span><br><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(v3);	<span class="comment">// 使用v3的前两个值，将v2设为(1.0, 0.0)</span></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>);	<span class="comment">// 将v4设为(1.0, 1.0, 1.0, 1.0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可以使用多个矢量组合成一个矢量，例如：</span></span><br><span class="line"><span class="type">vec4</span> v4_2 = <span class="type">vec4</span>(v2, v4);	<span class="comment">// 将v4_2设为(1.0, 0.0, 1.0, 1.0)，如果v2没有填满就继续用第二个参数v4中的元素填充</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-5-矩阵构造函数"><a href="#6-5-矩阵构造函数" class="headerlink" title="6.5 矩阵构造函数"></a>6.5 矩阵构造函数</h4><p>​        矩阵构造函数的使用方式与矢量构造函数的使用方式类似，但是要保证存储在矩阵中的元素是按照<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%812%EF%BC%9A">列主序</a>排列的。下面是使用矩阵构造函数的不同方式。</p>
+<h5 id="6-5-1-方式一"><a href="#6-5-1-方式一" class="headerlink" title="6.5.1 方式一"></a>6.5.1 方式一</h5><p>​        使用矩阵构造函数：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面构造的<code>4 x 4</code>矩阵对应的是：$<br>\begin{bmatrix}<br>    1.0 &amp; 5.0 &amp; 9.0 &amp; 13.0 \\<br>    2.0 &amp; 6.0 &amp; 10.0 &amp; 14.0 \\<br>    3.0 &amp; 7.0 &amp; 11.0 &amp; 15.0 \\<br>    4.0 &amp; 8.0 &amp; 12.0 &amp; 16.0<br>\end{bmatrix}<br>$</p>
+<h5 id="6-5-2-方式二"><a href="#6-5-2-方式二" class="headerlink" title="6.5.2 方式二"></a>6.5.2 方式二</h5><p>​        也可以向矩阵构造函数中传入一个或多个矢量，按照<strong>列主序</strong>使用矢量里的元素值来构造矩阵：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = <span class="type">vec2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_1 = <span class="type">mat2</span>(v2_1, v2_2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_2 = <span class="type">mat2</span>(v4);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-5-3-方式三"><a href="#6-5-3-方式三" class="headerlink" title="6.5.3 方式三"></a>6.5.3 方式三</h5><p>​        当然使用浮点数和矢量组合的方式来构造矩阵也是可以的：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2 = <span class="type">mat2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, v2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-5-4-方式四"><a href="#6-5-4-方式四" class="headerlink" title="6.5.4 方式四"></a>6.5.4 方式四</h5><p>​        如果想构造单位矩阵，那么有更简单的方式：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mat3</span> m3 = <span class="type">mat3</span>(<span class="number">1.0</span>);</span><br><span class="line"><span class="comment">// ┌1.0 0.0 0.0┐</span></span><br><span class="line"><span class="comment">// |0.0 1.0 0.0 |</span></span><br><span class="line"><span class="comment">// └0.0 0.0 1.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)	<span class="comment">// 出错，mat4对象需要16个元素</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-6-访问矢量和矩阵的元素"><a href="#6-6-访问矢量和矩阵的元素" class="headerlink" title="6.6 访问矢量和矩阵的元素"></a>6.6 访问矢量和矩阵的元素</h4><p>​        为了访问矢量或矩阵中的元素，可以使用<code>.</code>或<code>[]</code>运算符，下面将详细叙述。</p>
+<h5 id="6-6-1-访问矢量元素"><a href="#6-6-1-访问矢量元素" class="headerlink" title="6.6.1 访问矢量元素"></a>6.6.1 访问矢量元素</h5><h6 id="运算符"><a href="#运算符" class="headerlink" title=".运算符"></a><code>.</code>运算符</h6><p>​        在矢量变量名后接<code>.</code>运算符，然后接分量名，就可以访问矢量的元素了。<strong>矢量的分量名</strong>如下表：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x，y，z，w</td>
+<td>用来获取顶点坐标的分量</td>
+</tr>
+<tr>
+<td>r，g，b，a</td>
+<td>用来获取颜色分量</td>
+</tr>
+<tr>
+<td>s，t，p，q</td>
+<td>用来获取纹理坐标分量</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>事实上，任何矢量的x、r或s分量都会返回第一个分量</p>
+</blockquote>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// v4.x;</span></span><br><span class="line"><span class="comment">// v4.y;</span></span><br><span class="line"><span class="comment">// v4.r;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="混合"><a href="#混合" class="headerlink" title="混合"></a>混合</h6><p>​        其实，任何矢量的<code>x</code>、<code>r</code>或<code>s</code>都是返回第一个分量值，同理<code>y</code>/<code>g</code>/<code>t</code>返回第二个分量。我们还可以通过下面的方式给其他矢量赋值：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xy;	<span class="comment">// v2 = (0.0, 1.0)	</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.yx;	<span class="comment">// v2 = (1.0, 0.0)	可逆序</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xx;	<span class="comment">// v2 = (0.0, 0.0)	可重复</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.yzw;	<span class="comment">// v2 = (1.0, 1.0, 0.5)	可跳过</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.xzw;	<span class="comment">// v2 = (0.0, 1.0, 0.5)	可跳过</span></span><br></pre></td></tr></table></figure>
+
+<p>​        上面的代码中，将同一个集合的多个分量名共同置于<em>点运算符</em>后，就可以从矢量中同时提取出多个分量，这个过程也称作<strong>混合</strong>。当然，聚合分量名也可以作为<em>赋值表达式</em>的<em>左值</em>：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> position = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br><span class="line">position.xw = <span class="type">vec2</span>(<span class="number">5.0</span>, <span class="number">6.0</span>);	<span class="comment">// position=(5.0,2.0,3.0,6.0)</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-6-2-访问矩阵元素"><a href="#6-6-2-访问矩阵元素" class="headerlink" title="6.6.2 访问矩阵元素"></a>6.6.2 访问矩阵元素</h5><h6 id="运算符-1"><a href="#运算符-1" class="headerlink" title="[]运算符"></a><code>[]</code>运算符</h6><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​        访问矩阵中元素可以像我们<code>JS</code>中访问二维数组一样：<code>m4[0][0]</code>，这就获取到了<code>m4</code>中的第一个元素<code>1.0</code>，在前面的介绍中有提到，可以使用矢量创建矩阵，当然我们也可以在矩阵中获取矢量：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = m4[<span class="number">0</span>];	<span class="comment">// 第一列元素 (1.0, 2.0, 3.0, 4.0)</span></span><br></pre></td></tr></table></figure>
+
+<p>​        同样可以使用<em>点操作符</em>获取分量值：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> m1_2 = m4[<span class="number">0</span>].x;	<span class="comment">// 将m1_2设置为m4第1列的第1个元素</span></span><br><span class="line">m1_2 = m4[<span class="number">0</span>][<span class="number">1</span>];	<span class="comment">// 将m1_2设置为m4第1列的第2个元素</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="常量索引值"><a href="#常量索引值" class="headerlink" title="常量索引值"></a>常量索引值</h6><p>​        在<code>[]</code>中只能出现的索引值必须是<strong>常量索引值</strong>，其定义如下：</p>
+<ul>
+<li>整型字面量(如0或1)</li>
+<li>用<code>const</code>修饰的全局变量或局部变量，不包括函数参数</li>
+<li>循环索引</li>
+<li>由前述三条的项组成的表达式</li>
+</ul>
+<p>​        下面这个例子就用到了const变量作为访问数组元素的索引：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span> <span class="comment">// 只读</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>]</span><br><span class="line">    </span><br><span class="line"><span class="type">vec4</span> v4b = m4[<span class="keyword">index</span> + <span class="number">1</span>] <span class="comment">// 表达式索引</span></span><br></pre></td></tr></table></figure>
+
+<p>​        注意，不能使用未经const修饰的变量作为索引（除非是循环索引）</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>] 	<span class="comment">// 错误使用  </span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-7-运算"><a href="#6-7-运算" class="headerlink" title="6.7 运算"></a>6.7 运算</h4><h5 id="6-7-1-运算符"><a href="#6-7-1-运算符" class="headerlink" title="6.7.1 运算符"></a>6.7.1 运算符</h5><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>运算</th>
+<th>使用数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*  /</td>
+<td>乘除</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>+  -</td>
+<td>加减</td>
+<td></td>
+</tr>
+<tr>
+<td>++  –</td>
+<td>自增/减</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>=  +=  -=  *=  /=</td>
+<td>赋值、运算赋值</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>==  !=</td>
+<td>比较</td>
+<td>适用于vec[234]和mat[234]，对于==，如果两个操作数的每一个分量都相同，那么返回true；对于!=，如果任意分量不同，返回true。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>补充：</p>
+<p>​    矢量和矩阵的比较不能使用&lt;、&gt;、&lt;=、&gt;=，应该使用内置函数如lessThan()；</p>
+<p>​    若你想逐一分量比较，可使用内置函数equal()或notEqual()；</p>
+<p>​    当运算赋值操作作用于矢量或矩阵时，实际上是逐分量地对每一个元素进行独立的运算。</p>
+</blockquote>
+<h5 id="6-7-2-矢量运算"><a href="#6-7-2-矢量运算" class="headerlink" title="6.7.2 矢量运算"></a>6.7.2 矢量运算</h5><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = (<span class="number">1.0</span>, <span class="number">2.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = (<span class="number">0.1</span>, <span class="number">0.2</span>);</span><br><span class="line"><span class="type">float</span> f = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加法</span></span><br><span class="line">v2_1 = v2_1 + v2_2;	<span class="comment">// (1.1, 2.2) → (v2_1.x + v2_2.x, v2_1.y + v2_2.y)</span></span><br><span class="line">v2_1 = v2_1 + f;	<span class="comment">// (1.6, 2.7) → (v2_1.x + f, v2_1.y + f)</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-7-3-矩阵运算"><a href="#6-7-3-矩阵运算" class="headerlink" title="6.7.3 矩阵运算"></a>6.7.3 矩阵运算</h5><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义变量</span></span><br><span class="line"><span class="type">mat2</span> m2_1, m2_2;</span><br><span class="line"><span class="type">vec2</span> v2;</span><br><span class="line"><span class="type">float</span> f;</span><br></pre></td></tr></table></figure>
+
+<h6 id="矩阵和浮点数运算"><a href="#矩阵和浮点数运算" class="headerlink" title="矩阵和浮点数运算"></a>矩阵和浮点数运算</h6><p>​        矩阵与浮点数的运算发生在每个分量上：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m2_1 + f; <span class="comment">// m2_1[0].x + f; m2_1[0].y + f; m2_1[1].x + f; m2_1[1].y + f;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="矩阵右乘矢量"><a href="#矩阵右乘矢量" class="headerlink" title="矩阵右乘矢量"></a>矩阵右乘矢量</h6><p>​    矩阵右乘矢量的结果是矢量，其中每个分量都是原矢量中的对应分量，<strong>乘</strong>上矩阵对应<strong>行</strong>的每个元素的<strong>积的和</strong>。可参考之前的<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E4%B8%80%E3%80%81%E7%9F%A9%E9%98%B5%E5%92%8C%E7%9F%A2%E9%87%8F%E7%9A%84%E4%B9%98%E6%B3%95">矢量乘法实现旋转矩阵</a>。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 矩阵右乘矢量</span></span><br><span class="line"><span class="type">vec2</span> v2_result = m2_1 * v2;	</span><br><span class="line"><span class="comment">// v2_result.x = m2_1[0].x * v2.x + m2_1[1].x * v2.y;</span></span><br><span class="line"><span class="comment">// v2_result.y = m2_1[0].y * v2.x + m2_1[1].y * v2.y;</span></span><br></pre></td></tr></table></figure>
+
+<p>例：$<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​​​ * $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​​​​ = $<br>\begin{bmatrix}<br>    11  \\<br>    13  \\<br>    7<br>\end{bmatrix}<br>$​​​​</p>
+<h6 id="矩阵左乘矢量"><a href="#矩阵左乘矢量" class="headerlink" title="矩阵左乘矢量"></a>矩阵左乘矢量</h6><p>​        结果与右乘不同</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 矩阵左乘矢量</span></span><br><span class="line">v2_result = v2 * m2_1;	</span><br><span class="line"><span class="comment">// v2_result.x = v2.x * m2_1[0].x + v2.y * m2_1[0].y;</span></span><br><span class="line"><span class="comment">// v2_result.y = v2.x * m2_1[1].x + v2.y * m2_1[1].y;</span></span><br></pre></td></tr></table></figure>
+
+<p>例： $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​  * $<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​ = $<br>\begin{bmatrix}<br>    15  \\<br>    8  \\<br>    14<br>\end{bmatrix}<br>$​​</p>
+<h6 id="矩阵与矩阵相乘"><a href="#矩阵与矩阵相乘" class="headerlink" title="矩阵与矩阵相乘"></a>矩阵与矩阵相乘</h6><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 矩阵相乘</span></span><br><span class="line"><span class="type">mat2</span> m2_result = m2_1 * m2_2;	</span><br><span class="line"><span class="comment">// m2_result[0].x = m2_1[0].x * m2_2[0].x + m2_1[1].x * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].x = m2_1[0].x * m2_2[1].x + m2_1[1].x * m2_2[1].y;</span></span><br><span class="line"><span class="comment">// m2_result[0].y = m2_1[0].y * m2_2[0].x + m2_1[1].y * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].y = m2_1[0].y * m2_2[1].x + m2_1[1].y * m2_2[1].y;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="七、结构体"><a href="#七、结构体" class="headerlink" title="七、结构体"></a>七、结构体</h3><h4 id="7-1-结构体定义"><a href="#7-1-结构体定义" class="headerlink" title="7.1 结构体定义"></a>7.1 结构体定义</h4><p>​        在<code>GLSL ES</code>中可以使用<code>struct</code>关键字定义结构体：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义结构体</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明light类型变量</span></span><br><span class="line">light light_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为了方便，也可以使用这种方式定义并声明一个结构体类型的变量</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125; light_1;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-2-赋值和构造"><a href="#7-2-赋值和构造" class="headerlink" title="7.2 赋值和构造"></a>7.2 赋值和构造</h4><p>​        结构体有标准的构造函数，其名称与结构体一致。构造函数的参数顺序必须与结构体定义中的成员顺序一致。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">light_1 = light(<span class="type">vec4</span>(<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>), <span class="type">vec3</span>(<span class="number">8.0</span>,<span class="number">3.0</span>,<span class="number">0.0</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-3-访问成员"><a href="#7-3-访问成员" class="headerlink" title="7.3 访问成员"></a>7.3 访问成员</h4><p>​        通过<code>.</code>操作符访问成员变量：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec4</span> lcolor = light_1.color;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-运算符"><a href="#7-4-运算符" class="headerlink" title="7.4 运算符"></a>7.4 运算符</h4><p>​        结构体的成员可参与与其自身类型支持的任何运算，但是结构体本身只支持赋值（=）和比较（==、!=）。</p>
+<blockquote>
+<p>赋值和比较运算符不适用于含有数组与纹理成员的结构体</p>
+</blockquote>
+<h3 id="八、数组"><a href="#八、数组" class="headerlink" title="八、数组"></a>八、数组</h3>
     </div>
 
     
@@ -572,14 +751,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">248k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:46</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
 
@@ -633,7 +812,7 @@ setInterval("createtime()",250);
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

@@ -1997,8 +1997,14 @@ body {
   color: #e9836e;
   background-color: #f3f3f3;
 }
-.use-motion .post .post-wrap-main {
-  background: #fff;
+.use-motion .post blockquote {
+  background: #f2f2f2;
+  border-left: 4px solid #f1e1e7;
+}
+.use-motion .post blockquote P {
+  font-size: 16px;
+  line-height: 26px;
+  margin-bottom: 10px;
 }
 .use-motion .index {
   padding: 18px;
