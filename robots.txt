@@ -8,5 +8,5 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: http://freepiao.cn/sitemap.xml
-Sitemap: http://freepiao.cn/baidusitemap.xml
+Sitemap: https://freepiao.cn/sitemap.xml
+Sitemap: https://freepiao.cn/baidusitemap.xml

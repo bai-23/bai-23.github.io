@@ -1191,6 +1191,10 @@ pre code {
   font-weight: 900;
   color: #d9534f;
 }
+.mermaid {
+  margin-bottom: 20px;
+  text-align: center;
+}
 .pagination .prev,
 .pagination .next,
 .pagination .page-number,
