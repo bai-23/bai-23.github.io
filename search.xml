@@ -100,109 +100,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】05-通过鼠标点击绘点_v2_彩色版</title>
-    <url>/2021/07/25/ClickedPoints-color/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：05-ColorPoints</p>
-<p>要点：注册js事件、匿名函数、坐标转换、g_points.push()</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、为何使用匿名函数？"><a href="#一、为何使用匿名函数？" class="headerlink" title="一、为何使用匿名函数？"></a>一、为何使用匿名函数？</h5><p>先看示例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册鼠标点击事件响应函数(匿名函數)</span></span><br><span class="line">canvas.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    click(event, gl, canvas, a_Position);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>当你要画一个点时，需要传入三个变量（gl、canvas、a_Position），这三个变量是定义在<code>main()</code>函数中的局部变量。</p>
-<p>当用户点击鼠标时，浏览器会自动调用注册到<code>&lt;canvas&gt;</code>的ommousedown属性上的函数，并传入<code>event</code>（后面简写为‘e’）参数，通常你会这样写：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">canvas.onmousedown = mousedown	<span class="comment">// 注册响应函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mousedown</span>(<span class="params">e</span>) </span>&#123; ... &#125;<span class="comment">// 接收事件响应参数</span></span><br></pre></td></tr></table></figure>
-
-<p>但是，这样写会出现一个问题，定义在main()函数外部的mousedown()函数就无法获取 main函数中的局部变量，而使用匿名函数就可以解决这个问题。</p>
-<p>当用户点击鼠标后，程序先调用匿名函数function(e)，再调用匿名函数中的click()传入参数。</p>
-<p>当然，这里也可以使用<code>ES6</code>的箭头函数更加简洁：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">canvas.onmousedown = <span class="function"><span class="params">ev</span> =&gt;</span> click(ev, gl, canvas, a_Position);</span><br></pre></td></tr></table></figure>
-
-<h5 id="二、坐标转换"><a href="#二、坐标转换" class="headerlink" title="二、坐标转换"></a>二、坐标转换</h5><p>区别：</p>
-<p>​    ①**客户区原点(0,0)**：位于浏览器视图区的左上角顶点处</p>
-<p>​    ②<strong>canvas原点</strong>：位于绘图区左上角顶点处（…）</p>
-<p>​    ③<strong>WebGL原点</strong>：位于绘图区中心点</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取&lt;canvas&gt;在浏览器客户区中的坐标</span></span><br><span class="line"><span class="keyword">var</span> rect = ev.target.getBoundingClientRect();</span><br><span class="line">x = ((x - rect.left) - canvas.height / <span class="number">2</span>) / (canvas.height / <span class="number">2</span>);</span><br><span class="line">y = (canvas.width / <span class="number">2</span> - (y - rect.top)) / (canvas.width / <span class="number">2</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th align="left">rect.left：<canvas>原点在客户区中x坐标</th>
-<th>使用*{margin:0;padding:0;list-style: none;}清除默认样式后，与客户区原点重和,即(0,0)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">rect.top：<canvas>原点在客户区中y坐标</td>
-<td>若不清除默认样式后，canvas原点可能位于(8,8)，仅限博主浏览器测试。</td>
-</tr>
-<tr>
-<td align="left">x</td>
-<td>相对于浏览器左上角顶点处的鼠标横轴位置</td>
-</tr>
-<tr>
-<td align="left">y</td>
-<td>相对于浏览器左上角顶点处的鼠标纵轴位置</td>
-</tr>
-<tr>
-<td align="left"><strong>x - rect.left：鼠标点击处相对于canvas原点位置</strong></td>
-<td>将(x,y)转换成canvas坐标系的坐标</td>
-</tr>
-<tr>
-<td align="left"><strong>y - rect.top：鼠标点击处相对于canvas原点位置</strong></td>
-<td>将(x,y)转换成canvas坐标系的坐标</td>
-</tr>
-<tr>
-<td align="left">canvas.height/width</td>
-<td>绘图区的宽高</td>
-</tr>
-<tr>
-<td align="left">(canvas.height/width) / 2</td>
-<td>绘图区的中心点</td>
-</tr>
-<tr>
-<td align="left">(x - rect.left) - canvas.width / 2</td>
-<td>WebGL系统的原点</td>
-</tr>
-<tr>
-<td align="left">canvas.height / 2 - (y - rect.top)</td>
-<td>WebGL系统的原点</td>
-</tr>
-<tr>
-<td align="left">((x - rect.left) - canvas.width / 2) / (canvas.width / 2)</td>
-<td>将canvas坐标系下的坐标转换为WebGL坐标系中，最终渲染位置</td>
-</tr>
-<tr>
-<td align="left">(canvas.height / 2 - (y - rect.top))</td>
-<td>将canvas坐标系下的坐标转换为WebGL坐标系中，最终渲染位置</td>
-</tr>
-</tbody></table>
-<h5 id="三、为啥用g-points-push"><a href="#三、为啥用g-points-push" class="headerlink" title="三、为啥用g_points.push()"></a>三、为啥用g_points.push()</h5><p>因为WebGL系统中的绘制操作实际上是在颜色缓冲区中进行绘制，绘制结束后系统将缓冲区中的内容显示在屏幕上，然后颜色缓冲区就会被重置，其中内容就会丢失。也由此，每次点击后，浏览器会重新绘制之前的并绘制新点击的。</p>
-<h5 id="四、uniform变量"><a href="#四、uniform变量" class="headerlink" title="四、uniform变量"></a>四、uniform变量</h5><p>作用：从js程序向顶点和片元着色器传输“一致的”（不变的）数据。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">声明变量：&lt;存储限定符&gt;&lt;类型&gt;&lt;变量名&gt;</span><br><span class="line">          uniform    vec4  u_FragColor</span><br><span class="line">精度限定词：指定变量的范围和精度</span><br><span class="line">precision mediump float(中等精度)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>ColoredPoints<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">        <span class="comment">/* body &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">            margin:0;</span></span></span><br><span class="line"><span class="comment"><span class="css">            padding:0;</span></span></span><br><span class="line"><span class="comment"><span class="css">        &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">        Please use the browser supporting &quot;canvas&quot;.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;ClickedPoints.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//ColoredPoints.js</span></span><br><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_PointSize=10.0;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;uniform vec4 u_FragColor;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = u_FragColor;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取a_Position变量存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取u_FragColor 变量存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_FragColor = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_FragColor&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!u_FragColor)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of u_FragColor&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    canvas.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        click(ev,gl,canvas,a_Position,u_FragColor);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g_points = [];</span><br><span class="line"><span class="keyword">var</span> g_colors = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">click</span>(<span class="params">ev, gl, canvas, a_Position,u_FragColor</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x= ev.clientX;</span><br><span class="line">    <span class="keyword">var</span> y = ev.clientY;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> rect = ev.target.getBoundingClientRect();</span><br><span class="line">    x = ((x - rect.left) - canvas.width / <span class="number">2</span>) / (canvas.width / <span class="number">2</span>);</span><br><span class="line">    y = (canvas.height / <span class="number">2</span> - (y - rect.top)) / (canvas.height / <span class="number">2</span>);</span><br><span class="line">    <span class="comment">//将坐标存储到g_points数组中</span></span><br><span class="line">    g_points.push([x, y]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 教程示例</span></span><br><span class="line">    <span class="comment">// if(x &gt;= 0.0 &amp;&amp; y &gt;= 0.0)&#123;  //第一象限</span></span><br><span class="line">    <span class="comment">//     g_colors.push([1.0, 0.0, 0.0, 1.0]);  //红色</span></span><br><span class="line">    <span class="comment">// &#125;else if(x &lt; 0.0 &amp;&amp; y &lt; 0.0)&#123;  //第三象限</span></span><br><span class="line">    <span class="comment">//     g_colors.push([0.0, 1.0, 0.0, 1.0]);  //绿色</span></span><br><span class="line">    <span class="comment">// &#125;else&#123;</span></span><br><span class="line">    <span class="comment">//     g_colors.push([1.0, 1.0, 1.0, 1.0]);  //白色</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 修改示例</span></span><br><span class="line">    g_colors.push([<span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random()])</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清除&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> len = g_points.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> xy=g_points[i];</span><br><span class="line">        <span class="keyword">var</span> rgba = g_colors[i];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//将点的位置传递到a_Position变量中</span></span><br><span class="line">        gl.vertexAttrib3f(a_Position, xy[<span class="number">0</span>], xy[<span class="number">1</span>], <span class="number">0.0</span>);</span><br><span class="line">        <span class="comment">//将点的颜色传递到u_FragColor变量中</span></span><br><span class="line">        gl.uniform4f(u_FragColor, rgba[<span class="number">0</span>],  rgba[<span class="number">1</span>], rgba[<span class="number">2</span>], rgba[<span class="number">3</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//绘制点</span></span><br><span class="line">        gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/ColorPoints.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】04-通过鼠标点击绘点_v1</title>
     <url>/2021/07/24/ClickedPoints/</url>
     <content><![CDATA[<blockquote>
@@ -313,6 +210,109 @@
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】05-通过鼠标点击绘点_v2_彩色版</title>
+    <url>/2021/07/25/ClickedPoints-color/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：05-ColorPoints</p>
+<p>要点：注册js事件、匿名函数、坐标转换、g_points.push()</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、为何使用匿名函数？"><a href="#一、为何使用匿名函数？" class="headerlink" title="一、为何使用匿名函数？"></a>一、为何使用匿名函数？</h5><p>先看示例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注册鼠标点击事件响应函数(匿名函數)</span></span><br><span class="line">canvas.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    click(event, gl, canvas, a_Position);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当你要画一个点时，需要传入三个变量（gl、canvas、a_Position），这三个变量是定义在<code>main()</code>函数中的局部变量。</p>
+<p>当用户点击鼠标时，浏览器会自动调用注册到<code>&lt;canvas&gt;</code>的ommousedown属性上的函数，并传入<code>event</code>（后面简写为‘e’）参数，通常你会这样写：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">canvas.onmousedown = mousedown	<span class="comment">// 注册响应函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mousedown</span>(<span class="params">e</span>) </span>&#123; ... &#125;<span class="comment">// 接收事件响应参数</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，这样写会出现一个问题，定义在main()函数外部的mousedown()函数就无法获取 main函数中的局部变量，而使用匿名函数就可以解决这个问题。</p>
+<p>当用户点击鼠标后，程序先调用匿名函数function(e)，再调用匿名函数中的click()传入参数。</p>
+<p>当然，这里也可以使用<code>ES6</code>的箭头函数更加简洁：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">canvas.onmousedown = <span class="function"><span class="params">ev</span> =&gt;</span> click(ev, gl, canvas, a_Position);</span><br></pre></td></tr></table></figure>
+
+<h5 id="二、坐标转换"><a href="#二、坐标转换" class="headerlink" title="二、坐标转换"></a>二、坐标转换</h5><p>区别：</p>
+<p>​    ①**客户区原点(0,0)**：位于浏览器视图区的左上角顶点处</p>
+<p>​    ②<strong>canvas原点</strong>：位于绘图区左上角顶点处（…）</p>
+<p>​    ③<strong>WebGL原点</strong>：位于绘图区中心点</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取&lt;canvas&gt;在浏览器客户区中的坐标</span></span><br><span class="line"><span class="keyword">var</span> rect = ev.target.getBoundingClientRect();</span><br><span class="line">x = ((x - rect.left) - canvas.height / <span class="number">2</span>) / (canvas.height / <span class="number">2</span>);</span><br><span class="line">y = (canvas.width / <span class="number">2</span> - (y - rect.top)) / (canvas.width / <span class="number">2</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">rect.left：<canvas>原点在客户区中x坐标</th>
+<th>使用*{margin:0;padding:0;list-style: none;}清除默认样式后，与客户区原点重和,即(0,0)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">rect.top：<canvas>原点在客户区中y坐标</td>
+<td>若不清除默认样式后，canvas原点可能位于(8,8)，仅限博主浏览器测试。</td>
+</tr>
+<tr>
+<td align="left">x</td>
+<td>相对于浏览器左上角顶点处的鼠标横轴位置</td>
+</tr>
+<tr>
+<td align="left">y</td>
+<td>相对于浏览器左上角顶点处的鼠标纵轴位置</td>
+</tr>
+<tr>
+<td align="left"><strong>x - rect.left：鼠标点击处相对于canvas原点位置</strong></td>
+<td>将(x,y)转换成canvas坐标系的坐标</td>
+</tr>
+<tr>
+<td align="left"><strong>y - rect.top：鼠标点击处相对于canvas原点位置</strong></td>
+<td>将(x,y)转换成canvas坐标系的坐标</td>
+</tr>
+<tr>
+<td align="left">canvas.height/width</td>
+<td>绘图区的宽高</td>
+</tr>
+<tr>
+<td align="left">(canvas.height/width) / 2</td>
+<td>绘图区的中心点</td>
+</tr>
+<tr>
+<td align="left">(x - rect.left) - canvas.width / 2</td>
+<td>WebGL系统的原点</td>
+</tr>
+<tr>
+<td align="left">canvas.height / 2 - (y - rect.top)</td>
+<td>WebGL系统的原点</td>
+</tr>
+<tr>
+<td align="left">((x - rect.left) - canvas.width / 2) / (canvas.width / 2)</td>
+<td>将canvas坐标系下的坐标转换为WebGL坐标系中，最终渲染位置</td>
+</tr>
+<tr>
+<td align="left">(canvas.height / 2 - (y - rect.top))</td>
+<td>将canvas坐标系下的坐标转换为WebGL坐标系中，最终渲染位置</td>
+</tr>
+</tbody></table>
+<h5 id="三、为啥用g-points-push"><a href="#三、为啥用g-points-push" class="headerlink" title="三、为啥用g_points.push()"></a>三、为啥用g_points.push()</h5><p>因为WebGL系统中的绘制操作实际上是在颜色缓冲区中进行绘制，绘制结束后系统将缓冲区中的内容显示在屏幕上，然后颜色缓冲区就会被重置，其中内容就会丢失。也由此，每次点击后，浏览器会重新绘制之前的并绘制新点击的。</p>
+<h5 id="四、uniform变量"><a href="#四、uniform变量" class="headerlink" title="四、uniform变量"></a>四、uniform变量</h5><p>作用：从js程序向顶点和片元着色器传输“一致的”（不变的）数据。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">声明变量：&lt;存储限定符&gt;&lt;类型&gt;&lt;变量名&gt;</span><br><span class="line">          uniform    vec4  u_FragColor</span><br><span class="line">精度限定词：指定变量的范围和精度</span><br><span class="line">precision mediump float(中等精度)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>ColoredPoints<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">        <span class="comment">/* body &#123;</span></span></span><br><span class="line"><span class="comment"><span class="css">            margin:0;</span></span></span><br><span class="line"><span class="comment"><span class="css">            padding:0;</span></span></span><br><span class="line"><span class="comment"><span class="css">        &#125; */</span></span></span><br><span class="line"><span class="css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">        Please use the browser supporting &quot;canvas&quot;.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;ClickedPoints.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//ColoredPoints.js</span></span><br><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_PointSize=10.0;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;uniform vec4 u_FragColor;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = u_FragColor;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取a_Position变量存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取u_FragColor 变量存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_FragColor = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_FragColor&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!u_FragColor)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of u_FragColor&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    canvas.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        click(ev,gl,canvas,a_Position,u_FragColor);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g_points = [];</span><br><span class="line"><span class="keyword">var</span> g_colors = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">click</span>(<span class="params">ev, gl, canvas, a_Position,u_FragColor</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x= ev.clientX;</span><br><span class="line">    <span class="keyword">var</span> y = ev.clientY;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> rect = ev.target.getBoundingClientRect();</span><br><span class="line">    x = ((x - rect.left) - canvas.width / <span class="number">2</span>) / (canvas.width / <span class="number">2</span>);</span><br><span class="line">    y = (canvas.height / <span class="number">2</span> - (y - rect.top)) / (canvas.height / <span class="number">2</span>);</span><br><span class="line">    <span class="comment">//将坐标存储到g_points数组中</span></span><br><span class="line">    g_points.push([x, y]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 教程示例</span></span><br><span class="line">    <span class="comment">// if(x &gt;= 0.0 &amp;&amp; y &gt;= 0.0)&#123;  //第一象限</span></span><br><span class="line">    <span class="comment">//     g_colors.push([1.0, 0.0, 0.0, 1.0]);  //红色</span></span><br><span class="line">    <span class="comment">// &#125;else if(x &lt; 0.0 &amp;&amp; y &lt; 0.0)&#123;  //第三象限</span></span><br><span class="line">    <span class="comment">//     g_colors.push([0.0, 1.0, 0.0, 1.0]);  //绿色</span></span><br><span class="line">    <span class="comment">// &#125;else&#123;</span></span><br><span class="line">    <span class="comment">//     g_colors.push([1.0, 1.0, 1.0, 1.0]);  //白色</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 修改示例</span></span><br><span class="line">    g_colors.push([<span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random()])</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清除&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> len = g_points.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> xy=g_points[i];</span><br><span class="line">        <span class="keyword">var</span> rgba = g_colors[i];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//将点的位置传递到a_Position变量中</span></span><br><span class="line">        gl.vertexAttrib3f(a_Position, xy[<span class="number">0</span>], xy[<span class="number">1</span>], <span class="number">0.0</span>);</span><br><span class="line">        <span class="comment">//将点的颜色传递到u_FragColor变量中</span></span><br><span class="line">        gl.uniform4f(u_FragColor, rgba[<span class="number">0</span>],  rgba[<span class="number">1</span>], rgba[<span class="number">2</span>], rgba[<span class="number">3</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//绘制点</span></span><br><span class="line">        gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/ColorPoints.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【WebGL之巅】17-颜色与纹理-绘制彩色与渐变三角形</title>
     <url>/2021/07/29/ColoredTriangle/</url>
     <content><![CDATA[<blockquote>
@@ -369,301 +369,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】20-GLSL ES着色器语言语法详解</title>
-    <url>/2021/07/30/GLSLES/</url>
-    <content><![CDATA[<p>对应《WebGL编程指南》第六章</p>
-<p>要点：</p>
-<span id="more"></span>
-
-<h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p>本章知识点：</p>
-<p>1、数据、变量和变量类型</p>
-<p>2、矢量、矩阵、结构体、数组、采样器（纹理）</p>
-<p>3、运算、程序流、函数</p>
-<p>4、attribute、uniform和varying变量</p>
-<p>5、精度限定词</p>
-<p>6、预处理和指令</p>
-<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><h3 id="基本着色器代码"><a href="#基本着色器代码" class="headerlink" title="基本着色器代码"></a>基本着色器代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler1;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color0 = texture2D(u_Sampler0, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color1 = texture2D(u_Sampler1, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = color0 * color1;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、GLSL-ES概述"><a href="#一、GLSL-ES概述" class="headerlink" title="一、GLSL ES概述"></a>一、GLSL ES概述</h3><p>​        <code>GLSL ES</code>编程语言是在<code>OpenGL</code>着色器语言（GLSL）基础上，删除和简化一部分功能后形成的。各位看到<code>ES</code>版本应该会想到<code>GLSL ES</code>应用在手机、游戏主机等设备上，这样可以<strong>降低硬件的功耗，同时也能减少性能开销</strong>。</p>
-<p>​        <code>GLSL ES</code>的语法与C语言类似。此外，着色器语言也开始被用来完成一些通用的任务，如图像处理和数据运算（所谓的GPGPU）。</p>
-<h3 id="二、基础语法"><a href="#二、基础语法" class="headerlink" title="二、基础语法"></a>二、基础语法</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>​    <strong>2.1.1</strong> <code>GLSL ES</code>对大小写是敏感的，例如：<code>Niuniu</code>和<code>niuniu</code>这就对应的是两个不同的变量；</p>
-<p>​    <strong>2.1.2</strong> 每条语句都要有<code>;</code>结束</p>
-<h4 id="2-2-执行次序"><a href="#2-2-执行次序" class="headerlink" title="2.2 执行次序"></a>2.2 执行次序</h4><p>​    <strong>2.2.1</strong> 每个着色器程序都要有<code>main()</code>函数，就像<code>C语言</code>一样，每个着色器程序都从<code>main</code>开始执行，但是<code>GLSL ES</code>中的<code>main()</code>函数并<strong>不接收任何参数</strong>，并且必须是<code>void</code>类型；</p>
-<p>​    <strong>2.2.2</strong> <code>void</code>表示函数没有返回值，若有返回值，需明确返回值类型。</p>
-<h4 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3 注释"></a>2.3 注释</h4><p>​    2.3.1 单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
-<h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><strong>3.1</strong> <code>GLSL ES</code>支持两种数据值类型：</p>
-<p>​    <strong>3.1.1</strong> <strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
-<p>​    <strong>3.1.2</strong> <strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
-<blockquote>
-<p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
-</blockquote>
-<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="4-1-变量名规则"><a href="#4-1-变量名规则" class="headerlink" title="4.1 变量名规则"></a>4.1 变量名规则</h4><p><strong>4.1.1</strong> 只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
-<p><strong>4.1.2</strong> 变量名的第一个字符不能为数字</p>
-<p><strong>4.1.3</strong> 不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
-<p><strong>4.1.4</strong> 不能是下表中所列出的关键字</p>
-<p><img src="/images/glsles1.jpg" alt="1"></p>
-<p>​        GLSL ES保留字：</p>
-<p><img src="/images/glsles2.jpg" alt="2"></p>
-<h4 id="4-2-GLSL-ES是强类型语言"><a href="#4-2-GLSL-ES是强类型语言" class="headerlink" title="4.2 GLSL ES是强类型语言"></a>4.2 GLSL ES是强类型语言</h4><p>4.2.1 声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> a_Position</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
-</blockquote>
-<h3 id="五、基本类型"><a href="#五、基本类型" class="headerlink" title="五、基本类型"></a>五、基本类型</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>float</td>
-<td>单精度浮点类型</td>
-</tr>
-<tr>
-<td>int</td>
-<td>整型数</td>
-</tr>
-<tr>
-<td>bool</td>
-<td>布尔值</td>
-</tr>
-</tbody></table>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">float</span> fnumber = <span class="number">1.1</span>;	<span class="comment">// 浮点数</span></span><br><span class="line"><span class="type">int</span> inumber = <span class="number">1</span>;	<span class="comment">// 整型</span></span><br><span class="line"><span class="type">bool</span> blogic = <span class="literal">true</span>;	<span class="comment">// 布尔型</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="5-1-赋值和类型转换"><a href="#5-1-赋值和类型转换" class="headerlink" title="5.1 赋值和类型转换"></a>5.1 赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="5-2-运算符"><a href="#5-2-运算符" class="headerlink" title="5.2 运算符"></a>5.2 运算符</h4><table>
-<thead>
-<tr>
-<th>类别</th>
-<th>GLSL ES数据类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-  *  /  +</td>
-<td>加减乘除</td>
-</tr>
-<tr>
-<td>++  –</td>
-<td>自增、自减</td>
-</tr>
-<tr>
-<td>=  +=  -=  *=  /=</td>
-<td>赋值、算术赋值</td>
-</tr>
-<tr>
-<td>&lt;  &gt;  &lt;=  &gt;=  ==  !=</td>
-<td>比较</td>
-</tr>
-<tr>
-<td>!</td>
-<td>取反</td>
-</tr>
-<tr>
-<td>&amp;&amp;  ||  ^^</td>
-<td>逻辑与、或、异或</td>
-</tr>
-<tr>
-<td>?  :</td>
-<td>三元运算符</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><strong>逻辑与（&amp;&amp;）</strong>：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
-<p><strong>逻辑或（||）</strong>：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
-<p><strong>逻辑异或（^^）</strong>：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
-</blockquote>
-<h3 id="六、矢量和矩阵"><a href="#六、矢量和矩阵" class="headerlink" title="六、矢量和矩阵"></a>六、矢量和矩阵</h3><h4 id="6-1-矢量和矩阵举例"><a href="#6-1-矢量和矩阵举例" class="headerlink" title="6.1 矢量和矩阵举例"></a>6.1 矢量和矩阵举例</h4><p>矢量 $\begin{pmatrix}<br>    8 &amp; 3 &amp; 0<br>\end{pmatrix}<br>$        矩阵$<br>\begin{bmatrix}<br>    8 &amp; 3 &amp; 0 \\<br>    4 &amp; 3 &amp; 6 \\<br>    3 &amp; 2 &amp; 6<br>\end{bmatrix}<br>$​</p>
-<h4 id="6-2-矢量和矩阵的类型"><a href="#6-2-矢量和矩阵的类型" class="headerlink" title="6.2 矢量和矩阵的类型"></a>6.2 矢量和矩阵的类型</h4><table>
-<thead>
-<tr>
-<th>类别</th>
-<th>GLSL ES</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>矢量</td>
-<td>vec2、vec3、vec4</td>
-<td>具有2/3/4个浮点数元素的矢量</td>
-</tr>
-<tr>
-<td></td>
-<td>ivec2、ivec3、ivec4</td>
-<td>具有2/3/4个整型数元素的矢量</td>
-</tr>
-<tr>
-<td></td>
-<td>bvec2、bvec3、bvec4</td>
-<td>具有2/3/4个布尔值元素的矢量</td>
-</tr>
-<tr>
-<td>矩阵</td>
-<td>mat2、mat3、mat4</td>
-<td>2x2、3x3、4x4的浮点数元素的矩阵</td>
-</tr>
-</tbody></table>
-<h4 id="6-3-赋值和构造"><a href="#6-3-赋值和构造" class="headerlink" title="6.3 赋值和构造"></a>6.3 赋值和构造</h4><p><strong>6.3.1</strong> 通常使用与数据类型同名的内置构造函数来生成变量，对于vec4类型，就可以使用内置的<code>vec4()</code>函数，如：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>6.3.2</strong> 构造函数</p>
-<p>概念：专门创建指定类型的变量的函数被称为<strong>构造函数</strong>，构造函数的名称和其创建的变量的类型名称总数一致的。</p>
-<h4 id="6-4-矢量构造函数"><a href="#6-4-矢量构造函数" class="headerlink" title="6.4 矢量构造函数"></a>6.4 矢量构造函数</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec3</span> v3 = <span class="type">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>);	<span class="comment">// 将矢量v3设为(1.0, 0.0, 0.5)</span></span><br><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(v3);	<span class="comment">// 使用v3的前两个值，将v2设为(1.0, 0.0)</span></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>);	<span class="comment">// 将v4设为(1.0, 1.0, 1.0, 1.0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可以使用多个矢量组合成一个矢量，例如：</span></span><br><span class="line"><span class="type">vec4</span> v4_2 = <span class="type">vec4</span>(v2, v4);	<span class="comment">// 将v4_2设为(1.0, 0.0, 1.0, 1.0)，如果v2没有填满就继续用第二个参数v4中的元素填充</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="6-5-矩阵构造函数"><a href="#6-5-矩阵构造函数" class="headerlink" title="6.5 矩阵构造函数"></a>6.5 矩阵构造函数</h4><p>​        矩阵构造函数的使用方式与矢量构造函数的使用方式类似，但是要保证存储在矩阵中的元素是按照<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%812%EF%BC%9A">列主序</a>排列的。下面是使用矩阵构造函数的不同方式。</p>
-<h5 id="6-5-1-方式一"><a href="#6-5-1-方式一" class="headerlink" title="6.5.1 方式一"></a>6.5.1 方式一</h5><p>​        使用矩阵构造函数：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>上面构造的<code>4 x 4</code>矩阵对应的是：$<br>\begin{bmatrix}<br>    1.0 &amp; 5.0 &amp; 9.0 &amp; 13.0 \\<br>    2.0 &amp; 6.0 &amp; 10.0 &amp; 14.0 \\<br>    3.0 &amp; 7.0 &amp; 11.0 &amp; 15.0 \\<br>    4.0 &amp; 8.0 &amp; 12.0 &amp; 16.0<br>\end{bmatrix}<br>$</p>
-<h5 id="6-5-2-方式二"><a href="#6-5-2-方式二" class="headerlink" title="6.5.2 方式二"></a>6.5.2 方式二</h5><p>​        也可以向矩阵构造函数中传入一个或多个矢量，按照<strong>列主序</strong>使用矢量里的元素值来构造矩阵：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = <span class="type">vec2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_1 = <span class="type">mat2</span>(v2_1, v2_2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_2 = <span class="type">mat2</span>(v4);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="6-5-3-方式三"><a href="#6-5-3-方式三" class="headerlink" title="6.5.3 方式三"></a>6.5.3 方式三</h5><p>​        当然使用浮点数和矢量组合的方式来构造矩阵也是可以的：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2 = <span class="type">mat2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, v2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="6-5-4-方式四"><a href="#6-5-4-方式四" class="headerlink" title="6.5.4 方式四"></a>6.5.4 方式四</h5><p>​        如果想构造单位矩阵，那么有更简单的方式：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat3</span> m3 = <span class="type">mat3</span>(<span class="number">1.0</span>);</span><br><span class="line"><span class="comment">// ┌1.0 0.0 0.0┐</span></span><br><span class="line"><span class="comment">// |0.0 1.0 0.0 |</span></span><br><span class="line"><span class="comment">// └0.0 0.0 1.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)	<span class="comment">// 出错，mat4对象需要16个元素</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="6-6-访问矢量和矩阵的元素"><a href="#6-6-访问矢量和矩阵的元素" class="headerlink" title="6.6 访问矢量和矩阵的元素"></a>6.6 访问矢量和矩阵的元素</h4><p>​        为了访问矢量或矩阵中的元素，可以使用<code>.</code>或<code>[]</code>运算符，下面将详细叙述。</p>
-<h5 id="6-6-1-访问矢量元素"><a href="#6-6-1-访问矢量元素" class="headerlink" title="6.6.1 访问矢量元素"></a>6.6.1 访问矢量元素</h5><h6 id="运算符"><a href="#运算符" class="headerlink" title=".运算符"></a><code>.</code>运算符</h6><p>​        在矢量变量名后接<code>.</code>运算符，然后接分量名，就可以访问矢量的元素了。<strong>矢量的分量名</strong>如下表：</p>
-<table>
-<thead>
-<tr>
-<th>类别</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>x，y，z，w</td>
-<td>用来获取顶点坐标的分量</td>
-</tr>
-<tr>
-<td>r，g，b，a</td>
-<td>用来获取颜色分量</td>
-</tr>
-<tr>
-<td>s，t，p，q</td>
-<td>用来获取纹理坐标分量</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>事实上，任何矢量的x、r或s分量都会返回第一个分量</p>
-</blockquote>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// v4.x;</span></span><br><span class="line"><span class="comment">// v4.y;</span></span><br><span class="line"><span class="comment">// v4.r;</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="混合"><a href="#混合" class="headerlink" title="混合"></a>混合</h6><p>​        其实，任何矢量的<code>x</code>、<code>r</code>或<code>s</code>都是返回第一个分量值，同理<code>y</code>/<code>g</code>/<code>t</code>返回第二个分量。我们还可以通过下面的方式给其他矢量赋值：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xy;	<span class="comment">// v2 = (0.0, 1.0)	</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.yx;	<span class="comment">// v2 = (1.0, 0.0)	可逆序</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xx;	<span class="comment">// v2 = (0.0, 0.0)	可重复</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.yzw;	<span class="comment">// v2 = (1.0, 1.0, 0.5)	可跳过</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.xzw;	<span class="comment">// v2 = (0.0, 1.0, 0.5)	可跳过</span></span><br></pre></td></tr></table></figure>
-
-<p>​        上面的代码中，将同一个集合的多个分量名共同置于<em>点运算符</em>后，就可以从矢量中同时提取出多个分量，这个过程也称作<strong>混合</strong>。当然，聚合分量名也可以作为<em>赋值表达式</em>的<em>左值</em>：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> position = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br><span class="line">position.xw = <span class="type">vec2</span>(<span class="number">5.0</span>, <span class="number">6.0</span>);	<span class="comment">// position=(5.0,2.0,3.0,6.0)</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="6-6-2-访问矩阵元素"><a href="#6-6-2-访问矩阵元素" class="headerlink" title="6.6.2 访问矩阵元素"></a>6.6.2 访问矩阵元素</h5><h6 id="运算符-1"><a href="#运算符-1" class="headerlink" title="[]运算符"></a><code>[]</code>运算符</h6><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>​        访问矩阵中元素可以像我们<code>JS</code>中访问二维数组一样：<code>m4[0][0]</code>，这就获取到了<code>m4</code>中的第一个元素<code>1.0</code>，在前面的介绍中有提到，可以使用矢量创建矩阵，当然我们也可以在矩阵中获取矢量：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = m4[<span class="number">0</span>];	<span class="comment">// 第一列元素 (1.0, 2.0, 3.0, 4.0)</span></span><br></pre></td></tr></table></figure>
-
-<p>​        同样可以使用<em>点操作符</em>获取分量值：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> m1_2 = m4[<span class="number">0</span>].x;	<span class="comment">// 将m1_2设置为m4第1列的第1个元素</span></span><br><span class="line">m1_2 = m4[<span class="number">0</span>][<span class="number">1</span>];	<span class="comment">// 将m1_2设置为m4第1列的第2个元素</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="常量索引值"><a href="#常量索引值" class="headerlink" title="常量索引值"></a>常量索引值</h6><p>​        在<code>[]</code>中只能出现的索引值必须是<strong>常量索引值</strong>，其定义如下：</p>
-<ul>
-<li>整型字面量(如0或1)</li>
-<li>用<code>const</code>修饰的全局变量或局部变量，不包括函数参数</li>
-<li>循环索引</li>
-<li>由前述三条的项组成的表达式</li>
-</ul>
-<p>​        下面这个例子就用到了const变量作为访问数组元素的索引：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span> <span class="comment">// 只读</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>]</span><br><span class="line">    </span><br><span class="line"><span class="type">vec4</span> v4b = m4[<span class="keyword">index</span> + <span class="number">1</span>] <span class="comment">// 表达式索引</span></span><br></pre></td></tr></table></figure>
-
-<p>​        注意，不能使用未经const修饰的变量作为索引（除非是循环索引）</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>] 	<span class="comment">// 错误使用  </span></span><br></pre></td></tr></table></figure>
-
-<h4 id="6-7-运算"><a href="#6-7-运算" class="headerlink" title="6.7 运算"></a>6.7 运算</h4><h5 id="6-7-1-运算符"><a href="#6-7-1-运算符" class="headerlink" title="6.7.1 运算符"></a>6.7.1 运算符</h5><table>
-<thead>
-<tr>
-<th>运算符</th>
-<th>运算</th>
-<th>使用数据类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>*  /</td>
-<td>乘除</td>
-<td>适用于vec[234]和mat[234]</td>
-</tr>
-<tr>
-<td>+  -</td>
-<td>加减</td>
-<td></td>
-</tr>
-<tr>
-<td>++  –</td>
-<td>自增/减</td>
-<td>适用于vec[234]和mat[234]</td>
-</tr>
-<tr>
-<td>=  +=  -=  *=  /=</td>
-<td>赋值、运算赋值</td>
-<td>适用于vec[234]和mat[234]</td>
-</tr>
-<tr>
-<td>==  !=</td>
-<td>比较</td>
-<td>适用于vec[234]和mat[234]，对于==，如果两个操作数的每一个分量都相同，那么返回true；对于!=，如果任意分量不同，返回true。</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>补充：</p>
-<p>​    矢量和矩阵的比较不能使用&lt;、&gt;、&lt;=、&gt;=，应该使用内置函数如lessThan()；</p>
-<p>​    若你想逐一分量比较，可使用内置函数equal()或notEqual()；</p>
-<p>​    当运算赋值操作作用于矢量或矩阵时，实际上是逐分量地对每一个元素进行独立的运算。</p>
-</blockquote>
-<h5 id="6-7-2-矢量运算"><a href="#6-7-2-矢量运算" class="headerlink" title="6.7.2 矢量运算"></a>6.7.2 矢量运算</h5><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = (<span class="number">1.0</span>, <span class="number">2.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = (<span class="number">0.1</span>, <span class="number">0.2</span>);</span><br><span class="line"><span class="type">float</span> f = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加法</span></span><br><span class="line">v2_1 = v2_1 + v2_2;	<span class="comment">// (1.1, 2.2) → (v2_1.x + v2_2.x, v2_1.y + v2_2.y)</span></span><br><span class="line">v2_1 = v2_1 + f;	<span class="comment">// (1.6, 2.7) → (v2_1.x + f, v2_1.y + f)</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="6-7-3-矩阵运算"><a href="#6-7-3-矩阵运算" class="headerlink" title="6.7.3 矩阵运算"></a>6.7.3 矩阵运算</h5><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义变量</span></span><br><span class="line"><span class="type">mat2</span> m2_1, m2_2;</span><br><span class="line"><span class="type">vec2</span> v2;</span><br><span class="line"><span class="type">float</span> f;</span><br></pre></td></tr></table></figure>
-
-<h6 id="矩阵和浮点数运算"><a href="#矩阵和浮点数运算" class="headerlink" title="矩阵和浮点数运算"></a>矩阵和浮点数运算</h6><p>​        矩阵与浮点数的运算发生在每个分量上：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">m2_1 + f; <span class="comment">// m2_1[0].x + f; m2_1[0].y + f; m2_1[1].x + f; m2_1[1].y + f;</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="矩阵右乘矢量"><a href="#矩阵右乘矢量" class="headerlink" title="矩阵右乘矢量"></a>矩阵右乘矢量</h6><p>​    矩阵右乘矢量的结果是矢量，其中每个分量都是原矢量中的对应分量，<strong>乘</strong>上矩阵对应<strong>行</strong>的每个元素的<strong>积的和</strong>。可参考之前的<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E4%B8%80%E3%80%81%E7%9F%A9%E9%98%B5%E5%92%8C%E7%9F%A2%E9%87%8F%E7%9A%84%E4%B9%98%E6%B3%95">矢量乘法实现旋转矩阵</a>。</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵右乘矢量</span></span><br><span class="line"><span class="type">vec2</span> v2_result = m2_1 * v2;	</span><br><span class="line"><span class="comment">// v2_result.x = m2_1[0].x * v2.x + m2_1[1].x * v2.y;</span></span><br><span class="line"><span class="comment">// v2_result.y = m2_1[0].y * v2.x + m2_1[1].y * v2.y;</span></span><br></pre></td></tr></table></figure>
-
-<p>例：$<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​​​ * $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​​​​ = $<br>\begin{bmatrix}<br>    11  \\<br>    13  \\<br>    7<br>\end{bmatrix}<br>$​​​​</p>
-<h6 id="矩阵左乘矢量"><a href="#矩阵左乘矢量" class="headerlink" title="矩阵左乘矢量"></a>矩阵左乘矢量</h6><p>​        结果与右乘不同</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵左乘矢量</span></span><br><span class="line">v2_result = v2 * m2_1;	</span><br><span class="line"><span class="comment">// v2_result.x = v2.x * m2_1[0].x + v2.y * m2_1[0].y;</span></span><br><span class="line"><span class="comment">// v2_result.y = v2.x * m2_1[1].x + v2.y * m2_1[1].y;</span></span><br></pre></td></tr></table></figure>
-
-<p>例： $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​  * $<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​ = $<br>\begin{bmatrix}<br>    15  \\<br>    8  \\<br>    14<br>\end{bmatrix}<br>$​​</p>
-<h6 id="矩阵与矩阵相乘"><a href="#矩阵与矩阵相乘" class="headerlink" title="矩阵与矩阵相乘"></a>矩阵与矩阵相乘</h6><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵相乘</span></span><br><span class="line"><span class="type">mat2</span> m2_result = m2_1 * m2_2;	</span><br><span class="line"><span class="comment">// m2_result[0].x = m2_1[0].x * m2_2[0].x + m2_1[1].x * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].x = m2_1[0].x * m2_2[1].x + m2_1[1].x * m2_2[1].y;</span></span><br><span class="line"><span class="comment">// m2_result[0].y = m2_1[0].y * m2_2[0].x + m2_1[1].y * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].y = m2_1[0].y * m2_2[1].x + m2_1[1].y * m2_2[1].y;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="七、结构体"><a href="#七、结构体" class="headerlink" title="七、结构体"></a>七、结构体</h3><h4 id="7-1-结构体定义"><a href="#7-1-结构体定义" class="headerlink" title="7.1 结构体定义"></a>7.1 结构体定义</h4><p>​        在<code>GLSL ES</code>中可以使用<code>struct</code>关键字定义结构体：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义结构体</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明light类型变量</span></span><br><span class="line">light light_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为了方便，也可以使用这种方式定义并声明一个结构体类型的变量</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125; light_1;</span><br></pre></td></tr></table></figure>
-
-<h4 id="7-2-赋值和构造"><a href="#7-2-赋值和构造" class="headerlink" title="7.2 赋值和构造"></a>7.2 赋值和构造</h4><p>​        结构体有标准的构造函数，其名称与结构体一致。构造函数的参数顺序必须与结构体定义中的成员顺序一致。</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">light_1 = light(<span class="type">vec4</span>(<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>), <span class="type">vec3</span>(<span class="number">8.0</span>,<span class="number">3.0</span>,<span class="number">0.0</span>))</span><br></pre></td></tr></table></figure>
-
-<h4 id="7-3-访问成员"><a href="#7-3-访问成员" class="headerlink" title="7.3 访问成员"></a>7.3 访问成员</h4><p>​        通过<code>.</code>操作符访问成员变量：</p>
-<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> lcolor = light_1.color;</span><br></pre></td></tr></table></figure>
-
-<h4 id="7-4-运算符"><a href="#7-4-运算符" class="headerlink" title="7.4 运算符"></a>7.4 运算符</h4><p>​        结构体的成员可参与与其自身类型支持的任何运算，但是结构体本身只支持赋值（=）和比较（==、!=）。</p>
-<blockquote>
-<p>赋值和比较运算符不适用于含有数组与纹理成员的结构体</p>
-</blockquote>
-<h3 id="八、数组"><a href="#八、数组" class="headerlink" title="八、数组"></a>八、数组</h3>]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】01-使用webgl清空绘图区</title>
     <url>/2021/07/24/HellCanvas/</url>
     <content><![CDATA[<blockquote>
@@ -695,52 +400,6 @@
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
 <h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
-    <url>/2021/07/22/HelloCanvas2d/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
-</li>
-<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
-</li>
-<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
-<p>参数：x    矩形左上角的 x 坐标</p>
-<pre><code>      y    矩形左上角的 y 坐标
-      width        矩形的宽度
-      height   矩形的高度
-</code></pre>
-</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>HelloCanvas2d.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
 ]]></content>
       <categories>
         <category>code</category>
@@ -806,6 +465,77 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint1.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = vec4(-0.5, -0.5, 0.0, 1.0);\n&#x27;</span> + <span class="comment">//设置坐标：顶点位置</span></span><br><span class="line">        <span class="string">&#x27;gl_PointSize = 10.0;\n&#x27;</span> +                    <span class="comment">//设置尺寸（px数），默认值1.0</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">//设置颜色，RGBA格式</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>( !gl )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v1-03.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】00-使用canvas绘制2d矩形</title>
+    <url>/2021/07/22/HelloCanvas2d/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：00-HelloCanvas2d</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>canvas绘图机制：上下文。要在<canvas>上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</p>
+</li>
+<li><p><code>fillstyle</code>：设置或返回用于填充绘画的颜色、渐变或模式。</p>
+</li>
+<li><p>使用填充颜色填充矩形。<br><code>fillRect(x,y,width,height)</code></p>
+<p>参数：x    矩形左上角的 x 坐标</p>
+<pre><code>      y    矩形左上角的 y 坐标
+      width        矩形的宽度
+      height   矩形的高度
+</code></pre>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas2d.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;mycanvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas2d.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas2d.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas2d.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;标签</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;mycanvas&quot;</span>);</span><br><span class="line">	<span class="comment">//如果没找到&lt;canvas&gt;标签，则输出错误信息</span></span><br><span class="line">	<span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to retrieve the &lt;canvas&gt; element.&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// canvas绘图机制：上下文。要在&lt;canvas&gt;上绘制图像，须先获取绘图上下文，“2d”代表我们要绘制二维图形。</span></span><br><span class="line">	<span class="comment">// 注意区分‘2d’大小写</span></span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	ctx.fillStyle = <span class="string">&quot;rgba(0,100,0,1)&quot;</span>;</span><br><span class="line">	ctx.fillRect(<span class="number">120</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">150</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】08-绘制一个矩形</title>
+    <url>/2021/07/25/HelloRectangle/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
+<p>要点：缓冲区对象、gl.drawArrays()参数</p>
+<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
+<p><img src="/images/HelloRectangle02.png" alt="2"></p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -910,31 +640,6 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】08-绘制一个矩形</title>
-    <url>/2021/07/25/HelloRectangle/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
-<p>要点：缓冲区对象、gl.drawArrays()参数</p>
-<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
-<p><img src="/images/HelloRectangle02.png" alt="2"></p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -1317,43 +1022,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】13-使用Matrix4变换矩阵实现三角形复合变换</title>
-    <url>/2021/07/27/RotatedTranslatedTriangle/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：14-RotatedTranslatedTriangle</p>
-<p>要点：矩阵变换库（cuon-matrix.js 本书专用）、Matrix4对象、复合变换</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>1.将三角形沿着X轴平移一段距离</p>
-<p>2.旋转三角形</p>
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、模型变换"><a href="#一、模型变换" class="headerlink" title="一、模型变换"></a>一、模型变换</h5><p>建立下面的等式：</p>
-<p>​    <code>&lt;“平移后旋转”后的坐标&gt; = &lt;旋转矩阵&gt; X (&lt;平移矩阵&gt; X &lt;原始坐标&gt;)</code></p>
-<p>这里，<code>&lt;旋转矩阵&gt; X (&lt;平移矩阵&gt; X &lt;原始坐标&gt;)</code> 等价于 <code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;) X &lt;原始坐标&gt;</code>，即可在JavaScript中计算<code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</code>，然后将得到的结果传入顶点着色器，实现复合效果。</p>
-<p>一个模型可能经过多次变换，将这些变换全部复合成一个等效的变换，就得到了<strong>模型变换</strong>，或称<strong>建模变换</strong>，相应地，模型变换的矩阵称为<strong>模型矩阵</strong>。</p>
-<h5 id="二、Matrix4对象实现矩阵乘法"><a href="#二、Matrix4对象实现矩阵乘法" class="headerlink" title="二、Matrix4对象实现矩阵乘法"></a>二、Matrix4对象实现矩阵乘法</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> modelMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ANGLE = <span class="number">60.0</span>;</span><br><span class="line"><span class="keyword">var</span> Tx = <span class="number">0.5</span>;</span><br><span class="line"><span class="comment">// 执行完后modelMatrix中包含了一个旋转矩阵</span></span><br><span class="line">modelMatrix.setRotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);	</span><br><span class="line"><span class="comment">// 乘法：(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</span></span><br><span class="line">modelMatrix.translate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>你可能会发现，“先平移后旋转”的顺序与代码中构造模型矩阵<code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</code>的顺序是相反的，这是因为变换矩阵最终要与三角形的三个顶点的原始坐标矢量相乘。</p>
-<p>明白这个原理后，也可以尝试“先旋转后平移”：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">modelMatrix.setTranslate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">modelMatrix.rotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//RotatedTriangle.js</span></span><br><span class="line"><span class="comment">// 变换矩阵旋转</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="comment">//x&#x27; = x cos b - y sin b</span></span><br><span class="line">    <span class="comment">//y&#x27; = x sin b + y cosb</span></span><br><span class="line">    <span class="comment">//z&#x27; = z</span></span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ModelMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = u_ModelMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> modelMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> ANGLE = <span class="number">60.0</span>;</span><br><span class="line">    <span class="keyword">var</span> Tx = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 先平移后旋转</span></span><br><span class="line">    <span class="comment">// modelMatrix.setRotate(ANGLE, 0, 0, 1);</span></span><br><span class="line">    <span class="comment">// modelMatrix.translate(Tx, 0, 0);</span></span><br><span class="line">    <span class="comment">// 先旋转后平移</span></span><br><span class="line">    modelMatrix.setTranslate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    modelMatrix.rotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>); </span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> u_ModelMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ModelMatrix&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(u_ModelMatrix &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of u_xformMatrix&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.uniformMatrix4fv(u_ModelMatrix, <span class="literal">false</span>, modelMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">0.3</span>, -<span class="number">0.3</span>, -<span class="number">0.3</span>, <span class="number">0.3</span>, -<span class="number">0.3</span>]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">3</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><h5 id="先平移后旋转"><a href="#先平移后旋转" class="headerlink" title="先平移后旋转"></a>先平移后旋转</h5><p><img src="/images/RotatedTranslatedTriangle01.png" alt="1"></p>
-<h5 id="先旋转后平移"><a href="#先旋转后平移" class="headerlink" title="先旋转后平移"></a>先旋转后平移</h5><p><img src="/images/RotatedTranslatedTriangle02.png" alt="2"></p>
-<p>可以看到，两者的变换结果是不同的。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】19-颜色与纹理-使用多幅纹理</title>
     <url>/2021/07/30/MultiTexture/</url>
     <content><![CDATA[<p>对应《WebGL编程指南》代码：21-MultiTexture</p>
@@ -1390,6 +1058,43 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//MultiTexture.js</span></span><br><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler1;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color0 = texture2D(u_Sampler0, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color1 = texture2D(u_Sampler1, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = color0 * color1;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span>  <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!canvas) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span> (!gl) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Specify the color for clearing &lt;canvas&gt;</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set texture</span></span><br><span class="line">    <span class="keyword">if</span> (!initTextures(gl, n)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to intialize the texture.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesTexCoords = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [</span><br><span class="line">            -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,</span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">0.0</span>,</span><br><span class="line">            <span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">1.0</span>, <span class="number">0.0</span>,</span><br><span class="line">        ]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>;<span class="comment">//顶点数目</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexTexCoordBuffer = gl.createBuffer();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexTexCoordBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesTexCoords, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesTexCoords.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">4</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将纹理坐标分配给a_TexCoord并开启它</span></span><br><span class="line">    <span class="keyword">var</span> a_TexCoord = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_TexCoord&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    gl.vertexAttribPointer(a_TexCoord, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE*<span class="number">4</span>, FSIZE*<span class="number">2</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_TexCoord);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initTextures</span>(<span class="params">gl, n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> texture0 = gl.createTexture(); <span class="comment">//创建纹理对象</span></span><br><span class="line">    <span class="keyword">var</span> texture1 = gl.createTexture();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取u_Sampler的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> u_Sampler0 = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler0&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> u_Sampler1 = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_Sampler1&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> image0 = <span class="keyword">new</span> Image();<span class="comment">//创建一个image对象</span></span><br><span class="line">    <span class="keyword">var</span> image1 = <span class="keyword">new</span> Image();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注册图像加载时间的响应函数；注意最后一个参数是纹理单元编号</span></span><br><span class="line">    image0.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        loadTexture(gl, n, texture0, u_Sampler0, image0, <span class="number">0</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    image1.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        loadTexture(gl, n, texture1, u_Sampler1, image1, <span class="number">1</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//浏览器开始加载图像</span></span><br><span class="line">    image0.src = <span class="string">&#x27;../resources/sky.jpg&#x27;</span>;</span><br><span class="line">    image1.src = <span class="string">&#x27;../resources/circle.gif&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//标记纹理单元是否已经就绪</span></span><br><span class="line"><span class="keyword">var</span> g_texUnit0 = <span class="literal">false</span>, g_texUnit1 = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadTexture</span>(<span class="params">gl, n, texture, u_Sampler, image, texUnit</span>)</span>&#123;</span><br><span class="line">    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="number">1</span>);<span class="comment">//对纹理图像进行y轴反转</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(texUnit == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        gl.activeTexture(gl.TEXTURE0);</span><br><span class="line">        g_texUnit0 = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        gl.activeTexture(gl.TEXTURE1);</span><br><span class="line">        g_texUnit1 = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向target绑定纹理对象</span></span><br><span class="line">    gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//配置纹理参数</span></span><br><span class="line">    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);</span><br><span class="line">    <span class="comment">// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span></span><br><span class="line">    <span class="comment">// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);</span></span><br><span class="line">    <span class="comment">//配置纹理图像</span></span><br><span class="line">    gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将0号纹理传递给着色器</span></span><br><span class="line">    gl.uniform1i(u_Sampler, texUnit);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(g_texUnit0 &amp;&amp; g_texUnit1)</span><br><span class="line">        gl.drawArrays(gl.TRIANGLE_STRIP, <span class="number">0</span>, n);<span class="comment">//绘制矩形</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/images/MultiTexture.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】13-使用Matrix4变换矩阵实现三角形复合变换</title>
+    <url>/2021/07/27/RotatedTranslatedTriangle/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：14-RotatedTranslatedTriangle</p>
+<p>要点：矩阵变换库（cuon-matrix.js 本书专用）、Matrix4对象、复合变换</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>1.将三角形沿着X轴平移一段距离</p>
+<p>2.旋转三角形</p>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><h5 id="一、模型变换"><a href="#一、模型变换" class="headerlink" title="一、模型变换"></a>一、模型变换</h5><p>建立下面的等式：</p>
+<p>​    <code>&lt;“平移后旋转”后的坐标&gt; = &lt;旋转矩阵&gt; X (&lt;平移矩阵&gt; X &lt;原始坐标&gt;)</code></p>
+<p>这里，<code>&lt;旋转矩阵&gt; X (&lt;平移矩阵&gt; X &lt;原始坐标&gt;)</code> 等价于 <code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;) X &lt;原始坐标&gt;</code>，即可在JavaScript中计算<code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</code>，然后将得到的结果传入顶点着色器，实现复合效果。</p>
+<p>一个模型可能经过多次变换，将这些变换全部复合成一个等效的变换，就得到了<strong>模型变换</strong>，或称<strong>建模变换</strong>，相应地，模型变换的矩阵称为<strong>模型矩阵</strong>。</p>
+<h5 id="二、Matrix4对象实现矩阵乘法"><a href="#二、Matrix4对象实现矩阵乘法" class="headerlink" title="二、Matrix4对象实现矩阵乘法"></a>二、Matrix4对象实现矩阵乘法</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> modelMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ANGLE = <span class="number">60.0</span>;</span><br><span class="line"><span class="keyword">var</span> Tx = <span class="number">0.5</span>;</span><br><span class="line"><span class="comment">// 执行完后modelMatrix中包含了一个旋转矩阵</span></span><br><span class="line">modelMatrix.setRotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);	</span><br><span class="line"><span class="comment">// 乘法：(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</span></span><br><span class="line">modelMatrix.translate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>你可能会发现，“先平移后旋转”的顺序与代码中构造模型矩阵<code>(&lt;旋转矩阵&gt; X &lt;平移矩阵&gt;)</code>的顺序是相反的，这是因为变换矩阵最终要与三角形的三个顶点的原始坐标矢量相乘。</p>
+<p>明白这个原理后，也可以尝试“先旋转后平移”：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">modelMatrix.setTranslate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">modelMatrix.rotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//RotatedTriangle.js</span></span><br><span class="line"><span class="comment">// 变换矩阵旋转</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="comment">//x&#x27; = x cos b - y sin b</span></span><br><span class="line">    <span class="comment">//y&#x27; = x sin b + y cosb</span></span><br><span class="line">    <span class="comment">//z&#x27; = z</span></span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ModelMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = u_ModelMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> modelMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> ANGLE = <span class="number">60.0</span>;</span><br><span class="line">    <span class="keyword">var</span> Tx = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 先平移后旋转</span></span><br><span class="line">    <span class="comment">// modelMatrix.setRotate(ANGLE, 0, 0, 1);</span></span><br><span class="line">    <span class="comment">// modelMatrix.translate(Tx, 0, 0);</span></span><br><span class="line">    <span class="comment">// 先旋转后平移</span></span><br><span class="line">    modelMatrix.setTranslate(Tx, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    modelMatrix.rotate(ANGLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>); </span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> u_ModelMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ModelMatrix&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(u_ModelMatrix &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of u_xformMatrix&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.uniformMatrix4fv(u_ModelMatrix, <span class="literal">false</span>, modelMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [<span class="number">0.0</span>, <span class="number">0.3</span>, -<span class="number">0.3</span>, -<span class="number">0.3</span>, <span class="number">0.3</span>, -<span class="number">0.3</span>]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">3</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><h5 id="先平移后旋转"><a href="#先平移后旋转" class="headerlink" title="先平移后旋转"></a>先平移后旋转</h5><p><img src="/images/RotatedTranslatedTriangle01.png" alt="1"></p>
+<h5 id="先旋转后平移"><a href="#先旋转后平移" class="headerlink" title="先旋转后平移"></a>先旋转后平移</h5><p><img src="/images/RotatedTranslatedTriangle02.png" alt="2"></p>
+<p>可以看到，两者的变换结果是不同的。</p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -3214,6 +2919,399 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>frontEnd</tag>
         <tag>Browser</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】20-GLSL ES着色器语言语法详解</title>
+    <url>/2021/07/30/GLSLES/</url>
+    <content><![CDATA[<p>对应《WebGL编程指南》第六章</p>
+<p>要点：</p>
+<span id="more"></span>
+
+<h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p>本章知识点：</p>
+<p>1、数据、变量和变量类型</p>
+<p>2、矢量、矩阵、结构体、数组、采样器（纹理）</p>
+<p>3、运算、程序流、函数</p>
+<p>4、attribute、uniform和varying变量</p>
+<p>5、精度限定词</p>
+<p>6、预处理和指令</p>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><h3 id="基本着色器代码"><a href="#基本着色器代码" class="headerlink" title="基本着色器代码"></a>基本着色器代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec2 a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_TexCoord = a_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform sampler2D u_Sampler1;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec2 v_TexCoord;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color0 = texture2D(u_Sampler0, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   vec4 color1 = texture2D(u_Sampler1, v_TexCoord);\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = color0 * color1;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、GLSL-ES概述"><a href="#一、GLSL-ES概述" class="headerlink" title="一、GLSL ES概述"></a>一、GLSL ES概述</h3><p>​        <code>GLSL ES</code>编程语言是在<code>OpenGL</code>着色器语言（GLSL）基础上，删除和简化一部分功能后形成的。各位看到<code>ES</code>版本应该会想到<code>GLSL ES</code>应用在手机、游戏主机等设备上，这样可以<strong>降低硬件的功耗，同时也能减少性能开销</strong>。</p>
+<p>​        <code>GLSL ES</code>的语法与C语言类似。此外，着色器语言也开始被用来完成一些通用的任务，如图像处理和数据运算（所谓的GPGPU）。</p>
+<h3 id="二、基础语法"><a href="#二、基础语法" class="headerlink" title="二、基础语法"></a>二、基础语法</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>​     <code>GLSL ES</code>对大小写是敏感的，例如：<code>Niuniu</code>和<code>niuniu</code>这就对应的是两个不同的变量；</p>
+<p>​     每条语句都要有<code>;</code>结束</p>
+<h4 id="2-2-执行次序"><a href="#2-2-执行次序" class="headerlink" title="2.2 执行次序"></a>2.2 执行次序</h4><p>​     每个着色器程序都要有<code>main()</code>函数，就像<code>C语言</code>一样，每个着色器程序都从<code>main</code>开始执行，但是<code>GLSL ES</code>中的<code>main()</code>函数并<strong>不接收任何参数</strong>，并且必须是<code>void</code>类型；</p>
+<p>​     <code>void</code>表示函数没有返回值，若有返回值，需明确返回值类型。</p>
+<h4 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3 注释"></a>2.3 注释</h4><p>​     单行注释使用<code>//</code>，多行注释则是<code>/* 注释 */</code>；</p>
+<h3 id="三、数据值类型（数值额布尔值）"><a href="#三、数据值类型（数值额布尔值）" class="headerlink" title="三、数据值类型（数值额布尔值）"></a>三、数据值类型（数值额布尔值）</h3><p><strong>3.1</strong> <code>GLSL ES</code>支持两种数据值类型：</p>
+<p>​     <strong>数值类型</strong>：<code>GLSL ES</code>支持整数类型和浮点数，没有小数点的值被认定为整数类型，而有小数点的则被认为是浮点数；</p>
+<p>​     <strong>布尔值类型</strong>：<code>true</code>和<code>false</code>，无需多言。</p>
+<blockquote>
+<p><code>GLSL ES</code>不支持字符串类型，虽然字符串对三维图形语言来说还是有一定意义的。</p>
+</blockquote>
+<h3 id="四、变量"><a href="#四、变量" class="headerlink" title="四、变量"></a>四、变量</h3><h4 id="4-1-变量名规则"><a href="#4-1-变量名规则" class="headerlink" title="4.1 变量名规则"></a>4.1 变量名规则</h4><ul>
+<li><p>只能由<code>a-z</code>、<code>A-Z</code>、<code>0-9</code>以及<code>_</code>组成</p>
+</li>
+<li><p>变量名的第一个字符不能为数字</p>
+</li>
+<li><p>不能以<code>gl_</code>、<code>webgl_</code>或<code>_webgl</code>开头，这些前缀已被<code>OpenGL ES</code>保留了</p>
+</li>
+<li><p>不能是下表中所列出的关键字</p>
+</li>
+</ul>
+<p><img src="/images/glsles1.jpg" alt="1"></p>
+<p>​        GLSL ES保留字：</p>
+<p><img src="/images/glsles2.jpg" alt="2"></p>
+<h4 id="4-2-GLSL-ES是强类型语言"><a href="#4-2-GLSL-ES是强类型语言" class="headerlink" title="4.2 GLSL ES是强类型语言"></a>4.2 GLSL ES是强类型语言</h4><p>​    声明变量的方式：&lt;类型&gt; &lt;变量名&gt;，例：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> a_Position</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>进行赋值操作时，等号左右两侧的数据类型必须一致。</p>
+</blockquote>
+<h3 id="五、基本类型"><a href="#五、基本类型" class="headerlink" title="五、基本类型"></a>五、基本类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>float</td>
+<td>单精度浮点类型</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型数</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>布尔值</td>
+</tr>
+</tbody></table>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明变量</span></span><br><span class="line"><span class="type">float</span> fnumber = <span class="number">1.1</span>;	<span class="comment">// 浮点数</span></span><br><span class="line"><span class="type">int</span> inumber = <span class="number">1</span>;	<span class="comment">// 整型</span></span><br><span class="line"><span class="type">bool</span> blogic = <span class="literal">true</span>;	<span class="comment">// 布尔型</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-1-赋值和类型转换"><a href="#5-1-赋值和类型转换" class="headerlink" title="5.1 赋值和类型转换"></a>5.1 赋值和类型转换</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 强制类型转换</span></span><br><span class="line"><span class="type">int</span> fresult = <span class="type">int</span>(fnumber);	<span class="comment">// 去掉小数部分，例如：3.14转换为3</span></span><br><span class="line"><span class="type">bool</span> bresult = <span class="type">int</span>(blogic);	<span class="comment">// true转为1，false转为0</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> iresult = <span class="type">float</span>(inumber);	<span class="comment">// 整型转换为浮点数，例如：3转换为3.0</span></span><br><span class="line">bresult = <span class="type">float</span>(blogic);	<span class="comment">// 布尔型转换为浮点数，true转为1.0，false转为0.0</span></span><br><span class="line"></span><br><span class="line">iresult = <span class="type">bool</span>(inumber);	<span class="comment">// 整型转换为布尔型，0转为false，其余非0数转为true</span></span><br><span class="line">fresult = <span class="type">bool</span>(fnumber);	<span class="comment">// 整型转换为布尔型，0.0转为false，其余非0.0数转为true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-运算符"><a href="#5-2-运算符" class="headerlink" title="5.2 运算符"></a>5.2 运算符</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>GLSL ES数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-  *  /  +</td>
+<td>加减乘除</td>
+</tr>
+<tr>
+<td>++  –</td>
+<td>自增、自减</td>
+</tr>
+<tr>
+<td>=  +=  -=  *=  /=</td>
+<td>赋值、算术赋值</td>
+</tr>
+<tr>
+<td>&lt;  &gt;  &lt;=  &gt;=  ==  !=</td>
+<td>比较</td>
+</tr>
+<tr>
+<td>!</td>
+<td>取反</td>
+</tr>
+<tr>
+<td>&amp;&amp;  ||  ^^</td>
+<td>逻辑与、或、异或</td>
+</tr>
+<tr>
+<td>?  :</td>
+<td>三元运算符</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>逻辑与（&amp;&amp;）</strong>：只有第一个表达式的计算值为true时才会计算第二个表达式（找错）。</p>
+<p><strong>逻辑或（||）</strong>：只有第一个表达式的计算值为false时才会计算第二个表达式（找对）。</p>
+<p><strong>逻辑异或（^^）</strong>：只有当左右两个表达式中有且仅有一个为true时，运算结果为true，否则为false。</p>
+</blockquote>
+<h3 id="六、矢量和矩阵"><a href="#六、矢量和矩阵" class="headerlink" title="六、矢量和矩阵"></a>六、矢量和矩阵</h3><h4 id="6-1-矢量和矩阵举例"><a href="#6-1-矢量和矩阵举例" class="headerlink" title="6.1 矢量和矩阵举例"></a>6.1 矢量和矩阵举例</h4><p>矢量 $\begin{pmatrix}<br>    8 &amp; 3 &amp; 0<br>\end{pmatrix}<br>$        矩阵$<br>\begin{bmatrix}<br>    8 &amp; 3 &amp; 0 \\<br>    4 &amp; 3 &amp; 6 \\<br>    3 &amp; 2 &amp; 6<br>\end{bmatrix}<br>$​</p>
+<h4 id="6-2-矢量和矩阵的类型"><a href="#6-2-矢量和矩阵的类型" class="headerlink" title="6.2 矢量和矩阵的类型"></a>6.2 矢量和矩阵的类型</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>GLSL ES</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>矢量</td>
+<td>vec2、vec3、vec4</td>
+<td>具有2/3/4个浮点数元素的矢量</td>
+</tr>
+<tr>
+<td></td>
+<td>ivec2、ivec3、ivec4</td>
+<td>具有2/3/4个整型数元素的矢量</td>
+</tr>
+<tr>
+<td></td>
+<td>bvec2、bvec3、bvec4</td>
+<td>具有2/3/4个布尔值元素的矢量</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>mat2、mat3、mat4</td>
+<td>2x2、3x3、4x4的浮点数元素的矩阵</td>
+</tr>
+</tbody></table>
+<h4 id="6-3-赋值和构造"><a href="#6-3-赋值和构造" class="headerlink" title="6.3 赋值和构造"></a>6.3 赋值和构造</h4><p><strong>6.3.1</strong> 通常使用与数据类型同名的内置构造函数来生成变量，对于vec4类型，就可以使用内置的<code>vec4()</code>函数，如：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>6.3.2</strong> 构造函数</p>
+<p>概念：专门创建指定类型的变量的函数被称为<strong>构造函数</strong>，构造函数的名称和其创建的变量的类型名称总数一致的。</p>
+<h4 id="6-4-矢量构造函数"><a href="#6-4-矢量构造函数" class="headerlink" title="6.4 矢量构造函数"></a>6.4 矢量构造函数</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec3</span> v3 = <span class="type">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>);	<span class="comment">// 将矢量v3设为(1.0, 0.0, 0.5)</span></span><br><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(v3);	<span class="comment">// 使用v3的前两个值，将v2设为(1.0, 0.0)</span></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>);	<span class="comment">// 将v4设为(1.0, 1.0, 1.0, 1.0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可以使用多个矢量组合成一个矢量，例如：</span></span><br><span class="line"><span class="type">vec4</span> v4_2 = <span class="type">vec4</span>(v2, v4);	<span class="comment">// 将v4_2设为(1.0, 0.0, 1.0, 1.0)，如果v2没有填满就继续用第二个参数v4中的元素填充</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-5-矩阵构造函数"><a href="#6-5-矩阵构造函数" class="headerlink" title="6.5 矩阵构造函数"></a>6.5 矩阵构造函数</h4><p>​        矩阵构造函数的使用方式与矢量构造函数的使用方式类似，但是要保证存储在矩阵中的元素是按照<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%812%EF%BC%9A">列主序</a>排列的。下面是使用矩阵构造函数的不同方式。</p>
+<h5 id="6-5-1-方式一"><a href="#6-5-1-方式一" class="headerlink" title="6.5.1 方式一"></a>6.5.1 方式一</h5><p>​        使用矩阵构造函数：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面构造的<code>4 x 4</code>矩阵对应的是：$<br>\begin{bmatrix}<br>    1.0 &amp; 5.0 &amp; 9.0 &amp; 13.0 \\<br>    2.0 &amp; 6.0 &amp; 10.0 &amp; 14.0 \\<br>    3.0 &amp; 7.0 &amp; 11.0 &amp; 15.0 \\<br>    4.0 &amp; 8.0 &amp; 12.0 &amp; 16.0<br>\end{bmatrix}<br>$</p>
+<h5 id="6-5-2-方式二"><a href="#6-5-2-方式二" class="headerlink" title="6.5.2 方式二"></a>6.5.2 方式二</h5><p>​        也可以向矩阵构造函数中传入一个或多个矢量，按照<strong>列主序</strong>使用矢量里的元素值来构造矩阵：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = <span class="type">vec2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_1 = <span class="type">mat2</span>(v2_1, v2_2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2_2 = <span class="type">mat2</span>(v4);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-5-3-方式三"><a href="#6-5-3-方式三" class="headerlink" title="6.5.3 方式三"></a>6.5.3 方式三</h5><p>​        当然使用浮点数和矢量组合的方式来构造矩阵也是可以的：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2 = <span class="type">vec2</span>(<span class="number">2.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="type">mat2</span> m2 = <span class="type">mat2</span>(<span class="number">1.0</span>, <span class="number">3.0</span>, v2);</span><br><span class="line"><span class="comment">// ┌1.0 2.0┐</span></span><br><span class="line"><span class="comment">// └3.0 4.0┘</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-5-4-方式四"><a href="#6-5-4-方式四" class="headerlink" title="6.5.4 方式四"></a>6.5.4 方式四</h5><p>​        如果想构造单位矩阵，那么有更简单的方式：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat3</span> m3 = <span class="type">mat3</span>(<span class="number">1.0</span>);</span><br><span class="line"><span class="comment">// ┌1.0 0.0 0.0┐</span></span><br><span class="line"><span class="comment">// |0.0 1.0 0.0 |</span></span><br><span class="line"><span class="comment">// └0.0 0.0 1.0┘</span></span><br><span class="line"></span><br><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>)	<span class="comment">// 出错，mat4对象需要16个元素</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-6-访问矢量和矩阵的元素"><a href="#6-6-访问矢量和矩阵的元素" class="headerlink" title="6.6 访问矢量和矩阵的元素"></a>6.6 访问矢量和矩阵的元素</h4><p>​        为了访问矢量或矩阵中的元素，可以使用<code>.</code>或<code>[]</code>运算符，下面将详细叙述。</p>
+<h5 id="6-6-1-访问矢量元素"><a href="#6-6-1-访问矢量元素" class="headerlink" title="6.6.1 访问矢量元素"></a>6.6.1 访问矢量元素</h5><h6 id="运算符"><a href="#运算符" class="headerlink" title=".运算符"></a><code>.</code>运算符</h6><p>​        在矢量变量名后接<code>.</code>运算符，然后接分量名，就可以访问矢量的元素了。<strong>矢量的分量名</strong>如下表：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x，y，z，w</td>
+<td>用来获取顶点坐标的分量</td>
+</tr>
+<tr>
+<td>r，g，b，a</td>
+<td>用来获取颜色分量</td>
+</tr>
+<tr>
+<td>s，t，p，q</td>
+<td>用来获取纹理坐标分量</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>事实上，任何矢量的x、r或s分量都会返回第一个分量</p>
+</blockquote>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// v4.x;</span></span><br><span class="line"><span class="comment">// v4.y;</span></span><br><span class="line"><span class="comment">// v4.r;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="混合"><a href="#混合" class="headerlink" title="混合"></a>混合</h6><p>​        其实，任何矢量的<code>x</code>、<code>r</code>或<code>s</code>都是返回第一个分量值，同理<code>y</code>/<code>g</code>/<code>t</code>返回第二个分量。我们还可以通过下面的方式给其他矢量赋值：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = <span class="type">vec4</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xy;	<span class="comment">// v2 = (0.0, 1.0)	</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.yx;	<span class="comment">// v2 = (1.0, 0.0)	可逆序</span></span><br><span class="line"><span class="type">vec2</span> v2 = v4.xx;	<span class="comment">// v2 = (0.0, 0.0)	可重复</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.yzw;	<span class="comment">// v2 = (1.0, 1.0, 0.5)	可跳过</span></span><br><span class="line"><span class="type">vec3</span> v3 = v4.xzw;	<span class="comment">// v2 = (0.0, 1.0, 0.5)	可跳过</span></span><br></pre></td></tr></table></figure>
+
+<p>​        上面的代码中，将同一个集合的多个分量名共同置于<em>点运算符</em>后，就可以从矢量中同时提取出多个分量，这个过程也称作<strong>混合</strong>。当然，聚合分量名也可以作为<em>赋值表达式</em>的<em>左值</em>：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> position = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>);</span><br><span class="line">position.xw = <span class="type">vec2</span>(<span class="number">5.0</span>, <span class="number">6.0</span>);	<span class="comment">// position=(5.0,2.0,3.0,6.0)</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-6-2-访问矩阵元素"><a href="#6-6-2-访问矩阵元素" class="headerlink" title="6.6.2 访问矩阵元素"></a>6.6.2 访问矩阵元素</h5><h6 id="运算符-1"><a href="#运算符-1" class="headerlink" title="[]运算符"></a><code>[]</code>运算符</h6><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">mat4</span> m4 = <span class="type">mat4</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>,</span><br><span class="line">              <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>,</span><br><span class="line">              <span class="number">9.0</span>, <span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>,</span><br><span class="line">              <span class="number">13.0</span>, <span class="number">14.0</span>, <span class="number">15.0</span>, <span class="number">16.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​        访问矩阵中元素可以像我们<code>JS</code>中访问二维数组一样：<code>m4[0][0]</code>，这就获取到了<code>m4</code>中的第一个元素<code>1.0</code>，在前面的介绍中有提到，可以使用矢量创建矩阵，当然我们也可以在矩阵中获取矢量：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> v4 = m4[<span class="number">0</span>];	<span class="comment">// 第一列元素 (1.0, 2.0, 3.0, 4.0)</span></span><br></pre></td></tr></table></figure>
+
+<p>​        同样可以使用<em>点操作符</em>获取分量值：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> m1_2 = m4[<span class="number">0</span>].x;	<span class="comment">// 将m1_2设置为m4第1列的第1个元素</span></span><br><span class="line">m1_2 = m4[<span class="number">0</span>][<span class="number">1</span>];	<span class="comment">// 将m1_2设置为m4第1列的第2个元素</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="常量索引值"><a href="#常量索引值" class="headerlink" title="常量索引值"></a>常量索引值</h6><p>​        在<code>[]</code>中只能出现的索引值必须是<strong>常量索引值</strong>，其定义如下：</p>
+<ul>
+<li>整型字面量(如0或1)</li>
+<li>用<code>const</code>修饰的全局变量或局部变量，不包括函数参数</li>
+<li>循环索引</li>
+<li>由前述三条的项组成的表达式</li>
+</ul>
+<p>​        下面这个例子就用到了const变量作为访问数组元素的索引：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span> <span class="comment">// 只读</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>]</span><br><span class="line">    </span><br><span class="line"><span class="type">vec4</span> v4b = m4[<span class="keyword">index</span> + <span class="number">1</span>] <span class="comment">// 表达式索引</span></span><br></pre></td></tr></table></figure>
+
+<p>​        注意，不能使用未经const修饰的变量作为索引（除非是循环索引）</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="keyword">index</span> = <span class="number">0</span></span><br><span class="line"><span class="type">vec4</span> v4a = m4[<span class="keyword">index</span>] 	<span class="comment">// 错误使用  </span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-7-运算"><a href="#6-7-运算" class="headerlink" title="6.7 运算"></a>6.7 运算</h4><h5 id="6-7-1-运算符"><a href="#6-7-1-运算符" class="headerlink" title="6.7.1 运算符"></a>6.7.1 运算符</h5><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>运算</th>
+<th>使用数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*  /</td>
+<td>乘除</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>+  -</td>
+<td>加减</td>
+<td></td>
+</tr>
+<tr>
+<td>++  –</td>
+<td>自增/减</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>=  +=  -=  *=  /=</td>
+<td>赋值、运算赋值</td>
+<td>适用于vec[234]和mat[234]</td>
+</tr>
+<tr>
+<td>==  !=</td>
+<td>比较</td>
+<td>适用于vec[234]和mat[234]，对于==，如果两个操作数的每一个分量都相同，那么返回true；对于!=，如果任意分量不同，返回true。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>补充：</p>
+<p>​    矢量和矩阵的比较不能使用&lt;、&gt;、&lt;=、&gt;=，应该使用内置函数如lessThan()；</p>
+<p>​    若你想逐一分量比较，可使用内置函数equal()或notEqual()；</p>
+<p>​    当运算赋值操作作用于矢量或矩阵时，实际上是逐分量地对每一个元素进行独立的运算。</p>
+</blockquote>
+<h5 id="6-7-2-矢量运算"><a href="#6-7-2-矢量运算" class="headerlink" title="6.7.2 矢量运算"></a>6.7.2 矢量运算</h5><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec2</span> v2_1 = (<span class="number">1.0</span>, <span class="number">2.0</span>);</span><br><span class="line"><span class="type">vec2</span> v2_2 = (<span class="number">0.1</span>, <span class="number">0.2</span>);</span><br><span class="line"><span class="type">float</span> f = <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加法</span></span><br><span class="line">v2_1 = v2_1 + v2_2;	<span class="comment">// (1.1, 2.2) → (v2_1.x + v2_2.x, v2_1.y + v2_2.y)</span></span><br><span class="line">v2_1 = v2_1 + f;	<span class="comment">// (1.6, 2.7) → (v2_1.x + f, v2_1.y + f)</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="6-7-3-矩阵运算"><a href="#6-7-3-矩阵运算" class="headerlink" title="6.7.3 矩阵运算"></a>6.7.3 矩阵运算</h5><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义变量</span></span><br><span class="line"><span class="type">mat2</span> m2_1, m2_2;</span><br><span class="line"><span class="type">vec2</span> v2;</span><br><span class="line"><span class="type">float</span> f;</span><br></pre></td></tr></table></figure>
+
+<h6 id="矩阵和浮点数运算"><a href="#矩阵和浮点数运算" class="headerlink" title="矩阵和浮点数运算"></a>矩阵和浮点数运算</h6><p>​        矩阵与浮点数的运算发生在每个分量上：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">m2_1 + f; <span class="comment">// m2_1[0].x + f; m2_1[0].y + f; m2_1[1].x + f; m2_1[1].y + f;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="矩阵右乘矢量"><a href="#矩阵右乘矢量" class="headerlink" title="矩阵右乘矢量"></a>矩阵右乘矢量</h6><p>​    矩阵右乘矢量的结果是矢量，其中每个分量都是原矢量中的对应分量，<strong>乘</strong>上矩阵对应<strong>行</strong>的每个元素的<strong>积的和</strong>。可参考之前的<a href="https://freepiao.cn/2021/07/26/RotatedTriangle-Matrix/#%E4%B8%80%E3%80%81%E7%9F%A9%E9%98%B5%E5%92%8C%E7%9F%A2%E9%87%8F%E7%9A%84%E4%B9%98%E6%B3%95">矢量乘法实现旋转矩阵</a>。</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵右乘矢量</span></span><br><span class="line"><span class="type">vec2</span> v2_result = m2_1 * v2;	</span><br><span class="line"><span class="comment">// v2_result.x = m2_1[0].x * v2.x + m2_1[1].x * v2.y;</span></span><br><span class="line"><span class="comment">// v2_result.y = m2_1[0].y * v2.x + m2_1[1].y * v2.y;</span></span><br></pre></td></tr></table></figure>
+
+<p>例：$<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​​​ * $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​​​​ = $<br>\begin{bmatrix}<br>    11  \\<br>    13  \\<br>    7<br>\end{bmatrix}<br>$​​​​</p>
+<h6 id="矩阵左乘矢量"><a href="#矩阵左乘矢量" class="headerlink" title="矩阵左乘矢量"></a>矩阵左乘矢量</h6><p>​        结果与右乘不同</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵左乘矢量</span></span><br><span class="line">v2_result = v2 * m2_1;	</span><br><span class="line"><span class="comment">// v2_result.x = v2.x * m2_1[0].x + v2.y * m2_1[0].y;</span></span><br><span class="line"><span class="comment">// v2_result.y = v2.x * m2_1[1].x + v2.y * m2_1[1].y;</span></span><br></pre></td></tr></table></figure>
+
+<p>例： $<br>\begin{bmatrix}<br>    2  \\<br>    3  \\<br>    1<br>\end{bmatrix}$​  * $<br>\begin{bmatrix}<br>    1 &amp; 2 &amp; 3 \\<br>    4 &amp; 1 &amp; 2 \\<br>    1 &amp; 1 &amp; 2<br>\end{bmatrix}<br>$​​ = $<br>\begin{bmatrix}<br>    15  \\<br>    8  \\<br>    14<br>\end{bmatrix}<br>$​​</p>
+<h6 id="矩阵与矩阵相乘"><a href="#矩阵与矩阵相乘" class="headerlink" title="矩阵与矩阵相乘"></a>矩阵与矩阵相乘</h6><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 矩阵相乘</span></span><br><span class="line"><span class="type">mat2</span> m2_result = m2_1 * m2_2;	</span><br><span class="line"><span class="comment">// m2_result[0].x = m2_1[0].x * m2_2[0].x + m2_1[1].x * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].x = m2_1[0].x * m2_2[1].x + m2_1[1].x * m2_2[1].y;</span></span><br><span class="line"><span class="comment">// m2_result[0].y = m2_1[0].y * m2_2[0].x + m2_1[1].y * m2_2[0].y;</span></span><br><span class="line"><span class="comment">// m2_result[1].y = m2_1[0].y * m2_2[1].x + m2_1[1].y * m2_2[1].y;</span></span><br><span class="line"></span><br><span class="line">m3a * m3b;  <span class="comment">// m3a[0][0] * m3b[0][0] + m3a[1][0] * m3b[0][1] + m3a[2][0] * m3b[0][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][0] * m3b[1][0] + m3a[1][0] * m3b[1][1] + m3a[2][0] * m3b[1][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][0] * m3b[2][0] + m3a[1][0] * m3b[2][1] + m3a[2][0] * m3b[2][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][1] * m3b[0][0] + m3a[1][1] * m3b[0][1] + m3a[2][1] * m3b[0][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][1] * m3b[1][0] + m3a[1][1] * m3b[1][1] + m3a[2][1] * m3b[1][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][1] * m3b[2][0] + m3a[1][1] * m3b[2][1] + m3a[2][1] * m3b[2][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][2] * m3b[0][0] + m3a[1][2] * m3b[0][1] + m3a[2][2] * m3b[0][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][2] * m3b[1][0] + m3a[1][2] * m3b[1][1] + m3a[2][2] * m3b[1][2]</span></span><br><span class="line">            <span class="comment">// m3a[0][2] * m3b[2][0] + m3a[1][2] * m3b[2][1] + m3a[2][2] * m3b[2][2]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="七、结构体"><a href="#七、结构体" class="headerlink" title="七、结构体"></a>七、结构体</h3><h4 id="7-1-结构体定义"><a href="#7-1-结构体定义" class="headerlink" title="7.1 结构体定义"></a>7.1 结构体定义</h4><p>​        在<code>GLSL ES</code>中可以使用<code>struct</code>关键字定义结构体：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义结构体</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明light类型变量</span></span><br><span class="line">light light_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为了方便，也可以使用这种方式定义并声明一个结构体类型的变量</span></span><br><span class="line">struct light &#123;</span><br><span class="line">  <span class="type">vec4</span> color;</span><br><span class="line">  <span class="type">vec3</span> position;</span><br><span class="line">&#125; light_1;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-2-赋值和构造"><a href="#7-2-赋值和构造" class="headerlink" title="7.2 赋值和构造"></a>7.2 赋值和构造</h4><p>​        结构体有标准的构造函数，其名称与结构体一致。构造函数的参数顺序必须与结构体定义中的成员顺序一致。</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">light_1 = light(<span class="type">vec4</span>(<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>), <span class="type">vec3</span>(<span class="number">8.0</span>,<span class="number">3.0</span>,<span class="number">0.0</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-3-访问成员"><a href="#7-3-访问成员" class="headerlink" title="7.3 访问成员"></a>7.3 访问成员</h4><p>​        通过<code>.</code>操作符访问成员变量：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">vec4</span> lcolor = light_1.color;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-运算符"><a href="#7-4-运算符" class="headerlink" title="7.4 运算符"></a>7.4 运算符</h4><p>​        结构体的成员可参与与其自身类型支持的任何运算，但是结构体本身只支持赋值（=）和比较（==、!=）。</p>
+<blockquote>
+<p>赋值和比较运算符不适用于含有数组与纹理成员的结构体</p>
+</blockquote>
+<h3 id="八、数组"><a href="#八、数组" class="headerlink" title="八、数组"></a>八、数组</h3><h4 id="8-1-声明数组"><a href="#8-1-声明数组" class="headerlink" title="8.1 声明数组"></a>8.1 声明数组</h4><p>​        GLSL ES只支持一维数组，而且数组对象不支持pop()和push()等操作，创建数组时也不需要使用new运算符。声明方式如下：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> floatArray[<span class="number">4</span>]; <span class="comment">// 声明含有4个浮点数元素的数组</span></span><br><span class="line"><span class="type">vec4</span> vec4Array[<span class="number">2</span>]; <span class="comment">// 声明含有两个vec4对象的数组</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="8-2-定义数组"><a href="#8-2-定义数组" class="headerlink" title="8.2 定义数组"></a>8.2 定义数组</h4><p>数组的长度必须是大于0的<strong>整形常量表达式</strong>，如下定义：</p>
+<ul>
+<li><p>整形字面量（0、1）</p>
+</li>
+<li><p>用const限定字修饰的全局变量或局部变量，不包含函数参数</p>
+</li>
+<li><p>由上述两条中的项组成的表达式</p>
+<p>因此，下面的代码将会出错：</p>
+</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> size = <span class="number">4</span>;</span><br><span class="line"><span class="type">vec4</span> vec4Array[size]; <span class="comment">//错误。如果第一行为const int size = 4;则不会报错</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：不可以用const限定字来修饰数组本身。</p>
+</blockquote>
+<p>​        只有整型常量表达式和uniform变量可以被用作数组的索引值，此外，与js或c不同，数组不能再声明时被一次性地初始化，而必须显式的对每个元素进行初始化。如下：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">vec4Array[<span class="number">0</span>] = <span class="type">vec4</span>(<span class="number">4.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>,<span class="number">9.0</span>)</span><br><span class="line">vec4Array[<span class="number">1</span>] = <span class="type">vec4</span>(<span class="number">1.0</span>,<span class="number">2.0</span>,<span class="number">3.0</span>,<span class="number">4.0</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>数组本身只支持<code>[]</code>运算符，但数组元素能够参与其自身类型支持的任意运算。</p>
+</blockquote>
+<h3 id="九、取样器（纹理）"><a href="#九、取样器（纹理）" class="headerlink" title="九、取样器（纹理）"></a>九、取样器（纹理）</h3><h4 id="9-1-概念"><a href="#9-1-概念" class="headerlink" title="9.1 概念"></a>9.1 概念</h4><p>​        我们必须通过取样器（sampler）类型变量访问纹理。有两种基本的取样器类型：<code>sampler2D</code>和<code>samplerCube</code>。<strong>取样器变量只能是uniform变量</strong>，或者需要访问纹理的函数，如texture2D()函数的参数。比如：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="keyword">uniform</span> smapler2D u_Sampler;</span><br></pre></td></tr></table></figure>
+
+<p>​        并且，唯一能给取样器变量赋值的就是<em>纹理单元编号</em>，并且必须使用<code>WebGL</code>提供的方法<code>gl.uniform1i()</code>来赋值，比如在之前的文章中我们使用<code>gl.uniform1i(u_Sampler, 0)</code>将纹理单元编号0传给着色器。如：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">gl.uniform1i(u_Sampler, <span class="number">0</span>) <span class="comment">//将纹理单元编号0传给着色器</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-规范"><a href="#9-2-规范" class="headerlink" title="9.2 规范"></a>9.2 规范</h4><p>​        除了=、==、!=，取样器变量不可以作为操作参数与运算。</p>
+<p>​        取样器类型变量受到着色器支持的纹理单元的最大数量限制，如下表。</p>
+<table>
+<thead>
+<tr>
+<th>着色器</th>
+<th>表示最大数量的内置常量</th>
+<th>最小数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>顶点着色器</td>
+<td>const mediump int gl_MaxVertexTextureImageUnits</td>
+<td>0</td>
+</tr>
+<tr>
+<td>片元着色器</td>
+<td>const mediump int gl_MaxTextureImageUnits</td>
+<td>8</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>mediump是一个精度限定词。</p>
+</blockquote>
+<h3 id="十、程序流程控制：分支和循环"><a href="#十、程序流程控制：分支和循环" class="headerlink" title="十、程序流程控制：分支和循环"></a>十、程序流程控制：分支和循环</h3><h4 id="10-1-if和if-else语句"><a href="#10-1-if和if-else语句" class="headerlink" title="10.1 if和if-else语句"></a>10.1 if和if-else语句</h4><p>​        <code>if-else</code>结构用法与C语言和js一致，但<em>没有switch</em>语句</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (...) &#123;</span><br><span class="line">   ... </span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (...) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-2-for语句"><a href="#10-2-for语句" class="headerlink" title="10.2 for语句"></a>10.2 for语句</h4><p>​        <strong>只支持for循环</strong>，而且<em>只能</em>在初始化表达式（for(;;)中第一个分号前面的位置）中定义循环变量，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他规范：</p>
+<ul>
+<li><p>只允许有一个循环变量，且只能是int或float类型</p>
+</li>
+<li><p>循环表达式必须是以下形式：</p>
+<p>i++、i–、i+=常量表达式、i-=常量表达式</p>
+</li>
+<li><p>条件表达式必须是循环变量与整型常量比较</p>
+</li>
+<li><p>在循环体内，循环变量不可被赋值</p>
+</li>
+</ul>
+<h4 id="10-3-continue、break、discard语句"><a href="#10-3-continue、break、discard语句" class="headerlink" title="10.3 continue、break、discard语句"></a>10.3 continue、break、discard语句</h4><p>​        只能在for语句中使用continue、break。</p>
+<ul>
+<li><p>continue终止包含该语句的最内层循环和执行循环表达式（递增/递减循环变量），然后执行下一次循环</p>
+</li>
+<li><p>break终止包含该语句的最内层循环，并不再执行循环</p>
+</li>
+<li><p>discard只能在片元着色器中使用，表示放弃当前片元，直接处理下一个片元</p>
+</li>
+</ul>
+<h3 id="十一、函数"><a href="#十一、函数" class="headerlink" title="十一、函数"></a>十一、函数</h3><h4 id="11-1-声明函数"><a href="#11-1-声明函数" class="headerlink" title="11.1 声明函数"></a>11.1 声明函数</h4><figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line">返回类型 函数名(type0 arg0, ... , typen argn)&#123;</span><br><span class="line">    函数计算</span><br><span class="line">    <span class="keyword">return</span> 返回值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        如果函数不返回值，那么函数就不需要return语句；也可以将自己定义的结构体类型指定为返回类型，但是结构体的成员不能有数组。</p>
+<p>​        下面这段代码实现了将RGBA颜色值转化为亮度值：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> luma (<span class="type">vec4</span> color) &#123;</span><br><span class="line">    <span class="type">float</span>  r = color.r;</span><br><span class="line">    <span class="type">float</span>  g = color.g;</span><br><span class="line">    <span class="type">float</span>  b = color.b;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.2126</span> * r + <span class="number">0.7162</span> * g + <span class="number">0.0722</span> * b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line"><span class="keyword">attribute</span> <span class="type">vec4</span> a_Color;</span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="type">float</span> brightness = luma(a_Color)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="11-2-规范声明"><a href="#11-2-规范声明" class="headerlink" title="11.2 规范声明"></a>11.2 规范声明</h4><p>​      如果函数定义在其调用之后，那么我们<strong>必须在进行调用之前先声明该函数的规范</strong>（类似C语言）。规范声明不预先告诉WebGL系统函数的参数、参数类型、返回值类型等等。例如：</p>
+<figure class="highlight glsl"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> luma(<span class="type">vec4</span>); <span class="comment">// 规范声明</span></span><br><span class="line"></span><br><span class="line">main()&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="type">float</span> brightness = luma(color); <span class="comment">//luma()在定义之前就被调用了</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> luma(<span class="type">vec4</span> color)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.2126</span> * color.r + <span class="number">0.7162</span> * color.g + <span class="number">0.0722</span> * color.r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="11-3-参数限定词"><a href="#11-3-参数限定词" class="headerlink" title="11.3 参数限定词"></a>11.3 参数限定词</h4><h3 id="十二、内置函数"><a href="#十二、内置函数" class="headerlink" title="十二、内置函数"></a>十二、内置函数</h3>]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
       </tags>
   </entry>
   <entry>
