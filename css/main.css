@@ -1983,6 +1983,9 @@ body {
   -webkit-box-shadow: 2px 2px 10px rgba(233,205,215,0.8);
   transition: 0.4s;
 }
+.use-motion .post {
+  background: rgba(255,255,255,0.8);
+}
 .use-motion .post a {
   color: #55b9f3;
   border-bottom: none;
@@ -1997,9 +2000,15 @@ body {
   color: #e9836e;
   background-color: #f3f3f3;
 }
+.use-motion .post p {
+  margin-bottom: 10px;
+}
 .use-motion .post blockquote {
   background: #f2f2f2;
   border-left: 4px solid #f1e1e7;
+  -webkit-box-shadow: 2px 2px 5px rgba(47,50,49,0.3);
+  -moz-box-shadow: 2px 2px 5px rgba(47,50,49,0.3);
+  border-radius: 5px;
 }
 .use-motion .post blockquote P {
   font-size: 16px;
