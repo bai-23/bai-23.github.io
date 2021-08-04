@@ -17,10 +17,10 @@
   --btn-default-hover-bg: #222;
   --btn-default-hover-color: #fff;
   --btn-default-hover-border-color: #222;
-  --highlight-background: #2b2b2b;
-  --highlight-foreground: #f8f8f2;
-  --highlight-gutter-background: #3f3f3e;
-  --highlight-gutter-foreground: #e3e3de;
+  --highlight-background: #282828;
+  --highlight-foreground: #ebdbb2;
+  --highlight-gutter-background: #3b3935;
+  --highlight-gutter-foreground: #d7c9a4;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -42,10 +42,10 @@
     --btn-default-hover-bg: #666;
     --btn-default-hover-color: #ccc;
     --btn-default-hover-border-color: #666;
-    --highlight-background: #2b2b2b;
-    --highlight-foreground: #f8f8f2;
-    --highlight-gutter-background: #3f3f3e;
-    --highlight-gutter-foreground: #e3e3de;
+    --highlight-background: #282828;
+    --highlight-foreground: #ebdbb2;
+    --highlight-gutter-background: #3b3935;
+    --highlight-gutter-foreground: #d7c9a4;
   }
   img {
     opacity: 0.75;
@@ -391,104 +391,113 @@ td {
   top: -5px;
   transform: rotate(-45deg);
 }
-/* a11y-dark theme */
-/* Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css */
-/* @author: ericwbailey */
+/*
 
-/* Comment */
-.hljs-comment,
-.hljs-quote {
-  color: #d4d0ab;
-}
+Gruvbox style (dark) (c) Pavel Pertsev (original style at https://github.com/morhetz/gruvbox)
 
-/* Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-  color: #ffa07a;
-}
-
-/* Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-  color: #f5ab35;
-}
-
-/* Yellow */
-.hljs-attribute {
-  color: #ffd700;
-}
-
-/* Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-  color: #abe338;
-}
-
-/* Blue */
-.hljs-title,
-.hljs-section {
-  color: #00e0e0;
-}
-
-/* Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-  color: #dcc6e0;
-}
+*/
 
 .hljs {
   display: block;
   overflow-x: auto;
-  background: #2b2b2b;
-  color: #f8f8f2;
   padding: 0.5em;
+  background: #282828;
 }
 
+.hljs,
+.hljs-subst {
+  color: #ebdbb2;
+}
+
+/* Gruvbox Red */
+.hljs-deletion,
+.hljs-formula,
+.hljs-keyword,
+.hljs-link,
+.hljs-selector-tag {
+  color: #fb4934;
+}
+
+/* Gruvbox Blue */
+.hljs-built_in,
+.hljs-emphasis,
+.hljs-name,
+.hljs-quote,
+.hljs-strong,
+.hljs-title,
+.hljs-variable {
+  color: #83a598;
+}
+
+/* Gruvbox Yellow */
+.hljs-attr,
+.hljs-params,
+.hljs-template-tag,
+.hljs-type {
+  color: #fabd2f;
+}
+
+/* Gruvbox Purple */
+.hljs-builtin-name,
+.hljs-doctag,
+.hljs-literal,
+.hljs-number {
+  color: #8f3f71;
+}
+
+/* Gruvbox Orange */
+.hljs-code,
+.hljs-meta,
+.hljs-regexp,
+.hljs-selector-id,
+.hljs-template-variable {
+  color: #fe8019;
+}
+
+/* Gruvbox Green */
+.hljs-addition,
+.hljs-meta-string,
+.hljs-section,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-string,
+.hljs-symbol {
+  color: #b8bb26;
+}
+
+/* Gruvbox Aqua */
+.hljs-attribute,
+.hljs-bullet,
+.hljs-class,
+.hljs-function,
+.hljs-function .hljs-keyword,
+.hljs-meta-keyword,
+.hljs-selector-pseudo,
+.hljs-tag {
+  color: #8ec07c;
+}
+
+/* Gruvbox Gray */
+.hljs-comment {
+  color: #928374;
+}
+
+/* Gruvbox Purple */
+.hljs-link_label,
+.hljs-literal,
+.hljs-number {
+  color: #d3869b;
+}
+
+.hljs-comment,
 .hljs-emphasis {
   font-style: italic;
 }
 
-.hljs-strong {
+.hljs-section,
+.hljs-strong,
+.hljs-tag {
   font-weight: bold;
-}
-
-@media screen and (-ms-high-contrast: active) {
-  .hljs-addition,
-  .hljs-attribute,
-  .hljs-built_in,
-  .hljs-builtin-name,
-  .hljs-bullet,
-  .hljs-comment,
-  .hljs-link,
-  .hljs-literal,
-  .hljs-meta,
-  .hljs-number,
-  .hljs-params,
-  .hljs-string,
-  .hljs-symbol,
-  .hljs-type,
-  .hljs-quote {
-        color: highlight;
-    }
-
-    .hljs-keyword,
-    .hljs-selector-tag {
-        font-weight: bold;
-    }
 }
 
 .highlight:hover .copy-btn,
@@ -2025,6 +2034,11 @@ body {
 .use-motion .post {
   background: rgba(255,255,255,0.8);
 }
+.use-motion .post .post-block .post-body p {
+  text-indent: 1.55em;
+  font-size: 17px;
+  line-height: 27px;
+}
 .use-motion .post a {
   color: #55b9f3;
   border-bottom: none;
@@ -2060,7 +2074,28 @@ body {
 }
 .use-motion .index .post-block {
   border-radius: 8px;
-  background: rgba(243,243,243,0.3);
+}
+.use-motion .index .post-block .post-meta a {
+  color: #55b9f3;
+  border-bottom: none;
+  border-bottom: 1px solid #55b9f3;
+}
+.use-motion .index .post-block .post-meta a:hover {
+  color: #fc6423;
+  border-bottom: none;
+  border-bottom: 1px solid #fc6423;
+}
+.use-motion .index .post-body p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  color: #808080;
+}
+.use-motion .index .post-body .post-button .btn {
+  border-radius: 4px;
+  border: 1px solid #ffdbdb;
+}
+.use-motion .index .post-body .post-button .btn:hover {
+  background: linear-gradient(145deg, #fff1f7, #f1e1e7);
 }
 .use-motion .index .post-block .post-content .post-footer {
   display: none;

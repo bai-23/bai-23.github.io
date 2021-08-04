@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-xldbpbtuvv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"freepiao.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="对应《WebGL编程指南》第七章 26-OrthoView、27-LookAtTrianglesWithKeys_ViewVolume 要点：可视空间（正射类型、透视投影）、可视范围（正射类型）、盒状可视空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【WebGL之巅】22-三维世界-可视范围">
+<meta property="og:url" content="https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/index.html">
+<meta property="og:site_name" content="快乐码原">
+<meta property="og:description" content="对应《WebGL编程指南》第七章 26-OrthoView、27-LookAtTrianglesWithKeys_ViewVolume 要点：可视空间（正射类型、透视投影）、可视范围（正射类型）、盒状可视空间">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView1.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView2.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView3.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView4.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView5.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView6.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView7.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView4.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView5.png">
+<meta property="og:image" content="https://freepiao.cn/images/OrthoView6.png">
+<meta property="article:published_time" content="2021-08-01T08:50:45.000Z">
+<meta property="article:modified_time" content="2021-08-02T08:40:18.863Z">
+<meta property="article:author" content="Song木头">
+<meta property="article:tag" content="frontEnd">
+<meta property="article:tag" content="WebGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://freepiao.cn/images/OrthoView1.png">
+
+
+<link rel="canonical" href="https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/","path":"22-三维世界-可视范围-OrthoView/","title":"【WebGL之巅】22-三维世界-可视范围"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【WebGL之巅】22-三维世界-可视范围 | 快乐码原</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?c8b0778ca062f7721fa47eddb1ebf49c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">快乐码原</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
+        <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
+        <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
+        <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
+        <li class="menu-item menu-item-webgl"><a href="/categories/code/frontend/webgl" rel="section"><i class="fa fa-file-code fa-fw"></i>WebGL</a></li>
+        <li class="menu-item menu-item-爬虫"><a href="/categories/code/backend/Python" rel="section"><i class="fa fa-bug fa-fw"></i>爬虫</a></li>
+        <li class="menu-item menu-item-api"><a href="/apis/" rel="section"><i class="fa fa-star-half-alt fa-fw"></i>API</a></li>
+        <li class="menu-item menu-item-合作"><a href="/cooperation/" rel="section"><i class="fa fa-user-friends fa-fw"></i>合作</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4%EF%BC%88%E6%AD%A3%E5%B0%84%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="nav-text">一、可视范围（正射类型）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-WebGL%E7%BB%98%E5%88%B6%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4%E5%86%85%E4%B8%89%E7%BB%B4%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-text">1.1 WebGL绘制可视范围内三维对象的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4"><span class="nav-text">1.2 可视空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%9F%BA%E4%BA%8E%E6%AD%A3%E5%B0%84%E6%8A%95%E5%BD%B1%E7%9A%84%E7%9B%92%E7%8A%B6%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-text">1.3 基于正射投影的盒状可视空间的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E5%AE%9A%E4%B9%89%E7%9B%92%E7%8A%B6%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4"><span class="nav-text">1.4 定义盒状可视空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text">1.5 代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-1-%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-text">1.5.1 实现步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-2-JS-%E4%BF%AE%E6%94%B9-HTML-%E5%85%83%E7%B4%A0"><span class="nav-text">1.5.2 JS 修改 HTML 元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-3-%E9%A1%B6%E7%82%B9%E7%9D%80%E8%89%B2%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-text">1.5.3 顶点着色器的执行流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-4-%E4%BF%AE%E6%94%B9-near-%E5%92%8C-far-%E5%80%BC"><span class="nav-text">1.5.4 修改 near 和 far 值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%A1%A5%E4%B8%8A%E7%BC%BA%E6%8E%89%E7%9A%84%E8%A7%92"><span class="nav-text">二、补上缺掉的角</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%811"><span class="nav-text">代码1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%88%E6%9E%9C1"><span class="nav-text">效果1</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%812"><span class="nav-text">代码2</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%88%E6%9E%9C2"><span class="nav-text">效果2</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song木头"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Song木头</p>
+  <div class="site-description" itemprop="description">民以食为天</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bai-23" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bai-23" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2421662954@qq.com" title="E-Mail → mailto:2421662954@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/xxg0" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;xxg0" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      传送门
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.aoau.top/" title="http:&#x2F;&#x2F;www.aoau.top" rel="noopener" target="_blank">AOAU.TOP</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width=100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+      
+
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/bai-23" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Song木头">
+      <meta itemprop="description" content="民以食为天">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="快乐码原">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【WebGL之巅】22-三维世界-可视范围<a href="https://github.com/bai-23/bai-23.github.io_posts/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-01 16:50:45" itemprop="dateCreated datePublished" datetime="2021-08-01T16:50:45+08:00">2021-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-02 16:40:18" itemprop="dateModified" datetime="2021-08-02T16:40:18+08:00">2021-08-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/webgl/" itemprop="url" rel="index"><span itemprop="name">webgl</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>对应《WebGL编程指南》第七章 26-OrthoView、27-LookAtTrianglesWithKeys_ViewVolume</p>
+<p>要点：可视空间（正射类型、透视投影）、可视范围（正射类型）、盒状可视空间</p>
+<span id="more"></span>
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、可视范围（正射类型）"><a href="#一、可视范围（正射类型）" class="headerlink" title="一、可视范围（正射类型）"></a>一、可视范围（正射类型）</h3><p>​        回顾：在上一节的最后一个示例程序中，当视点在极左或极右的位置时，三角形会缺少一部分。</p>
+<p>​        三角形缺了一角的原因是，我们没有指定<strong>可视范围</strong>，即实际观察得到的区域边界。如前一章所属，WebGL 只显示可视范围内的区域。例中当我们改变视点位置时，三角形的一部分到了可视范围外，所以图中的三角形就缺了一个角。</p>
+<h4 id="1-1-WebGL绘制可视范围内三维对象的方式"><a href="#1-1-WebGL绘制可视范围内三维对象的方式" class="headerlink" title="1.1 WebGL绘制可视范围内三维对象的方式"></a>1.1 WebGL绘制可视范围内三维对象的方式</h4><p>​        虽然你可以将三维物体放在三维空间中的任何地方，但是<u>只有当它在可视范围内时，WebGL 才会绘制它</u>。事实上，不绘制可视范围外的而对象，是基本的降低程序开销的手段。绘制可视范围外的对象没有意义，即使把它们绘制出来也不会在屏幕上显示。从某种程序上来说，这样也模拟了人类观察物体的方式，如下图所示。我们人类也只能看到眼前的东西，水平视角大约200度左右。总之，WebGL 就是以类似的方式，只绘制可视范围内的三维对象。<br><img src="/images/OrthoView1.png" alt="人类的可视范围"></p>
+<p>​        除了水平和垂直范围内的限制，WebGL 还限制观察者的<u>可视深度，即”能够看多远“</u>。所有这些限制，包括<u>水平视角</u>、<u>垂直视角</u>和<u>可视深度</u>，定义了<strong>可视空间</strong>。由于我们没有显式地指定可视空间，默认的可视深度又不够远，所以三角形的一个角看上去就消失了。</p>
+<h4 id="1-2-可视空间"><a href="#1-2-可视空间" class="headerlink" title="1.2 可视空间"></a>1.2 可视空间</h4><p>有两类常用的可视空间：</p>
+<ul>
+<li>长方体可视空间，也称盒状空间，由<strong>正射投影</strong>产生。</li>
+<li>四棱锥/金字塔可视空间，由<strong>透视投影</strong>产生。</li>
+</ul>
+<p>​        在透视投影下，产生的三维场景看上去更是有<u>深度感</u>，更加自然，<u>因为我们平时观察真实世界用的也是透视投影</u>。在大多数情况下，比如三维射击类游戏中，我们都应当采用透视投影。相比之下，<u>正射投影的好处是用户可以方便比较场景中物体的大小</u>，这是因为<u>物体看上去的大小与其所在的位置没有关系</u>。在建筑平面图等技术绘图的相关场合，应当使用这种投影。</p>
+<h4 id="1-3-基于正射投影的盒状可视空间的工作原理"><a href="#1-3-基于正射投影的盒状可视空间的工作原理" class="headerlink" title="1.3 基于正射投影的盒状可视空间的工作原理"></a>1.3 基于正射投影的<u>盒状可视空间</u>的工作原理</h4><p>​        盒状可视空间的形状如下图所示。可视空间由前后两个矩形表面确定，分别称<strong>近裁剪面</strong>和<strong>远裁剪面</strong>。</p>
+<ul>
+<li><p>前者的四个顶点为<code>（right, top,-near）</code>，<code>（-left,top,-near）</code>，<code>（-left,-bottom,-near）</code>，<code>（right,-bottom,-near）</code></p>
+</li>
+<li><p>后者的四个顶点为<code>（right, top,-far）</code>，<code>（-left,top,-far）</code>，<code>（-left,-bottom,-far）</code>，<code>（right,-bottom,-far）</code>。<br><img src="/images/OrthoView2.png" alt="盒状可视空间"></p>
+</li>
+</ul>
+<p>​        <code>&lt;canvas&gt;</code> 上显示的就是可视空间中物体在<strong>近裁剪面</strong>上的投影。如果剪裁面的宽高比和 <code>&lt;canvas&gt;</code> 不一样，那么画面就会被按照 <code>&lt;canvas&gt;</code>的宽高比进行压缩，物体会被扭曲。<u>近裁剪面与远裁剪面之间的盒装空间就是可视空间</u>，只有在此空间内的物体会被显示出来。如果某个物体一部分在可视空间内，一部分在其外，那就只显示空间内的部分。</p>
+<h4 id="1-4-定义盒状可视空间"><a href="#1-4-定义盒状可视空间" class="headerlink" title="1.4 定义盒状可视空间"></a>1.4 定义盒状可视空间</h4><p>cuon-matrix.js 提供的 <code>Matrix4.setOrtho()</code>方法可用来设置投影矩阵，定义盒状可视空间。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>Matrix4.setOrtho(left, right, bottom, top, near, far)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>left, right</td>
+<td>指定近裁剪面（也是可视空间的，下同）的左边界和又边界</td>
+</tr>
+<tr>
+<td>bottom,top</td>
+<td>指定近裁剪面的上边界和下边界</td>
+</tr>
+<tr>
+<td>near, far</td>
+<td>指定近裁剪面和远裁剪面的位置，即可视空间的近边界和远边界</td>
+</tr>
+</tbody></table>
+<p>​        我们在这里又用到了<strong>矩阵</strong>。这个矩阵被称为<u>正射投影矩阵</u>。示例程序 OrthoView 将使用这种矩阵定义盒装可视空间，并绘制3个与 LookAtRotatedTriangles 中一样的三角形，由此测试盒装可视空间的效果。LookAtRotatedTriangles 程序将视点放在一个指定的非原点位置上，但本例为方便，直接把视点置于<u>原点处</u>，视线为<u>Z轴负方向</u>。</p>
+<p>​        可视空间如下图所示，<code>near = 0.0，far = 0.5，left = -1.0，right = 1.0，bottom = -1.0，top = 1.0</code>，三角形处于Z轴 <code>0.0 到 -0.4</code> 区间上。<br><img src="/images/OrthoView3.png" alt="正射投影和盒状可视空间"></p>
+<p>​        此外，<a href="#%E4%BB%A3%E7%A0%811">示例程序</a>还允许通过键盘按键修改可视空间的 near 和 far 值。这样我们就能直观地看到这两个值具体对可视空间由什么影响。下面列出了各按键的作用。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>右方向键</td>
+<td>near提高0.01</td>
+</tr>
+<tr>
+<td>左方向键</td>
+<td>near降低0.01</td>
+</tr>
+<tr>
+<td>上方向键</td>
+<td>far提高0.01</td>
+</tr>
+<tr>
+<td>下方向键</td>
+<td>far降低0.01</td>
+</tr>
+</tbody></table>
+<h4 id="1-5-代码分析"><a href="#1-5-代码分析" class="headerlink" title="1.5 代码分析"></a>1.5 代码分析</h4><h5 id="1-5-1-实现步骤"><a href="#1-5-1-实现步骤" class="headerlink" title="1.5.1 实现步骤"></a>1.5.1 实现步骤</h5><p>​        与 LookAtTrainglesWithKeys 类似，本例也定义了 <code>keydown()函数</code>，每当按下按键时，匿名的事件响应函数就会调用 <code>keydown()函数</code>。<code>keydown()函数</code>首先更新 near 和 far 的值，然后调用 <code>draw()函数</code>进行绘制。<code>draw()函数</code>将设置可视空间，更新页面上文本显示的 near 和 far 的值，并绘制3个三角形。最关键的事情是设置可视空间，就发生在 draw()函数中。但是在深入研究前，先来看一下JS如何修改页面上的文本。</p>
+<h5 id="1-5-2-JS-修改-HTML-元素"><a href="#1-5-2-JS-修改-HTML-元素" class="headerlink" title="1.5.2 JS 修改 HTML 元素"></a>1.5.2 JS 修改 HTML 元素</h5><p>​        JS 修改 HTML 元素中内容的方法很简单。首先调用 <code>getElementById()</code>并传入元素的 id，获取待修改的HTML 元素。</p>
+<p>​        在示例程序中，我们把下面这个 <code>&lt;p&gt;</code> 元素中的文本改成了“near:0.0, far:0.5”：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p id = <span class="string">&quot;nearFar&quot;</span>&gt;The near and far values are displayed here.&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​        在 OrthoView.js 中，我们调用 getElementById()并传入元素的 id 值 “nearfar” 以获取该元素。如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nf = <span class="built_in">document</span>.getElementById(<span class="string">&quot;nearFar&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​        一旦 nf 变量获取了 <code>&lt;p&gt;</code> 元素，就可以直接通过其 innerHTML 属性来进行修改，比如，如果你写下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nf.innerHTML = <span class="string">&#x27;Good Morning,Marusyje-san!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>​        在执行之后，”Good Morning,Marusyje-san!” 这段文本就显示了在页面上。你也可以在文本中加入 HTML 标签，比如<code>‘Good Morning &lt;b&gt;Marisuke&lt;b&gt;-san!’</code>，就会以突出显示“Marisuke”。</p>
+<p>在OrthoView.js 中，可视空间的 near 和 far 的值会存储在全局变量 g_near 和 g_far 中。</p>
+<h5 id="1-5-3-顶点着色器的执行流程"><a href="#1-5-3-顶点着色器的执行流程" class="headerlink" title="1.5.3 顶点着色器的执行流程"></a>1.5.3 顶点着色器的执行流程</h5><p>​        本例中的顶点着色器与 LookAtTraingles.js 中的几乎一样，只是 uniform 变量变成了 <code>u_ProjMatrix</code>。该变量存储了<strong>可观空间的投影矩阵</strong>，我们将投影矩阵与顶点坐标相乘，再赋值给 gl_Position。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ProjMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_ProjMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​        当键盘的上方向键被按下时，事件响应函数就会执行并调用 keydown()。注意我们将 nf 作为最后一个参数传入，这样 keydown()函数就能够访问并修改 <code>&lt;p&gt;</code> 元素了。keydown()函数最后调用了 draw()函数绘制三角形，这样<u>每次按键后都会重绘整个图形。</u></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注册键盘事件响应函数</span></span><br><span class="line"><span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span> (<span class="params">ev</span>) </span>&#123;</span><br><span class="line">    keydown(ev, gl, n, u_ProjMatrix,projMatrix, nf);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>​        keydown()函数首先检查哪个键被按下，然后根据按下的键，修改 g_near 和 g_far 的值，最后调用 draw()函数。注意，这里 <u>g_near 和 g_far 是全局变量，不管是 keydown()还是 draw()函数都可以访问它</u>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 视点与近、远裁剪面的距离</span></span><br><span class="line"><span class="keyword">var</span> g_near = <span class="number">0.0</span>, g_far = <span class="number">0.5</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">keydown</span>(<span class="params">ev, gl, n, u_ProjMatrix, projMatrix, nf</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (ev.keyCode)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">39</span>: g_near += <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//right</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">37</span>: g_near -= <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//left</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">38</span>: g_far += <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//up</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">40</span>: g_far -=<span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//down</span></span><br><span class="line">        <span class="keyword">default</span>: <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    draw(gl, n, u_ProjMatrix, projMatrix, nf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        再看一下 draw()函数，它与 LookAtTriangle.js 中的几乎一样，唯一的区别是它修改了网页上的文本信息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">gl, n, u_ProjMatrix, projMatrix, nf</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 使用矩阵设置可视空间</span></span><br><span class="line">    projMatrix.setOrtho(-<span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, g_near, g_far);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将投影矩阵传递给u_ProjMatrix变量</span></span><br><span class="line">    gl.uniformMatrix4fv(u_ProjMatrix, <span class="literal">false</span>, projMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COlOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// innerHTML在JS是双向功能：获取对象的内容 或 向对象插入内容；</span></span><br><span class="line">    nf.innerHTML = <span class="string">&#x27;near: &#x27;</span> + <span class="built_in">Math</span>.round(g_near * <span class="number">100</span>)/<span class="number">100</span> + <span class="string">&#x27;, far: &#x27;</span> + <span class="built_in">Math</span>.round(g_far * <span class="number">100</span>)/<span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        draw()函数计算出可视空间对应的投影矩阵 projMatrix，将其传递给着色器中的 u_ProjMatrix 变量，接着在页面上更新 near 和 far 的值，最后绘制出三角形。</p>
+<h5 id="1-5-4-修改-near-和-far-值"><a href="#1-5-4-修改-near-和-far-值" class="headerlink" title="1.5.4 修改 near 和 far 值"></a>1.5.4 修改 near 和 far 值</h5><p>​        运行程序，按下右方向键逐渐增加near 值，你会看到三角形逐个消失了。</p>
+<div style="display: flex;">
+    <img src="/images/OrthoView4.png"/>
+    <img src="/images/OrthoView5.png"/>
+    <img src="/images/OrthoView6.png"/>
+</div>
+​        默认情况下，near 值为 0.0，此时3个三角形都出现了。当我们首次按下右方向键时，将 near 值增加至 0.01 时，处在最前面的蓝色三角形消失了。这是因为，蓝色三角形就在 XY 平面上，近裁剪面越过了蓝色三角形，使其处在了可视空间外。
+
+<p><img src="/images/OrthoView7.png" alt="蓝色三角形处于可视空间外"></p>
+<p>​        我们接着继续增大 near 值，当 near 值大于 <code>0.2</code> 时，近裁剪面越过了黄色三角形，使其处在可视空间外。黄色三角形也消失了，视野中只剩下绿色三角形。此时，如果你逐渐减小 near 值使其小于 0.2，黄色的三角形就会重新出现，而如果继续增大 near 值使其大于 0.4，绿色的三角形就会小时，视野中将空无一物，只剩下黑色的背景。</p>
+<p>​        同样，如果你改变 far 的值，也会产生类似的效果。随着 far 值的逐渐减小，当值小于 0.4 时，绿色三角形会首先消失，小于 0.2 时，黄色三角形小时，最终只剩下蓝色三角形。</p>
+<h3 id="二、补上缺掉的角"><a href="#二、补上缺掉的角" class="headerlink" title="二、补上缺掉的角"></a>二、补上缺掉的角</h3><p>​        在 LookAtTrianglesWithKeys 中，当你多次按左或右方向键，处于极左处或极右处观察三角形时，会发现三角形看上去缺了一个角。通过前一节的讨论，我们已经很明确地知道这时因为三角形的一部分处于可视区域之外，被裁剪掉了。这一节，我们就来修改程序，适当地设置可视空间，确保三角形不被裁剪。</p>
+<p>​        从上节中可以看出，三角形中<u>距离视点最远的角被裁剪了</u>。显然，这是由远裁剪面过于接近视点导致，我们<u>只需要将远裁剪面移到距离视点更远的地方</u>。为此，我们可以按照以下的配置来修改可视空间：left = -1.0，right = 1.0，bottom = -1.0，top = 1.0，near = 0.0，far = 2.0。</p>
+<p>​        程序涉及两个矩阵：<u>关于可视空间的正射投影矩阵</u>，以及<u>关于视点与视线的视图矩阵</u>。在顶点着色器中，我们需要用视图矩阵乘以顶点坐标，得到顶点在视图坐标系下的坐标，再左乘正射投影矩阵并赋值给 gl_Position。如下表达式：</p>
+<p><code>&lt;正射投影矩阵&gt;x&lt;视图矩阵&gt;x&lt;顶点坐标&gt;</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ViewMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ProjMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_ProjMatrix * u_ViewMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​        在计算正射投影矩阵 projMatrix 时，我们将 far 的值从 1.0 改成 2.0，将结果传给了顶点着色器中的 u_ProjMatrix。投影矩阵与顶点无关，所以它是 uniform 变量。运行<a href="#%E6%95%88%E6%9E%9C2">示例程序</a>，然后像之前那样移动视点，你会发现三角形再也不会被裁剪了。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h4 id="代码1"><a href="#代码1" class="headerlink" title="代码1"></a>代码1</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LookAtTrianglesWithKeys.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ProjMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_ProjMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +<span class="comment">//!!! 需要声明浮点数精度，否则报错No precision specified for (float)</span></span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = v_Color;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> nf = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;nearFar&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> u_ProjMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ProjMatrix&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置视点、视线、上方向</span></span><br><span class="line">    <span class="keyword">var</span> projMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注册键盘事件响应函数</span></span><br><span class="line">    <span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span> (<span class="params">ev</span>) </span>&#123;</span><br><span class="line">        keydown(ev, gl, n, u_ProjMatrix,projMatrix, nf);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">   draw(gl, n, u_ProjMatrix, projMatrix, nf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 视点与近、远裁剪面的距离</span></span><br><span class="line"><span class="keyword">var</span> g_near = <span class="number">0.0</span>, g_far = <span class="number">0.5</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">keydown</span>(<span class="params">ev, gl, n, u_ProjMatrix, projMatrix, nf</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (ev.keyCode)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">39</span>: g_near += <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//right</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">37</span>: g_near -= <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//left</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">38</span>: g_far += <span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//up</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">40</span>: g_far -=<span class="number">0.01</span>; <span class="keyword">break</span>; <span class="comment">//down</span></span><br><span class="line">        <span class="keyword">default</span>: <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    draw(gl, n, u_ProjMatrix, projMatrix, nf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">gl, n, u_ProjMatrix, projMatrix, nf</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 使用矩阵设置可视空间</span></span><br><span class="line">    projMatrix.setOrtho(-<span class="number">1</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, g_near, g_far);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将投影矩阵传递给u_ProjMatrix变量</span></span><br><span class="line">    gl.uniformMatrix4fv(u_ProjMatrix, <span class="literal">false</span>, projMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COlOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// innerHTML在JS是双向功能：获取对象的内容 或 向对象插入内容；</span></span><br><span class="line">    nf.innerHTML = <span class="string">&#x27;near: &#x27;</span> + <span class="built_in">Math</span>.round(g_near * <span class="number">100</span>)/<span class="number">100</span> + <span class="string">&#x27;, far: &#x27;</span> + <span class="built_in">Math</span>.round(g_far * <span class="number">100</span>)/<span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The back green one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.5</span>,  <span class="number">0.4</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="comment">// The middle yellow one</span></span><br><span class="line">            -<span class="number">0.5</span>,  <span class="number">0.4</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.0</span>, -<span class="number">0.6</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="comment">// The front blue one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.8</span>,  <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span></span><br><span class="line">        ]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n = <span class="number">9</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> verteColorBuffer = gl.createBuffer();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, verteColorBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesColors.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE *<span class="number">6</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Color = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Color&#x27;</span>);</span><br><span class="line">    gl.vertexAttribPointer(a_Color, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">6</span>, FSIZE * <span class="number">3</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_Color);</span><br><span class="line"></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, <span class="literal">null</span>);<span class="comment">// 取消绑定的缓冲区对象</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="效果1"><a href="#效果1" class="headerlink" title="效果1"></a>效果1</h5><div style="display: flex;">
+    <img src="/images/OrthoView4.png"/>
+    <img src="/images/OrthoView5.png"/>
+    <img src="/images/OrthoView6.png"/>
+</div>
+
+
+
+<h4 id="代码2"><a href="#代码2" class="headerlink" title="代码2"></a>代码2</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LookAtTrianglesWithKeys_ViewVolume.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ViewMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_ProjMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_ProjMatrix * u_ViewMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +<span class="comment">//!!! 需要声明浮点数精度，否则报错No precision specified for (float)</span></span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = v_Color;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> u_ViewMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ViewMatrix&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置视点、视线、上方向</span></span><br><span class="line">    <span class="keyword">var</span> viewMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注册键盘事件响应函数</span></span><br><span class="line">    <span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span> (<span class="params">ev</span>) </span>&#123;</span><br><span class="line">        keydown(ev, gl, n, u_ViewMatrix,viewMatrix);</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 创建指定可视空间的矩阵并传给u_ProjMatrix变量</span></span><br><span class="line">    <span class="keyword">var</span> u_ProjMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ProjMatrix&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> projMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">    projMatrix.setOrtho(-<span class="number">1.0</span>, <span class="number">1.0</span>, -<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">2.0</span>);</span><br><span class="line">    <span class="comment">//projMatrix.setOrtho(-0.5, 0.5, -0.5, 0.5, 0.0, 2.0);</span></span><br><span class="line">    <span class="comment">//projMatrix.setOrtho(-0.3, 0.3, -1.0, 1.0, 0.0, 2.0);</span></span><br><span class="line">    gl.uniformMatrix4fv(u_ProjMatrix, <span class="literal">false</span>, projMatrix.elements);</span><br><span class="line"></span><br><span class="line">   draw(gl, n, u_ViewMatrix, viewMatrix);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g_eyeX = <span class="number">0.20</span>, g_eyeY = <span class="number">0.25</span>, g_eyeZ = <span class="number">0.25</span>; <span class="comment">//视点</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">keydown</span>(<span class="params">ev, gl, n, u_ViewMatrix, viewMatrix</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(ev.keyCode == <span class="number">39</span>)&#123;   <span class="comment">//按下右键</span></span><br><span class="line">        g_eyeX += <span class="number">0.01</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(ev.keyCode == <span class="number">37</span>)&#123; <span class="comment">//按下左键</span></span><br><span class="line">        g_eyeX -= <span class="number">0.01</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    draw(gl, n, u_ViewMatrix, viewMatrix);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">gl, n, u_ViewMatrix, viewMatrix</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//设置视点和视线</span></span><br><span class="line">    viewMatrix.setLookAt(g_eyeX, g_eyeY, g_eyeZ, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将视图矩阵传递给u_ViewMatrix变量</span></span><br><span class="line">    gl.uniformMatrix4fv(u_ViewMatrix, <span class="literal">false</span>, viewMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COlOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The back green one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">0.5</span>,  -<span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.5</span>,  <span class="number">0.4</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="comment">// The middle yellow one</span></span><br><span class="line">            -<span class="number">0.5</span>,  <span class="number">0.4</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.0</span>, -<span class="number">0.6</span>,  -<span class="number">0.2</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="comment">// The front blue one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">0.5</span>,   <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span></span><br><span class="line">        ]</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> n = <span class="number">9</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> verteColorBuffer = gl.createBuffer();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, verteColorBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesColors.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE *<span class="number">6</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Color = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Color&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    gl.vertexAttribPointer(a_Color, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">6</span>, FSIZE * <span class="number">3</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_Color);</span><br><span class="line"></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, <span class="literal">null</span>);<span class="comment">//取消绑定的缓冲区对象</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="效果2"><a href="#效果2" class="headerlink" title="效果2"></a>效果2</h5><script src="\lib\webgl-utils.js"></script>
+<script src="\lib\webgl-debug.js"></script>
+<script src="\lib\cuon-utils.js"></script>
+<script src="\lib\cuon-matrix.js"></script>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <title>LookAtTriangles</title>
+</head>
+<body onload="main()">
+<div>
+    <button id="left">←</button>
+    <button id="right">→</button>
+</div>
+<canvas id="webgl" width="300" height="300">
+  Please use the browser supporting "canvas".
+</canvas>
+<script type='text/javascript'>
+//LookAtTrianglesWithKeys.js
+var VSHADER_SOURCE =
+    'attribute vec4 a_Position;\n' +
+    'attribute vec4 a_Color;\n' +
+    'uniform mat4 u_ViewMatrix;\n' +
+    'uniform mat4 u_ProjMatrix;\n' +
+    'varying vec4 v_Color;\n' +
+    'void main() {\n' +
+    '   gl_Position = u_ProjMatrix * u_ViewMatrix * a_Position;\n' +
+    '   gl_PointSize = 10.0;\n' +
+    '   v_Color = a_Color;\n' +
+    '}\n';
+var FSHADER_SOURCE=
+    'precision mediump float;\n' +
+    'varying vec4 v_Color;\n' +
+    'void main(){\n'+
+    '   gl_FragColor = v_Color;\n'+
+    '}\n';
+function main() {
+    var canvas = document.getElementById("webgl");
+    var gl = getWebGLContext(canvas);
+    if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
+        console.log("Failed to initialize shaders.");
+        return;
+    }
+    //设置顶点位置
+    var n = initVertexBuffers(gl);
+    var u_ViewMatrix = gl.getUniformLocation(gl.program, 'u_ViewMatrix');
+    //设置视点、视线、上方向
+    var viewMatrix = new Matrix4();
+    //注册键盘事件响应函数
+    document.onkeydown = function (ev) {
+        keydown(ev, gl, n, u_ViewMatrix,viewMatrix);
+    };
+    document.onclick = function (ev) {
+        myClick(ev, gl, n, u_ViewMatrix,viewMatrix)
+    }
+    var u_ProjMatrix = gl.getUniformLocation(gl.program, 'u_ProjMatrix');
+    var projMatrix = new Matrix4();
+    projMatrix.setOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 2.0);
+    gl.uniformMatrix4fv(u_ProjMatrix, false, projMatrix.elements);
+    draw(gl, n, u_ViewMatrix, viewMatrix);
+}
+var g_eyeX = 0.20, g_eyeY = 0.25, g_eyeZ = 0.25; // 视点
+function keydown(ev, gl, n, u_ViewMatrix, viewMatrix) {
+    if(ev.keyCode == 39){   //按下右键
+        g_eyeX += 0.02;
+    }else if(ev.keyCode == 37){ //按下左键
+        g_eyeX -= 0.02;
+    }else {
+        return ;
+    }
+    draw(gl, n, u_ViewMatrix, viewMatrix);
+}
+function myClick(ev, gl, n, u_ViewMatrix,viewMatrix){
+    if(ev.target.id == 'left') {
+        g_eyeX -= 0.02;
+    } else {
+        g_eyeX += 0.02;
+    }
+    draw(gl, n, u_ViewMatrix, viewMatrix);
+}
+function draw(gl, n, u_ViewMatrix, viewMatrix) {
+    //设置视点和视线
+    viewMatrix.setLookAt(g_eyeX, g_eyeY, g_eyeZ, 0, 0, 0, 0, 1, 0);
+    //将视图矩阵传递给u_ViewMatrix变量
+    gl.uniformMatrix4fv(u_ViewMatrix, false, viewMatrix.elements);
+    gl.clear(gl.COlOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
+}
+function initVertexBuffers(gl) {
+    var verticesColors = new Float32Array(
+        [
+            0.0,  0.5,  -0.4,  0.4,  1.0,  0.4, // The back green one
+            -0.5, -0.5,  -0.4,  0.4,  1.0,  0.4,
+            0.5, -0.5,  -0.4,  1.0,  0.4,  0.4,
+            0.5,  0.4,  -0.2,  1.0,  0.4,  0.4, // The middle yellow one
+            -0.5,  0.4,  -0.2,  1.0,  1.0,  0.4,
+            0.0, -0.6,  -0.2,  1.0,  1.0,  0.4,
+            0.0,  0.5,   0.0,  0.4,  0.4,  1.0,  // The front blue one
+            -0.5, -0.5,   0.0,  0.4,  0.4,  1.0,
+            0.5, -0.5,   0.0,  1.0,  0.4,  0.4
+        ]
+    );
+    var n = 9; //点的个数
+    //创建缓冲区对象
+    var verteColorBuffer = gl.createBuffer();
+    //将缓冲区对象保存到目标上
+    gl.bindBuffer(gl.ARRAY_BUFFER, verteColorBuffer);
+    //向缓存对象写入数据
+    gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
+    var FSIZE = verticesColors.BYTES_PER_ELEMENT;
+    var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
+    //将缓冲区对象分配给a_Postion变量
+    gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, FSIZE *6, 0);
+    //连接a_Postion变量与分配给它的缓冲区对象
+    gl.enableVertexAttribArray(a_Position);
+    var a_Color = gl.getAttribLocation(gl.program, 'a_Color');
+    gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, FSIZE * 6, FSIZE * 3);
+    gl.enableVertexAttribArray(a_Color);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);//取消绑定的缓冲区对象
+    return n;}
+    </script>
+    </body>
+    </html>
+
+ 
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\00-使用canvas绘制2d矩形-HelloCanvas2d\" rel="bookmark">【WebGL之巅】00-使用canvas绘制2d矩形</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\02-绘制一个点_v1-HelloPoint-v1\" rel="bookmark">【WebGL之巅】02-绘制一个点_v1</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\01-使用webgl清空绘图区-HellCanvas\" rel="bookmark">【WebGL之巅】01-使用webgl清空绘图区</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\03-绘制一个点_v2_attribute变量-HelloPoint-v2\" rel="bookmark">【WebGL之巅】03-绘制一个点_v2_attribute变量</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Song木头
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/" title="【WebGL之巅】22-三维世界-可视范围">https://freepiao.cn/22-三维世界-可视范围-OrthoView/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/frontEnd/" rel="tag"><i class="fa fa-tag"></i> frontEnd</a>
+              <a href="/tags/WebGL/" rel="tag"><i class="fa fa-tag"></i> WebGL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/21-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E7%BB%98%E5%88%B6%E4%B8%89%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2-LookAtTriangles/" rel="prev" title="【WebGL之巅】21-三维世界-绘制三个三角形">
+                  <i class="fa fa-chevron-left"></i> 【WebGL之巅】21-三维世界-绘制三个三角形
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Echarts/" rel="next" title="数据可视化之Echarts学习">
+                  数据可视化之Echarts学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+  
+  <div class='myComments' style="margin-top:40px;margin-bottom:-50px;padding-top:5px;border-top:1px dashed #c0bfbf">
+    <span>评论区</span>
+    <span style="font-size:14px;">（请使用<a target="_blank" rel="noopener" href="https://github.com/">github</a>账号登陆）</span>
+  </div>
+    <div class="comments utterances-container"></div>
+  </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-egg"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song木头</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        站点访客：<span id="busuanzi_value_site_uv"><i class="fa fa-spinner"></i></span>人次
+      </span>
+    </span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">354k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:22</span>
+  </span>
+</div>
+
+<!-- 网站运行时间的设置
+<div> 
+  <i class="fa fa-dog"></i>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span> 
+</div>
+
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/10/2021 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "与她在一起的: -"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒 ";
+    }
+setInterval("createtime()",250);
+</script>
+ -->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.4" zIndex="-2" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":false}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/22-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E8%8C%83%E5%9B%B4-OrthoView/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"bai-23/commons","issue_term":"og:title","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

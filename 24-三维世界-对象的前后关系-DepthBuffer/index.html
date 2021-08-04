@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-xldbpbtuvv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"freepiao.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="对应《WebGL编程指南》第七章 31-DepthBuffer、32-Zfighting 要点：对象的前后关系、隐藏面消除、深度冲突">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【WebGL之巅】24-三维世界-对象的前后关系">
+<meta property="og:url" content="https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/index.html">
+<meta property="og:site_name" content="快乐码原">
+<meta property="og:description" content="对应《WebGL编程指南》第七章 31-DepthBuffer、32-Zfighting 要点：对象的前后关系、隐藏面消除、深度冲突">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer1.png">
+<meta property="og:image" content="https://freepiao.cn/images/perspectiveview1.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer2.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer3.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer4.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer5.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer8.png">
+<meta property="og:image" content="https://freepiao.cn/images/perspectiveview1.png">
+<meta property="og:image" content="https://freepiao.cn/images/DepthBuffer6.png">
+<meta property="article:published_time" content="2021-08-03T13:14:09.000Z">
+<meta property="article:modified_time" content="2021-08-04T02:19:32.884Z">
+<meta property="article:author" content="Song木头">
+<meta property="article:tag" content="frontEnd">
+<meta property="article:tag" content="WebGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://freepiao.cn/images/DepthBuffer1.png">
+
+
+<link rel="canonical" href="https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/","path":"24-三维世界-对象的前后关系-DepthBuffer/","title":"【WebGL之巅】24-三维世界-对象的前后关系"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【WebGL之巅】24-三维世界-对象的前后关系 | 快乐码原</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?c8b0778ca062f7721fa47eddb1ebf49c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">快乐码原</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a></li>
+        <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
+        <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
+        <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
+        <li class="menu-item menu-item-webgl"><a href="/categories/code/frontend/webgl" rel="section"><i class="fa fa-file-code fa-fw"></i>WebGL</a></li>
+        <li class="menu-item menu-item-爬虫"><a href="/categories/code/backend/Python" rel="section"><i class="fa fa-bug fa-fw"></i>爬虫</a></li>
+        <li class="menu-item menu-item-api"><a href="/apis/" rel="section"><i class="fa fa-star-half-alt fa-fw"></i>API</a></li>
+        <li class="menu-item menu-item-合作"><a href="/cooperation/" rel="section"><i class="fa fa-user-friends fa-fw"></i>合作</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%AD%A3%E7%A1%AE%E5%A4%84%E7%90%86%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB"><span class="nav-text">一、正确处理对象的前后关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-WebGL%E7%9A%84%E7%BB%98%E5%9B%BE%E5%8E%9F%E7%90%86"><span class="nav-text">1.1 WebGL的绘图原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E9%9A%90%E8%97%8F%E9%9D%A2%E6%B6%88%E9%99%A4"><span class="nav-text">1.2 隐藏面消除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B7%B1%E5%BA%A6%E5%86%B2%E7%AA%81"><span class="nav-text">二、深度冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%81%8F%E7%A7%BB"><span class="nav-text">2.1 多边形偏移</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%811"><span class="nav-text">代码1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%812"><span class="nav-text">代码2</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%88%E6%9E%9C-1"><span class="nav-text">效果</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song木头"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Song木头</p>
+  <div class="site-description" itemprop="description">民以食为天</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bai-23" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bai-23" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2421662954@qq.com" title="E-Mail → mailto:2421662954@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/xxg0" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;xxg0" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      传送门
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.aoau.top/" title="http:&#x2F;&#x2F;www.aoau.top" rel="noopener" target="_blank">AOAU.TOP</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width=100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+      
+
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/bai-23" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Song木头">
+      <meta itemprop="description" content="民以食为天">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="快乐码原">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【WebGL之巅】24-三维世界-对象的前后关系<a href="https://github.com/bai-23/bai-23.github.io_posts/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-03 21:14:09" itemprop="dateCreated datePublished" datetime="2021-08-03T21:14:09+08:00">2021-08-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-04 10:19:32" itemprop="dateModified" datetime="2021-08-04T10:19:32+08:00">2021-08-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/" itemprop="url" rel="index"><span itemprop="name">frontend</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/frontend/webgl/" itemprop="url" rel="index"><span itemprop="name">webgl</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>对应《WebGL编程指南》第七章 31-DepthBuffer、32-Zfighting</p>
+<p>要点：对象的前后关系、隐藏面消除、深度冲突</p>
+<span id="more"></span>
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、正确处理对象的前后关系"><a href="#一、正确处理对象的前后关系" class="headerlink" title="一、正确处理对象的前后关系"></a>一、正确处理对象的前后关系</h3><p>目前为止，已经掌握编写代码移动视点，设置可视空间，从不同的角度观察三维对象，处理三角形缺一角的情况。但是，仍然还存在一个问题：在移动视点的过程中，有时候前面的三角形会“躲”到后面的三角形之后，这一节将会研究这一问题。</p>
+<h4 id="1-1-WebGL的绘图原理"><a href="#1-1-WebGL的绘图原理" class="headerlink" title="1.1 WebGL的绘图原理"></a>1.1 WebGL的绘图原理</h4><p>在真实世界中，如果你将两个盒子一前一后放在桌子上，如下图，下面的盒子会挡住部分后面的盒子。</p>
+<p><img src="/images/DepthBuffer1.png" alt="前面的盒子挡住部分后面的盒子"></p>
+<p>回顾一下示例程序 PerspectiveView 的效果，绿色三角形的一部分被黄色和蓝色三角形挡住了。看上去似乎是 WebGL 专为三维图形学设计，能够自动分析处三维对象的远近，并正确处理遮挡关系。</p>
+<p><img src="/images/perspectiveview1.png" alt="perspectiveview"></p>
+<p>遗憾的是，事实没有想象的那么美好。默认情况下，<u>WebGL 为了加速绘图操作，是按照顶点在缓冲区中的顺序来处理它们的</u>。前面所有的示例程序我们都是故意先定义远的物体，后定义近的物体，从而产生正确的效果。</p>
+<p>比如在上一节 PerspectiveView_mvp.js中，我们按照如下顺序定义了三角形的顶点和颜色数据：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="comment">// Three triangles on the right side</span></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The back green one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The middle yellow one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="comment">// The front blue one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line">    ]);</span><br></pre></td></tr></table></figure>
+
+<p><strong>WebGL 按照顶点在缓冲区中的顺序来进行绘制</strong>。后绘制的图形将覆盖已经绘制好的图形，这样就恰好产生了近处的三角形挡住远处的三角形的效果。</p>
+<p>为了验证这一点，我们将缓冲区中三角形顶点数据的顺序调整一下，把近处的蓝色三角形定义在前面，然后是中间的黄色三角形，最后是远处的绿色三角形，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">    [</span><br><span class="line">        <span class="comment">// Three triangles on the right side</span></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="comment">// The front blue one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The middle yellow one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">        <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The back green one</span></span><br><span class="line">        -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">        <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line">    ]);</span><br></pre></td></tr></table></figure>
+
+<p>运行程序，你就会发现本该出现在最远处的绿色三角形，不自然地挡住了近处的黄色和蓝色三角形: </p>
+<p><img src="/images/DepthBuffer2.png" alt="远处的图形挡住了近处的图形"></p>
+<p>WebGL 在默认情况下会按照缓冲区中的顺序绘制图形，而且后绘制的图形覆盖先绘制的图形，因为这样做很高效。如果场景中的对象不发生运动，观察者的状态也是唯一的，那么这种做法没有问题。但是如果，比如你<u>希望不断移动视点，从不同的角度看物体，那么你不可能事先决定对象出现的顺序</u>。</p>
+<h4 id="1-2-隐藏面消除"><a href="#1-2-隐藏面消除" class="headerlink" title="1.2 隐藏面消除"></a>1.2 隐藏面消除</h4><p>为了解决这个问题，WebGL 提供了<strong>隐藏面消除</strong>功能。这个功能会帮助我们消除那些被遮挡的表面（隐藏面），你可以放心地绘制场景而不必顾及各物体在缓冲区中的顺序，因为那些远处的物体会自动被近处的物体挡住，不会被绘制出来。这个功能已经内嵌在 WebGL 中了，你只需要简单地开启这个功能就可以了。</p>
+<p>开启隐藏面消除功能，需要遵循以下两步：</p>
+<ul>
+<li>开启隐藏面消除功能（<code>gl.enable(gl.DEPTH_TEST)</code>）</li>
+<li>在绘制之前，清除深度缓冲区（<code>gl.clear(gl.DEPTH_BUFFER_BIT)</code>）</li>
+</ul>
+<p>第1步所用的 <code>gl.enable()</code>函数实际上可以开启 WebGL 中的多种功能，其规范如下：</p>
+<p><img src="/images/DepthBuffer3.png" alt="gl.enable()"></p>
+<p>第2步，使用 gl.clear(）方法清除<strong>深度缓冲区</strong>。深度缓冲区是一个中间对象，其<u>作用就是帮助WebGL 进行隐藏面消除</u>。WebGL 在颜色缓冲区中绘制几何图形，绘制完成后将缓冲区显示到 canvas 上。如果要将隐藏面消除，那就必须知道每个几个图形的深度信息，而<u>深度缓冲区就是用来存储深度信息的</u>。<u>由于深度方向通常是Z轴方向，所以有时候我们也称为<strong>Z缓冲区</strong></u>。<br><img src="/images/DepthBuffer4.png" alt="深度缓冲区与隐藏面消除"></p>
+<p>在绘制任意一帧之前，都必须清除深度缓冲区，以消除绘制上一帧时在其中留下的痕迹。如果不这样做，就会出现错误的结果。我们调用 <code>gl.clear()</code>函数，并传入参数 gl.DEPTH_BUFFER_BIT 清除深度缓冲区。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl.clear(gl.DEPTH_BUFFER_BIT)</span><br></pre></td></tr></table></figure>
+
+<p>当然，还需要清除颜色缓冲区。用按位或符号 <code>|</code> 链接这两个参数，并作为参数传入函数中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)</span><br></pre></td></tr></table></figure>
+
+<p>与 gl.enble()函数对应的还有 gl.disable()函数，其规范如下所示(略)，前者启用某个功能，后者则禁用之。</p>
+<p>示例程序名为 <a href="#%E4%BB%A3%E7%A0%811">DepthBuffer.js</a>，它在 PerspectiveView_mvpMatrix.js 的基础上，加入了隐藏面消除的相关代码。注意，缓冲区中顶点的顺没有改变，程序一次按照<u>近处，中间，远处</u>的顺序绘制三角形。程序运行的结果和 PerspectiveView_mvpMatrix 完全一样。</p>
+<h3 id="二、深度冲突"><a href="#二、深度冲突" class="headerlink" title="二、深度冲突"></a>二、深度冲突</h3><p>隐藏面消除是 WebGL 的一项复杂而又强大的特性，在绝大多数情况下，它都能很好地完成任务。然而，当几何图形或物体的两个表面极为接近时，就会出现新的问题，<u>使得表面看上去斑斑驳驳的</u>，如下图所示。这种现象被称为<strong>深度冲突</strong>。现在，我们来画两个Z值完全一样的三角形。</p>
+<p><img src="/images/DepthBuffer5.png" alt="深度冲突的效果"></p>
+<p>之所以会产生深度冲突，是因为<u>两个表面过于接近</u>，深度缓冲区有限的精度已经不能区分哪个在前，哪个在后了。严格地说，如果创建三维模型阶段就对顶点的深度值加以注意，是能够避免深度冲突的。但是，当场景中有多个运动者的物体时，实现这一点几乎是不可能的。</p>
+<h4 id="2-1-多边形偏移"><a href="#2-1-多边形偏移" class="headerlink" title="2.1 多边形偏移"></a>2.1 多边形偏移</h4><p>WebGL 提供一种称为<strong>多边形偏移</strong>的的机制来解决这个问题。<u>该机制将自动在Z值加上一个偏移量，偏移量的值由物体表面相对与观察者视线的角度来确定</u>。启用该机制只需两行代码：</p>
+<ul>
+<li>启用多边形偏移：<code>gl.enable(gl.POLYGON_OFFSET_FILL)</code></li>
+<li>在绘制之前指定用来计算偏移量的参数: <code>gl.polygonOffset(1.0, 1.0)</code></li>
+</ul>
+<p>第1步调用了 gl.enable()启用多边形偏移，注意启用隐藏面消除用到的也是该函数，只不过两者传入了不同的参数。第2步中的函数 <code>gl.polygonOffset()</code>的规范如下：</p>
+<p><img src="/images/DepthBuffer8.png" alt="gl.polygonOffset()"></p>
+<p>实例<a href="#%E4%BB%A3%E7%A0%812">代码2</a>核心部分：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用多边形偏移</span></span><br><span class="line">gl.enable(gl.POLYGON_OFFSET_FILL);</span><br><span class="line"><span class="comment">// Draw the triangles</span></span><br><span class="line">gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n/<span class="number">2</span>);   <span class="comment">// The green triangle</span></span><br><span class="line">gl.polygonOffset(<span class="number">1.0</span>, <span class="number">1.0</span>);          <span class="comment">// 设置多边形偏移参数</span></span><br><span class="line">gl.drawArrays(gl.TRIANGLES, n/<span class="number">2</span>, n/<span class="number">2</span>); <span class="comment">// The yellow triangle</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">    <span class="comment">// Vertex coordinates and color</span></span><br><span class="line">    <span class="number">0.0</span>,  <span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The green triangle</span></span><br><span class="line">    -<span class="number">2.5</span>, -<span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">    <span class="number">2.5</span>, -<span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, </span><br><span class="line"></span><br><span class="line">    <span class="number">0.0</span>,  <span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="comment">// The yellow triagle</span></span><br><span class="line">    -<span class="number">3.0</span>, -<span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">    <span class="number">3.0</span>, -<span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, </span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<p>可见，所有顶点的Z 坐标值都一样，为 -0.5，但是却没有出现深度冲突现象。</p>
+<p>在代码的其余部分，我们开启了多边形偏移机制，然后绘制了一个绿色的三角形和一个黄色的三角形。两个三角形的数据存储在同一个缓冲区中，所以需要格外注意 <code>gl.drawArryas()</code>的第2个和第3个参数。<u>第2个参数表示开始绘制的顶点的编号</u>，而<u>第3个参数表示该次操作绘制的顶点个数</u>。所以，我们先画了一个绿色三角形，然后通过 <code>gl.polygonOffset()</code>设置了多边形偏移参数，使之后的绘制受到多边形偏移机制影响，再画了一个黄色三角形。运行程序，你将看到两个三角形没有发生深度冲突。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h4 id="代码1"><a href="#代码1" class="headerlink" title="代码1"></a>代码1</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//DepthBuffer.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_MvpMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_MvpMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +<span class="comment">//!!! 需要声明浮点数精度，否则报错No precision specified for (float)</span></span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = v_Color;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//gl.clearColor(0, 0, 0, 1);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//开启隐藏面消除</span></span><br><span class="line">    gl.enable(gl.DEPTH_TEST);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//模型视图投影矩阵</span></span><br><span class="line">    <span class="keyword">var</span> u_MvpMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_MvpMatrix&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> mvpMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//模型矩阵------------------------------</span></span><br><span class="line">    <span class="comment">// var u_ModelMatrix = gl.getUniformLocation(gl.program, &#x27;u_ModelMatrix&#x27;);</span></span><br><span class="line">    <span class="keyword">var</span> modelMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">    modelMatrix.setTranslate(<span class="number">0.75</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">//平移0.75单位</span></span><br><span class="line">    <span class="comment">//gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);</span></span><br><span class="line">    <span class="comment">//---------------------------------------</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//视图矩阵------------------------------</span></span><br><span class="line">    <span class="comment">// var u_ViewMatrix = gl.getUniformLocation(gl.program, &#x27;u_ViewMatrix&#x27;);</span></span><br><span class="line">    <span class="comment">//设置视点、视线、上方向</span></span><br><span class="line">    <span class="keyword">var</span> viewMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">    viewMatrix.setLookAt(<span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">100</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">   <span class="comment">// gl.uniformMatrix4fv(u_ViewMatrix, false, viewMatrix.elements);</span></span><br><span class="line">    <span class="comment">//---------------------------------------</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//投影矩阵--------------------------</span></span><br><span class="line">    <span class="comment">// var u_ProjMatrix = gl.getUniformLocation(gl.program, &#x27;u_ProjMatrix&#x27;);</span></span><br><span class="line">    <span class="keyword">var</span> projMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">    projMatrix.setPerspective(<span class="number">30</span>, canvas.width/canvas.height, <span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">    <span class="comment">//gl.uniformMatrix4fv(u_ProjMatrix, false, projMatrix.elements);</span></span><br><span class="line">    <span class="comment">//----------------------------------</span></span><br><span class="line"></span><br><span class="line">    mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);</span><br><span class="line">    gl.uniformMatrix4fv(u_MvpMatrix, <span class="literal">false</span>, mvpMatrix.elements);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空颜色和深度缓冲区</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);<span class="comment">//绘制右侧一组三角形</span></span><br><span class="line"></span><br><span class="line">    modelMatrix.setTranslate(-<span class="number">0.75</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    mvpMatrix.set(projMatrix).multiply(viewMatrix).multiply(modelMatrix);</span><br><span class="line">    gl.uniformMatrix4fv(u_MvpMatrix, <span class="literal">false</span>, mvpMatrix.elements);</span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n);<span class="comment">//绘制左侧一组三角形</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="comment">// Three triangles on the right side</span></span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="comment">// The front blue one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">1.0</span>,   <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The middle yellow one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">2.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line"></span><br><span class="line">            <span class="number">0.0</span>,  <span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The back green one</span></span><br><span class="line">            -<span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">            <span class="number">0.5</span>, -<span class="number">1.0</span>,  -<span class="number">4.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>,</span><br><span class="line">        ]);</span><br><span class="line">    <span class="keyword">var</span> n = <span class="number">9</span>; <span class="comment">//点的个数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> verteColorBuffer = gl.createBuffer();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, verteColorBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> FSIZE = verticesColors.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="comment">//将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE *<span class="number">6</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Color = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Color&#x27;</span>);</span><br><span class="line">    gl.vertexAttribPointer(a_Color, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">6</span>, FSIZE * <span class="number">3</span>);</span><br><span class="line">    gl.enableVertexAttribArray(a_Color);</span><br><span class="line"></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, <span class="literal">null</span>);<span class="comment">//取消绑定的缓冲区对象</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h5><p><img src="/images/perspectiveview1.png" alt="DepthBuffer"></p>
+<h4 id="代码2"><a href="#代码2" class="headerlink" title="代码2"></a>代码2</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Vertex shader program</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">  <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;uniform mat4 u_ViewProjMatrix;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;  gl_Position = u_ViewProjMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;  v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fragment shader program</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE =</span><br><span class="line">  <span class="string">&#x27;#ifdef GL_ES\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;#endif\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;  gl_FragColor = v_Color;\n&#x27;</span> +</span><br><span class="line">  <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Retrieve &lt;canvas&gt; element</span></span><br><span class="line">  <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Get the rendering context for WebGL</span></span><br><span class="line">  <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Initialize shaders</span></span><br><span class="line">  <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to intialize shaders.&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Set the vertex coordinates and color (the blue triangle is in the front)</span></span><br><span class="line">  <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//Set clear color and enable the hidden surface removal function</span></span><br><span class="line">  gl.clearColor(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">  gl.enable(gl.DEPTH_TEST);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Get the storage locations of u_ViewProjMatrix</span></span><br><span class="line">  <span class="keyword">var</span> u_ViewProjMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_ViewProjMatrix&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> viewProjMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">  <span class="comment">// Set the eye point, look-at point, and up vector.</span></span><br><span class="line">  viewProjMatrix.setPerspective(<span class="number">30</span>, canvas.width/canvas.height, <span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">  viewProjMatrix.lookAt(<span class="number">3.06</span>, <span class="number">2.5</span>, <span class="number">10.0</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Pass the view projection matrix to u_ViewProjMatrix</span></span><br><span class="line">  gl.uniformMatrix4fv(u_ViewProjMatrix, <span class="literal">false</span>, viewProjMatrix.elements);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Clear color and depth buffer</span></span><br><span class="line">  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 启用多边形偏移</span></span><br><span class="line">  gl.enable(gl.POLYGON_OFFSET_FILL);</span><br><span class="line">  <span class="comment">// Draw the triangles</span></span><br><span class="line">  gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, n/<span class="number">2</span>);   <span class="comment">// The green triangle</span></span><br><span class="line">  gl.polygonOffset(<span class="number">1.0</span>, <span class="number">1.0</span>);          <span class="comment">// 设置多边形偏移参数</span></span><br><span class="line">  gl.drawArrays(gl.TRIANGLES, n/<span class="number">2</span>, n/<span class="number">2</span>); <span class="comment">// The yellow triangle</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> verticesColors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">    <span class="comment">// Vertex coordinates and color</span></span><br><span class="line">     <span class="number">0.0</span>,  <span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="comment">// The green triangle</span></span><br><span class="line">    -<span class="number">2.5</span>, -<span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">0.4</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">     <span class="number">2.5</span>, -<span class="number">2.5</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, </span><br><span class="line"></span><br><span class="line">     <span class="number">0.0</span>,  <span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="comment">// The yellow triagle</span></span><br><span class="line">    -<span class="number">3.0</span>, -<span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>,</span><br><span class="line">     <span class="number">3.0</span>, -<span class="number">3.0</span>,  -<span class="number">5.0</span>,  <span class="number">1.0</span>,  <span class="number">1.0</span>,  <span class="number">0.4</span>, </span><br><span class="line">  ]);</span><br><span class="line">  <span class="keyword">var</span> n = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a buffer object</span></span><br><span class="line">  <span class="keyword">var</span> vertexColorbuffer = gl.createBuffer();  </span><br><span class="line"></span><br><span class="line">  <span class="comment">// Write the vertex coordinates and color to the buffer object</span></span><br><span class="line">  gl.bindBuffer(gl.ARRAY_BUFFER, vertexColorbuffer);</span><br><span class="line">  gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> FSIZE = verticesColors.BYTES_PER_ELEMENT;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Assign the buffer object to a_Position and enable the assignment</span></span><br><span class="line">  <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">  gl.vertexAttribPointer(a_Position, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">6</span>, <span class="number">0</span>);</span><br><span class="line">  gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Assign the buffer object to a_Color and enable the assignment</span></span><br><span class="line">  <span class="keyword">var</span> a_Color = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Color&#x27;</span>);</span><br><span class="line">  gl.vertexAttribPointer(a_Color, <span class="number">3</span>, gl.FLOAT, <span class="literal">false</span>, FSIZE * <span class="number">6</span>, FSIZE * <span class="number">3</span>);</span><br><span class="line">  gl.enableVertexAttribArray(a_Color);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h5><p><img src="/images/DepthBuffer6.png" alt="Zfighting"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\00-使用canvas绘制2d矩形-HelloCanvas2d\" rel="bookmark">【WebGL之巅】00-使用canvas绘制2d矩形</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\02-绘制一个点_v1-HelloPoint-v1\" rel="bookmark">【WebGL之巅】02-绘制一个点_v1</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\01-使用webgl清空绘图区-HellCanvas\" rel="bookmark">【WebGL之巅】01-使用webgl清空绘图区</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\03-绘制一个点_v2_attribute变量-HelloPoint-v2\" rel="bookmark">【WebGL之巅】03-绘制一个点_v2_attribute变量</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Song木头
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/" title="【WebGL之巅】24-三维世界-对象的前后关系">https://freepiao.cn/24-三维世界-对象的前后关系-DepthBuffer/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/frontEnd/" rel="tag"><i class="fa fa-tag"></i> frontEnd</a>
+              <a href="/tags/WebGL/" rel="tag"><i class="fa fa-tag"></i> WebGL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/23-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4%EF%BC%88%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%EF%BC%89-perspectiveview/" rel="prev" title="【WebGL之巅】23-三维世界-可视空间（透视投影）">
+                  <i class="fa fa-chevron-left"></i> 【WebGL之巅】23-三维世界-可视空间（透视投影）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/25-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E7%AB%8B%E6%96%B9%E4%BD%93-HelloCubes/" rel="next" title="【WebGL之巅】25-三维世界-立方体">
+                  【WebGL之巅】25-三维世界-立方体 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+  
+  <div class='myComments' style="margin-top:40px;margin-bottom:-50px;padding-top:5px;border-top:1px dashed #c0bfbf">
+    <span>评论区</span>
+    <span style="font-size:14px;">（请使用<a target="_blank" rel="noopener" href="https://github.com/">github</a>账号登陆）</span>
+  </div>
+    <div class="comments utterances-container"></div>
+  </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-egg"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song木头</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        站点访客：<span id="busuanzi_value_site_uv"><i class="fa fa-spinner"></i></span>人次
+      </span>
+    </span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">354k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:22</span>
+  </span>
+</div>
+
+<!-- 网站运行时间的设置
+<div> 
+  <i class="fa fa-dog"></i>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span> 
+</div>
+
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/10/2021 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "与她在一起的: -"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒 ";
+    }
+setInterval("createtime()",250);
+</script>
+ -->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.4" zIndex="-2" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":false}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/24-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%89%8D%E5%90%8E%E5%85%B3%E7%B3%BB-DepthBuffer/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"bai-23/commons","issue_term":"og:title","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
