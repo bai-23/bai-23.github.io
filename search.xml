@@ -41,49 +41,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
-    <url>/01-%E4%BD%BF%E7%94%A8webgl%E6%B8%85%E7%A9%BA%E7%BB%98%E5%9B%BE%E5%8C%BA-HellCanvas/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
-<li>获取<code>&lt;canvas&gt;</code>元素</li>
-<li>获取webgl绘图上下文</li>
-<li>设置背景色</li>
-<li>清空<code>&lt;canvas&gt;</code></li>
-</ol>
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>gl.cleanColor()的参数</p>
-</li>
-<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
-</li>
-<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
-</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>HelloCanvas.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【WebGL之巅】02-绘制一个点_v1</title>
     <url>/02-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%82%B9_v1-HelloPoint-v1/</url>
     <content><![CDATA[<blockquote>
@@ -137,6 +94,153 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint1.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = vec4(-0.5, -0.5, 0.0, 1.0);\n&#x27;</span> + <span class="comment">//设置坐标：顶点位置</span></span><br><span class="line">        <span class="string">&#x27;gl_PointSize = 10.0;\n&#x27;</span> +                    <span class="comment">//设置尺寸（px数），默认值1.0</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">//设置颜色，RGBA格式</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>( !gl )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v1-03.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】03-绘制一个点_v2_attribute变量</title>
+    <url>/03-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%82%B9_v2_attribute%E5%8F%98%E9%87%8F-HelloPoint-v2/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：03-HelloPoint2</p>
+<p>要点：JavaScript与着色器之前数据的传输（attribute变量使用步骤）、存储限定符（attribute）、gl.getAttribLocation()、gl.vertexAttrib3f()、WebGL函数命名规范</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><h6 id="位置信息的传输"><a href="#位置信息的传输" class="headerlink" title="位置信息的传输"></a>位置信息的传输</h6><p>方式1：attribute变量，传输与顶点相关的数据</p>
+<p>方式2：uniform变量，传输对于所有顶点都相同（与顶点无关）的数据</p>
+</li>
+<li><h6 id="attribute变量使用步骤"><a href="#attribute变量使用步骤" class="headerlink" title="attribute变量使用步骤"></a>attribute变量使用步骤</h6><p>① 在顶点着色器中，声明attribute变量</p>
+<p>② 将attribute变量赋值给gl_Position变量</p>
+<p>③ 向attribute变量传输数据</p>
+</li>
+<li><h6 id="存储限定符"><a href="#存储限定符" class="headerlink" title="存储限定符"></a>存储限定符</h6><p>关键词attribute被称为存储限定符</p>
+<p>声明attribute变量：**&lt;存储限定符&gt;&lt;类型&gt;&lt;变量名&gt;**</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">存储限定符  类型    变量名</span><br><span class="line">     ↓      ↓        ↓</span><br><span class="line"><span class="string">&#x27;attribute vec4 a_Position;&#x27;</span></span><br><span class="line"></span><br><span class="line">注意：以后所有attribute变量名都使用‘a_’，uniform变量名使用‘u_’规范</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line">准备好从外部接收顶点坐标及尺寸</span><br></pre></td></tr></table></figure></li>
+<li><h6 id="gl-getAttribLocation"><a href="#gl-getAttribLocation" class="headerlink" title="gl.getAttribLocation()"></a>gl.getAttribLocation()</h6></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>作用</th>
+<th>获取attribute变量地址</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数</td>
+<td>program：程序对象，包含了顶点和片元着色器</td>
+<td>name：attribute变量名称</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>大于等于0：attribute变量的存储地址</td>
+<td>-1：attribute变量不存在或命名错误</td>
+</tr>
+<tr>
+<td>错误</td>
+<td>INVALID_OPERATION 程序对象未能成功连接</td>
+<td>INVALID_VALUE name参数长度越界</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li><h6 id="gl-vertexAttrib3f"><a href="#gl-vertexAttrib3f" class="headerlink" title="gl.vertexAttrib3f()"></a>gl.vertexAttrib3f()</h6></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>作用</th>
+<th>将顶点位置传输给attribute变量</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数</td>
+<td>location：指定将要修改的attribute变量的存储位置(a_Position)</td>
+<td>v0,v1,v2,[,1.0]: 指定填充值(x,y,z坐标)</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+<td></td>
+</tr>
+<tr>
+<td>错误</td>
+<td>INVALID_OPERATION 没有当前的program对象</td>
+<td>INVALID_VALUE location数目大于attribute变量的最大数目</td>
+</tr>
+<tr>
+<td>同族函数</td>
+<td>gl.vertexAttrib1f、gl.vertexAttrib2f、gl.vertexAttrib4f</td>
+<td>矢量版本：gl.vertexAttrib3f<strong>v</strong>, 可接受数组作为参数</td>
+</tr>
+</tbody></table>
+<ol start="6">
+<li><h6 id="WebGL函数命名规范"><a href="#WebGL函数命名规范" class="headerlink" title="WebGL函数命名规范"></a>WebGL函数命名规范</h6><p>遵循openGL：&lt;基础函数名&gt;&lt;参数个数&gt;&lt;参数类型&gt;</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.vertexAttrib <span class="number">3</span>     f ()</span><br><span class="line">       ↑        ↑     ↑</span><br><span class="line">  基础函数名  参数个数  参数类型（f：浮点数，i：整数）</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>draw a point 2<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">    Please use the browser supporting &quot;canvas&quot;.</span><br><span class="line"><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloPoint2.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
+    <url>/01-%E4%BD%BF%E7%94%A8webgl%E6%B8%85%E7%A9%BA%E7%BB%98%E5%9B%BE%E5%8C%BA-HellCanvas/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
+<li>获取<code>&lt;canvas&gt;</code>元素</li>
+<li>获取webgl绘图上下文</li>
+<li>设置背景色</li>
+<li>清空<code>&lt;canvas&gt;</code></li>
+</ol>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>gl.cleanColor()的参数</p>
+</li>
+<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
+</li>
+<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -247,110 +351,6 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">click</span>(<span class="params">ev, gl, canvas, a_Position</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x= ev.clientX;  <span class="comment">// 鼠标点击处的x坐标</span></span><br><span class="line">    <span class="keyword">var</span> y = ev.clientY; <span class="comment">// 鼠标点击处的y坐标</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> rect = ev.target.getBoundingClientRect();</span><br><span class="line">    x = ((x - rect.left) - canvas.width / <span class="number">2</span>) / (canvas.width / <span class="number">2</span>);</span><br><span class="line">    y = (canvas.height / <span class="number">2</span> - (y - rect.top)) / (canvas.height / <span class="number">2</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将坐标存储到g_points数组中</span></span><br><span class="line">    g_points.push([x, y]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清除&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> len = g_points.length;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i+=<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">var</span> xy = g_points[i]</span><br><span class="line">        <span class="comment">// 将点的位置传递到变量中</span></span><br><span class="line">        gl.vertexAttrib3f(a_Position, xy[<span class="number">0</span>], xy[<span class="number">1</span>], <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 绘制点</span></span><br><span class="line">        gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/ClickPoints-v1.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】03-绘制一个点_v2_attribute变量</title>
-    <url>/03-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%82%B9_v2_attribute%E5%8F%98%E9%87%8F-HelloPoint-v2/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：03-HelloPoint2</p>
-<p>要点：JavaScript与着色器之前数据的传输（attribute变量使用步骤）、存储限定符（attribute）、gl.getAttribLocation()、gl.vertexAttrib3f()、WebGL函数命名规范</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><h6 id="位置信息的传输"><a href="#位置信息的传输" class="headerlink" title="位置信息的传输"></a>位置信息的传输</h6><p>方式1：attribute变量，传输与顶点相关的数据</p>
-<p>方式2：uniform变量，传输对于所有顶点都相同（与顶点无关）的数据</p>
-</li>
-<li><h6 id="attribute变量使用步骤"><a href="#attribute变量使用步骤" class="headerlink" title="attribute变量使用步骤"></a>attribute变量使用步骤</h6><p>① 在顶点着色器中，声明attribute变量</p>
-<p>② 将attribute变量赋值给gl_Position变量</p>
-<p>③ 向attribute变量传输数据</p>
-</li>
-<li><h6 id="存储限定符"><a href="#存储限定符" class="headerlink" title="存储限定符"></a>存储限定符</h6><p>关键词attribute被称为存储限定符</p>
-<p>声明attribute变量：**&lt;存储限定符&gt;&lt;类型&gt;&lt;变量名&gt;**</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">存储限定符  类型    变量名</span><br><span class="line">     ↓      ↓        ↓</span><br><span class="line"><span class="string">&#x27;attribute vec4 a_Position;&#x27;</span></span><br><span class="line"></span><br><span class="line">注意：以后所有attribute变量名都使用‘a_’，uniform变量名使用‘u_’规范</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line">准备好从外部接收顶点坐标及尺寸</span><br></pre></td></tr></table></figure></li>
-<li><h6 id="gl-getAttribLocation"><a href="#gl-getAttribLocation" class="headerlink" title="gl.getAttribLocation()"></a>gl.getAttribLocation()</h6></li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>作用</th>
-<th>获取attribute变量地址</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>参数</td>
-<td>program：程序对象，包含了顶点和片元着色器</td>
-<td>name：attribute变量名称</td>
-</tr>
-<tr>
-<td>返回值</td>
-<td>大于等于0：attribute变量的存储地址</td>
-<td>-1：attribute变量不存在或命名错误</td>
-</tr>
-<tr>
-<td>错误</td>
-<td>INVALID_OPERATION 程序对象未能成功连接</td>
-<td>INVALID_VALUE name参数长度越界</td>
-</tr>
-</tbody></table>
-<ol start="5">
-<li><h6 id="gl-vertexAttrib3f"><a href="#gl-vertexAttrib3f" class="headerlink" title="gl.vertexAttrib3f()"></a>gl.vertexAttrib3f()</h6></li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>作用</th>
-<th>将顶点位置传输给attribute变量</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>参数</td>
-<td>location：指定将要修改的attribute变量的存储位置(a_Position)</td>
-<td>v0,v1,v2,[,1.0]: 指定填充值(x,y,z坐标)</td>
-</tr>
-<tr>
-<td>返回值</td>
-<td>无</td>
-<td></td>
-</tr>
-<tr>
-<td>错误</td>
-<td>INVALID_OPERATION 没有当前的program对象</td>
-<td>INVALID_VALUE location数目大于attribute变量的最大数目</td>
-</tr>
-<tr>
-<td>同族函数</td>
-<td>gl.vertexAttrib1f、gl.vertexAttrib2f、gl.vertexAttrib4f</td>
-<td>矢量版本：gl.vertexAttrib3f<strong>v</strong>, 可接受数组作为参数</td>
-</tr>
-</tbody></table>
-<ol start="6">
-<li><h6 id="WebGL函数命名规范"><a href="#WebGL函数命名规范" class="headerlink" title="WebGL函数命名规范"></a>WebGL函数命名规范</h6><p>遵循openGL：&lt;基础函数名&gt;&lt;参数个数&gt;&lt;参数类型&gt;</p>
-</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">gl.vertexAttrib <span class="number">3</span>     f ()</span><br><span class="line">       ↑        ↑     ↑</span><br><span class="line">  基础函数名  参数个数  参数类型（f：浮点数，i：整数）</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>draw a point 2<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">    Please use the browser supporting &quot;canvas&quot;.</span><br><span class="line"><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloPoint2.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -1449,6 +1449,50 @@ function down(){
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】26-光照-光照原理</title>
+    <url>/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/</url>
+    <content><![CDATA[<p>对应《WebGL编程指南》第八章 36-LightedCube</p>
+<p>要点：光源类型（平行光、点光源光）、反射类型（漫反射、环境反射）、根据光线和表面的方向计算入射角、法向量</p>
+<span id="more"></span>
+
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="一、光照原理"><a href="#一、光照原理" class="headerlink" title="一、光照原理"></a>一、光照原理</h3><h4 id="1-1-引入——着色与阴影"><a href="#1-1-引入——着色与阴影" class="headerlink" title="1.1 引入——着色与阴影"></a>1.1 引入——着色与阴影</h4><p>现实世界中的物体被光纤照射时，会反射一部分光。只有当反射光线进入你的眼睛时，你才能够看到物体并辨认出它的颜色。</p>
+<p>在现实世界中，当光线照射到物体上时，发生了两个重要的现象：</p>
+<ul>
+<li>根据光源和光线方向，物体不同表面的<u>明暗程度</u>变得不一致。</li>
+<li>根据<u>光源</u>和<u>光线方向</u>，物体向地面投下<u>影子</u>。</li>
+</ul>
+<p><img src="/images/LightedCube1.png" alt="明暗差异和阴影"></p>
+<p>明暗差异给了物体立体感。上图中的立方体是纯白的，但是它每个面受到光照程度不同所以能够辨认。</p>
+<p><strong>着色</strong>：根据光照条件重建“物体各表面明暗不一的效果”的过程。</p>
+<p><strong>阴影</strong>：物体向地面投下影子的现象，又被成为阴影。</p>
+<p>在讨论着色过程之前，考虑两件事：</p>
+<ul>
+<li><p>发出光线的光源的类型</p>
+</li>
+<li><p>物体表面如何反射光线</p>
+</li>
+</ul>
+<h4 id="1-2-光源类型"><a href="#1-2-光源类型" class="headerlink" title="1.2 光源类型"></a>1.2 光源类型</h4><p>真实世界的光主要有两种类型：</p>
+<ul>
+<li><strong>平行光</strong>，类似于自然中的太阳光</li>
+<li><strong>点光源光</strong>，类似于人造灯泡的光</li>
+<li>此外，我们还用<strong>环境光</strong>来模拟真实世界中的非直射光（也就是由光源发出后经过墙壁或其他物体反射后的光）</li>
+</ul>
+<blockquote>
+<p>三维图形学还使用一些其他类型的光，比如用聚合灯光来模拟电筒，车前灯等。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>UA伪装爬取网页【★】</title>
     <url>/UA%E4%BC%AA%E8%A3%85%E7%88%AC%E5%8F%96%E7%BD%91%E9%A1%B5/</url>
     <content><![CDATA[<p>复习：<strong>UA检测</strong></p>
@@ -1614,32 +1658,6 @@ function down(){
       </tags>
   </entry>
   <entry>
-    <title>建站随笔</title>
-    <url>/hello-world/</url>
-    <content><![CDATA[<p>…</p>
-<span id="more"></span>
-
-
-<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
-
-<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>essay</category>
-        <category>建站指南</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7 零成本搭建web服务器【外网可访问】</title>
     <url>/centosweb/</url>
     <content><![CDATA[<blockquote>
@@ -1728,6 +1746,32 @@ Natapp网址：[点这里](https://natapp.cn/)
       <tags>
         <tag>Linux</tag>
         <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>建站随笔</title>
+    <url>/hello-world/</url>
+    <content><![CDATA[<p>…</p>
+<span id="more"></span>
+
+
+<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page ‘title’</span><br></pre></td></tr></table></figure>
+
+<h3 id="提交Git"><a href="#提交Git" class="headerlink" title="提交Git"></a>提交Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s --debug</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>essay</category>
+        <category>建站指南</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2119,6 +2163,28 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
+    <title>xpath解析58二手房的房源信息【★★】</title>
+    <url>/xpath%E8%A7%A3%E6%9E%9058%E4%BA%8C%E6%89%8B%E6%88%BF%E7%9A%84%E6%88%BF%E6%BA%90%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/xpath/xpath-syntax.html">XPath语法</a></p>
+<p>需求：爬取58二手房中的房源信息</p>
+<span id="more"></span>
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="comment"># 需求：爬取58二手房中的房源信息</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 爬取到页面源码数据</span></span><br><span class="line">    url = <span class="string">&#x27;https://bj.58.com/ershoufang/&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 数据解析</span></span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 存储的就是li标签对象</span></span><br><span class="line">    div_list = tree.xpath(<span class="string">&#x27;//section[@class=&quot;list&quot;]//h3/text()&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(div_list)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;58.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> div_list:</span><br><span class="line">        fp.write(item + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>小舍免费图片Api</title>
     <url>/xiaoshesapi/</url>
     <content><![CDATA[<blockquote>
@@ -2189,28 +2255,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       <tags>
         <tag>图片Api</tag>
         <tag>NodeJs</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>xpath解析58二手房的房源信息【★★】</title>
-    <url>/xpath%E8%A7%A3%E6%9E%9058%E4%BA%8C%E6%89%8B%E6%88%BF%E7%9A%84%E6%88%BF%E6%BA%90%E4%BF%A1%E6%81%AF/</url>
-    <content><![CDATA[<p>复习：<a href="https://www.runoob.com/xpath/xpath-syntax.html">XPath语法</a></p>
-<p>需求：爬取58二手房中的房源信息</p>
-<span id="more"></span>
-
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="comment"># 需求：爬取58二手房中的房源信息</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 爬取到页面源码数据</span></span><br><span class="line">    url = <span class="string">&#x27;https://bj.58.com/ershoufang/&#x27;</span></span><br><span class="line">    page_text = requests.get(url=url, headers=headers).text</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 数据解析</span></span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 存储的就是li标签对象</span></span><br><span class="line">    div_list = tree.xpath(<span class="string">&#x27;//section[@class=&quot;list&quot;]//h3/text()&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(div_list)</span><br><span class="line">    fp = <span class="built_in">open</span>(<span class="string">&#x27;58.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> div_list:</span><br><span class="line">        fp.write(item + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -2318,30 +2362,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>单张图片爬取【★】</title>
-    <url>/%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E7%88%AC%E5%8F%96/</url>
-    <content><![CDATA[<blockquote>
-<p>request请求返回类型区别：</p>
-<ul>
-<li>content返回的是二进制形式的图片数据</li>
-<li>text（字符串） content（二进制）json() (对象)</li>
-</ul>
-</blockquote>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 爬取图片数据</span></span><br><span class="line">    url = <span class="string">&#x27;http://api.aoau.top:9999/photos/3/%20%2834%29.png&#x27;</span></span><br><span class="line">    <span class="comment"># content返回的是二进制形式的图片数据</span></span><br><span class="line">    <span class="comment"># text（字符串） content（二进制）json() (对象)</span></span><br><span class="line">    img_data = requests.get(url=url).content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tp.jpg&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ajax跨域解决方案</title>
     <url>/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
@@ -2378,6 +2398,30 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </categories>
       <tags>
         <tag>Ajax</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单张图片爬取【★】</title>
+    <url>/%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E7%88%AC%E5%8F%96/</url>
+    <content><![CDATA[<blockquote>
+<p>request请求返回类型区别：</p>
+<ul>
+<li>content返回的是二进制形式的图片数据</li>
+<li>text（字符串） content（二进制）json() (对象)</li>
+</ul>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 爬取图片数据</span></span><br><span class="line">    url = <span class="string">&#x27;http://api.aoau.top:9999/photos/3/%20%2834%29.png&#x27;</span></span><br><span class="line">    <span class="comment"># content返回的是二进制形式的图片数据</span></span><br><span class="line">    <span class="comment"># text（字符串） content（二进制）json() (对象)</span></span><br><span class="line">    img_data = requests.get(url=url).content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tp.jpg&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -3672,7 +3716,7 @@ function initVertexBuffers(gl) {
 <tbody><tr>
 <td>参数</td>
 <td>mode</td>
-<td>指定绘制的方式，可接受以下常量符号</td>
+<td>指定绘制的方式，可接受以下常量符号[1]</td>
 </tr>
 <tr>
 <td></td>
@@ -3701,7 +3745,7 @@ function initVertexBuffers(gl) {
 </tr>
 </tbody></table>
 <blockquote>
-<p>mode参数：gl.POINTS/gl.LINES/gl.LINE_STRIP/gl.LINE_LOOP/</p>
+<p>[1] mode参数：gl.POINTS/gl.LINES/gl.LINE_STRIP/gl.LINE_LOOP/</p>
 <p>gl.TRIANGLES/gl.TRIANGLE_STRIP/gl.TRIANGLE_FAN</p>
 </blockquote>
 <blockquote>
@@ -3760,7 +3804,7 @@ function initVertexBuffers(gl) {
 <h4 id="代码2"><a href="#代码2" class="headerlink" title="代码2"></a>代码2</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//ColoredCube.js</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;uniform mat4 u_MvpMatrix;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_Position = u_MvpMatrix * a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   gl_PointSize = 10.0;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;   v_Color = a_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;precision mediump float;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;varying vec4 v_Color;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;   gl_FragColor = v_Color;\n&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//gl.clearColor(0, 0, 0, 1);</span></span><br><span class="line">    gl.enable(gl.DEPTH_TEST);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//模型视图投影矩阵</span></span><br><span class="line">    <span class="keyword">var</span> u_MvpMatrix = gl.getUniformLocation(gl.program, <span class="string">&#x27;u_MvpMatrix&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> mvpMatrix = <span class="keyword">new</span> Matrix4();</span><br><span class="line">    mvpMatrix.setPerspective(<span class="number">30</span>, <span class="number">1</span>, <span class="number">1</span> ,<span class="number">100</span>);</span><br><span class="line">    mvpMatrix.lookAt(<span class="number">3</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    gl.uniformMatrix4fv(u_MvpMatrix, <span class="literal">false</span>, mvpMatrix.elements);</span><br><span class="line"></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawElements(gl.TRIANGLES, n, gl.UNSIGNED_BYTE, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Create a cube</span></span><br><span class="line">    <span class="comment">//    v6----- v5</span></span><br><span class="line">    <span class="comment">//   /|      /|</span></span><br><span class="line">    <span class="comment">//  v1------v0|</span></span><br><span class="line">    <span class="comment">//  | |     | |</span></span><br><span class="line">    <span class="comment">//  | |v7---|-|v4</span></span><br><span class="line">    <span class="comment">//  |/      |/</span></span><br><span class="line">    <span class="comment">//  v2------v3</span></span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([   <span class="comment">// Vertex coordinates</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  -<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  -<span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,   <span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="comment">// v0-v1-v2-v3 front</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,   <span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,   <span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,   <span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>,  <span class="comment">// v0-v3-v4-v5 right</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,   <span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="comment">// v0-v5-v6-v1 up</span></span><br><span class="line">        -<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  -<span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="comment">// v1-v6-v7-v2 left</span></span><br><span class="line">        -<span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,   <span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,   <span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,  -<span class="number">1.0</span>,-<span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="comment">// v7-v4-v3-v2 down</span></span><br><span class="line">        <span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>,-<span class="number">1.0</span>,-<span class="number">1.0</span>,  -<span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>,   <span class="number">1.0</span>, <span class="number">1.0</span>,-<span class="number">1.0</span>   <span class="comment">// v4-v7-v6-v5 back</span></span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([     <span class="comment">// Colors</span></span><br><span class="line">        <span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">1.0</span>,  <span class="comment">// v0-v1-v2-v3 front(blue)</span></span><br><span class="line">        <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="comment">// v0-v3-v4-v5 right(green)</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">0.4</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">0.4</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">0.4</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">0.4</span>, <span class="number">0.4</span>,  <span class="comment">// v0-v5-v6-v1 up(red)</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.4</span>,  <span class="comment">// v1-v6-v7-v2 left</span></span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="comment">// v7-v4-v3-v2 down</span></span><br><span class="line">        <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">1.0</span>,  <span class="number">0.4</span>, <span class="number">1.0</span>, <span class="number">1.0</span>   <span class="comment">// v4-v7-v6-v5 back</span></span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> indices = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>([       <span class="comment">// Indices of the vertices</span></span><br><span class="line">        <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>,   <span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>,    <span class="comment">// front</span></span><br><span class="line">        <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>,   <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>,    <span class="comment">// right</span></span><br><span class="line">        <span class="number">8</span>, <span class="number">9</span>,<span class="number">10</span>,   <span class="number">8</span>,<span class="number">10</span>,<span class="number">11</span>,    <span class="comment">// up</span></span><br><span class="line">        <span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>,  <span class="number">12</span>,<span class="number">14</span>,<span class="number">15</span>,    <span class="comment">// left</span></span><br><span class="line">        <span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,  <span class="number">16</span>,<span class="number">18</span>,<span class="number">19</span>,    <span class="comment">// down</span></span><br><span class="line">        <span class="number">20</span>,<span class="number">21</span>,<span class="number">22</span>,  <span class="number">20</span>,<span class="number">22</span>,<span class="number">23</span>     <span class="comment">// back</span></span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Create a buffer object</span></span><br><span class="line">    <span class="keyword">var</span> indexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span> (!indexBuffer)</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Write the vertex coordinates and color to the buffer object</span></span><br><span class="line">    <span class="keyword">if</span> (!initArrayBuffer(gl, vertices, <span class="number">3</span>, gl.FLOAT, <span class="string">&#x27;a_Position&#x27;</span>))</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!initArrayBuffer(gl, colors, <span class="number">3</span>, gl.FLOAT, <span class="string">&#x27;a_Color&#x27;</span>))</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Write the indices to the buffer object</span></span><br><span class="line">    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);</span><br><span class="line">    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> indices.length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initArrayBuffer</span>(<span class="params">gl, data, num, type, attribute</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> buffer = gl.createBuffer();   <span class="comment">// Create a buffer object</span></span><br><span class="line">    <span class="keyword">if</span> (!buffer) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to create the buffer object&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Write date into the buffer object</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);</span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);</span><br><span class="line">    <span class="comment">// Assign the buffer object to the attribute variable</span></span><br><span class="line">    <span class="keyword">var</span> a_attribute = gl.getAttribLocation(gl.program, attribute);</span><br><span class="line">    <span class="keyword">if</span> (a_attribute &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of &#x27;</span> + attribute);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    gl.vertexAttribPointer(a_attribute, num, type, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Enable the assignment of the buffer object to the attribute variable</span></span><br><span class="line">    gl.enableVertexAttribArray(a_attribute);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h5 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h5><p><img src="/images/ColoredCube1.png" alt="ColoredCube"></p>
-<h4 id="代码3"><a href="#代码3" class="headerlink" title="代码3"></a>代码3</h4><h5 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h5>]]></content>
+]]></content>
       <categories>
         <category>code</category>
         <category>frontend</category>
