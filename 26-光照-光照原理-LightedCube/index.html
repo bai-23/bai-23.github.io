@@ -32,8 +32,11 @@
 <meta property="og:description" content="对应《WebGL编程指南》第八章 36-LightedCube 要点：光源类型（平行光、点光源光）、反射类型（漫反射、环境反射）、根据光线和表面的方向计算入射角、法向量">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://freepiao.cn/images/LightedCube1.png">
+<meta property="og:image" content="https://freepiao.cn/images/LightedCube2.png">
+<meta property="og:image" content="https://freepiao.cn/images/LightedCube3.png">
+<meta property="og:image" content="https://freepiao.cn/images/LightedCube4.png">
 <meta property="article:published_time" content="2021-08-05T08:13:59.000Z">
-<meta property="article:modified_time" content="2021-08-05T12:33:06.783Z">
+<meta property="article:modified_time" content="2021-08-05T12:52:28.263Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="frontEnd">
 <meta property="article:tag" content="WebGL">
@@ -162,7 +165,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86"><span class="nav-text">一、光照原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%BC%95%E5%85%A5%E2%80%94%E2%80%94%E7%9D%80%E8%89%B2%E4%B8%8E%E9%98%B4%E5%BD%B1"><span class="nav-text">1.1 引入——着色与阴影</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%85%89%E6%BA%90%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.2 光源类型</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86"><span class="nav-text">一、光照原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%BC%95%E5%85%A5%E2%80%94%E2%80%94%E7%9D%80%E8%89%B2%E4%B8%8E%E9%98%B4%E5%BD%B1"><span class="nav-text">1.1 引入——着色与阴影</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%85%89%E6%BA%90%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.2 光源类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B3%E8%A1%8C%E5%85%89"><span class="nav-text">平行光</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%82%B9%E5%85%89%E6%BA%90%E5%85%89"><span class="nav-text">点光源光</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%85%89"><span class="nav-text">环境光</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%8F%8D%E5%B0%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.3 反射类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%BC%AB%E5%8F%8D%E5%B0%84"><span class="nav-text">漫反射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%8D%E5%B0%84"><span class="nav-text">环境反射</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -298,7 +301,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-08-05 16:13:59 / 修改时间：20:33:06" itemprop="dateCreated datePublished" datetime="2021-08-05T16:13:59+08:00">2021-08-05</time>
+      <time title="创建时间：2021-08-05 16:13:59 / 修改时间：20:52:28" itemprop="dateCreated datePublished" datetime="2021-08-05T16:13:59+08:00">2021-08-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -333,7 +336,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>499</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -381,7 +384,33 @@
 <blockquote>
 <p>三维图形学还使用一些其他类型的光，比如用聚合灯光来模拟电筒，车前灯等。</p>
 </blockquote>
-
+<p><img src="/images/LightedCube2.png" alt="平行光、点光源光、环境光"></p>
+<h5 id="平行光"><a href="#平行光" class="headerlink" title="平行光"></a>平行光</h5><p>顾名思义，平行光的光线是互相平行的，<u>平行光具有方向</u>。平行光可以看做是无限远处的光源（比如太阳）发出的光。因为太阳距离地球很远，所以阳光到达地球时可以认为是平行的。平行光很简单，可以用一个方向和一个<u>颜色</u>来定义。</p>
+<blockquote>
+<p>本章节提到的“光的颜色”，实际上已包含光的强度信息。比如标准的白光为(1, 1, 1)，那么两倍于其强度的白光就表示为(2, 2, 2)。</p>
+</blockquote>
+<h5 id="点光源光"><a href="#点光源光" class="headerlink" title="点光源光"></a>点光源光</h5><p>点光源光是<u>从一个点向周围</u>的所有方向发出的光。点光源光可以用来表示现实中的灯泡、火焰等。我们需要指定点光源的<u>位置</u>和<u>颜色</u>。光线的方向将根据点光源的位置和被照射之处的位置计算出来，因为<u>点光源的光线的方向在场景内的不同位置是不同的。</u></p>
+<blockquote>
+<p>实际上点光源的光会衰减，本章教程中为了程序简单并未进行点光源光强的衰减。</p>
+</blockquote>
+<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>环境光（间接光）是指那些经光源（点光源或平行光源）发出后，被墙壁等物体多次<u>反射</u>，然后照到物体表面上的光。环境光从各个角度照射物体，其强度都是一致的。比如说，在夜间打开冰箱的门，整个厨房都会有些微微亮，这就是环境光的作用。<u>环境光不用指定位置和方向，只需要指定颜色即可</u>。</p>
+<h4 id="1-3-反射类型"><a href="#1-3-反射类型" class="headerlink" title="1.3 反射类型"></a>1.3 反射类型</h4><p>物体向哪个方向反射光，反射的光是什么颜色，取决于以下两个因素：</p>
+<ul>
+<li>入射光</li>
+<li>物体表面的类型</li>
+</ul>
+<p>入射光的信息包括<u>入射光的方向和颜色</u>，而物体表面的信息包括<u>表面的固有颜色和反射特性。</u></p>
+<p>物体表面反射光线的方式由两种：<strong>漫反射</strong>和<strong>环境反射</strong>。本节的重点是如何很据上述两种信息（入射光和物体表面特性）来计算出反射光的颜色。本节会涉及一些简单的数学计算。</p>
+<h5 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h5><p>漫反射是针对<strong>平行光</strong>或<strong>点光源</strong>而言的。漫反射的反射光在各个方向上是均匀的，如下图所示。</p>
+<p><img src="/images/LightedCube3.png" alt="漫反射"></p>
+<p>如果物体表面像镜子一样光滑，那么光线就会以特定的角度反射出去；但是现实中的大部分材质，比如纸张、岩石、塑料等，其表面都是粗糙的，在这种情况下反射光就会以不固定的角度反射出去。漫反射就是针对后一种情况而建立的理想反射模型。</p>
+<p>在漫反射中，反射光的颜色取决于<strong>入射光的颜色</strong>、<strong>表面的基底色</strong>、<strong>入射光与表面形成的入射角</strong>。</p>
+<p><strong>入射角定义</strong>：入射光与表面的法线形成的夹角，用 θ 表示。</p>
+<p>漫反射光的颜色可以根据下式计算得到：</p>
+<p><code>&lt;漫反射光颜色&gt; = &lt;入射光颜色&gt; x &lt;表面基底色&gt; x cosθ</code></p>
+<p>式子中，<code>&lt;入射光颜色&gt;</code>指的是<u>点光源</u>或<u>平行光的颜色</u>，乘法操作是在颜色矢量上<u>逐分量（R、G、B）</u>进行的。因为漫反射光在各个方向上都是”均匀“的，所以从任何角度看上去其<u>强度都相等</u>。</p>
+<p><img src="/images/LightedCube4.png" alt="漫反射光各方向均匀"></p>
+<h5 id="环境反射"><a href="#环境反射" class="headerlink" title="环境反射"></a>环境反射</h5>
     </div>
 
     
@@ -394,13 +423,13 @@
       <div class="popular-posts-title"><a href="\00-使用canvas绘制2d矩形-HelloCanvas2d\" rel="bookmark">【WebGL之巅】00-使用canvas绘制2d矩形</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\01-使用webgl清空绘图区-HellCanvas\" rel="bookmark">【WebGL之巅】01-使用webgl清空绘图区</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\02-绘制一个点_v1-HelloPoint-v1\" rel="bookmark">【WebGL之巅】02-绘制一个点_v1</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\03-绘制一个点_v2_attribute变量-HelloPoint-v2\" rel="bookmark">【WebGL之巅】03-绘制一个点_v2_attribute变量</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\01-使用webgl清空绘图区-HellCanvas\" rel="bookmark">【WebGL之巅】01-使用webgl清空绘图区</a></div>
     </li>
   </ul>
 
@@ -483,14 +512,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">370k</span>
+    <span title="站点总字数">371k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:36</span>
+    <span title="站点阅读时长">5:37</span>
   </span>
 </div>
 

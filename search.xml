@@ -41,6 +41,49 @@
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
+    <url>/01-%E4%BD%BF%E7%94%A8webgl%E6%B8%85%E7%A9%BA%E7%BB%98%E5%9B%BE%E5%8C%BA-HellCanvas/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
+<li>获取<code>&lt;canvas&gt;</code>元素</li>
+<li>获取webgl绘图上下文</li>
+<li>设置背景色</li>
+<li>清空<code>&lt;canvas&gt;</code></li>
+</ol>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><p>gl.cleanColor()的参数</p>
+</li>
+<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
+</li>
+<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
+</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>HelloCanvas.js</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【WebGL之巅】02-绘制一个点_v1</title>
     <url>/02-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%82%B9_v1-HelloPoint-v1/</url>
     <content><![CDATA[<blockquote>
@@ -198,49 +241,6 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloPoint2</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;attribute float a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;void main() &#123;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_Position = a_Position;\n&#x27;</span> +</span><br><span class="line">        <span class="string">&#x27;gl_PointSize = a_PointSize;\n&#x27;</span> +</span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;\n&#x27;</span>+</span><br><span class="line">        <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n&#x27;</span>+ <span class="comment">// 设置颜色</span></span><br><span class="line">    <span class="string">&#x27;&#125;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> gl=getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to initialize shaders.&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_Position&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取attribute变量的存储位置</span></span><br><span class="line">    <span class="keyword">var</span> a_PointSize = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_PointSize&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_PointSize&lt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the storage location of a_PointSize&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将顶点位置传输给attribute变量</span></span><br><span class="line">    <span class="comment">// gl.vertexAttrib2f(a_Position, 0.2,0.5);</span></span><br><span class="line">    gl.vertexAttrib3f(a_Position, <span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">    gl.vertexAttrib1f(a_PointSize, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    gl.drawArrays(gl.POINTS, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloPoint-v2.png" alt="1"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】01-使用webgl清空绘图区</title>
-    <url>/01-%E4%BD%BF%E7%94%A8webgl%E6%B8%85%E7%A9%BA%E7%BB%98%E5%9B%BE%E5%8C%BA-HellCanvas/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：01-HelloCanvas</p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
-<li>获取<code>&lt;canvas&gt;</code>元素</li>
-<li>获取webgl绘图上下文</li>
-<li>设置背景色</li>
-<li>清空<code>&lt;canvas&gt;</code></li>
-</ol>
-<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
-<li><p>gl.cleanColor()的参数</p>
-</li>
-<li><p>一旦指定了背景色，背景色就会驻存在WebGL系统中，在下次调用clearColor前不会改变</p>
-</li>
-<li><p>若想显示webgl调试错误，在调用getWebGLContext时，传入第二个参数<code>true</code>即可开启，例:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gl = getWebGLContext(canvas, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>gl.clear(buffer)清空背景色; 关于缓冲区，可以<a href="">查看这里</a></p>
-</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>HelloCanvas.html</code></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Clear canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;main()&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;webgl&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">		Please use the browser supporting &quot;canvas&quot;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/webgl-debug.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../lib/cuon-utils.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;HelloCanvas.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>HelloCanvas.js</code></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//HelloCanvas.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">//获取&lt;canvas&gt;元素</span></span><br><span class="line">	<span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;webgl&#x27;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取WebGl绘图上下文</span></span><br><span class="line">	<span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">	<span class="keyword">if</span>(!gl)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;Failed to get the rendering context for WebGL&#x27;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//指定清空&lt;canvas&gt;的颜色</span></span><br><span class="line">	gl.clearColor(<span class="number">0.6</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//清空&lt;canvas&gt;</span></span><br><span class="line">	gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HellCanvas.png"></p>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><code>getWebGLContext()</code>是《webgl编程指南》一书所编写的工具库(<code>cuon-utils.js</code>)中的方法，若有需要，可找博主私信即可。</p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -721,6 +721,31 @@
       </tags>
   </entry>
   <entry>
+    <title>【WebGL之巅】08-绘制一个矩形</title>
+    <url>/08-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%9F%A9%E5%BD%A2-HelloRectangle/</url>
+    <content><![CDATA[<blockquote>
+<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
+<p>要点：缓冲区对象、gl.drawArrays()参数</p>
+<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
+<p><img src="/images/HelloRectangle02.png" alt="2"></p>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>frontend</category>
+        <category>webgl</category>
+      </categories>
+      <tags>
+        <tag>frontEnd</tag>
+        <tag>WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【WebGL之巅】07-绘制三角形</title>
     <url>/07-%E7%BB%98%E5%88%B6%E4%B8%89%E8%A7%92%E5%BD%A2-HelloTriangle/</url>
     <content><![CDATA[<blockquote>
@@ -739,31 +764,6 @@
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloTriangle01.png" alt="1"></p>
 <p><img src="/images/HelloTriangle02.png" alt="2"></p>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>frontend</category>
-        <category>webgl</category>
-      </categories>
-      <tags>
-        <tag>frontEnd</tag>
-        <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【WebGL之巅】08-绘制一个矩形</title>
-    <url>/08-%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E7%9F%A9%E5%BD%A2-HelloRectangle/</url>
-    <content><![CDATA[<blockquote>
-<p>对应《WebGL编程指南》代码：08-HelloRectangle</p>
-<p>要点：缓冲区对象、gl.drawArrays()参数</p>
-<p>复习：<a href="https://freepiao.cn/2021/07/25/HelloTriangle/">【WebGL之巅】07-绘制三角形</a></p>
-</blockquote>
-<span id="more"></span>
-
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// HelloRectangle.js</span></span><br><span class="line"><span class="comment">// 顶点着色器程序</span></span><br><span class="line"><span class="keyword">var</span> VSHADER_SOURCE =</span><br><span class="line">    <span class="string">&#x27;attribute vec4 a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_Position=a_Position;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片元着色器程序</span></span><br><span class="line"><span class="keyword">var</span> FSHADER_SOURCE=</span><br><span class="line">    <span class="string">&#x27;void main()&#123;&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);&#x27;</span>+</span><br><span class="line">    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取canvas元素</span></span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">&quot;webgl&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!canvas)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to retrieve the &lt;canvas&gt; element&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取WebGL绘图上下文</span></span><br><span class="line">    <span class="keyword">var</span> gl = getWebGLContext(canvas);</span><br><span class="line">    <span class="keyword">if</span>(!gl)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the rendering context for WebGL&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化着色器</span></span><br><span class="line">    <span class="keyword">if</span>(!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to initialize shaders.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置顶点位置</span></span><br><span class="line">    <span class="keyword">var</span> n = initVertexBuffers(gl);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;Failed to set the positions of the vertices&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定清空&lt;canvas&gt;颜色</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清空&lt;canvas&gt;</span></span><br><span class="line">    gl.clear(gl.COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制4个点</span></span><br><span class="line">    <span class="comment">// gl.drawArrays(gl.TRIANGLE_STRIP, 0, n);  // 矩形</span></span><br><span class="line">    gl.drawArrays(gl.LINE_LOOP, <span class="number">0</span>, n);  <span class="comment">// 矩形框</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initVertexBuffers</span>(<span class="params">gl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        <span class="comment">// -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5 // 矩形</span></span><br><span class="line">        -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, -<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span> <span class="comment">// 矩形框</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">var</span> n=<span class="number">4</span>; <span class="comment">// 点的个数+1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">    <span class="keyword">var</span> vertexBuffer = gl.createBuffer();</span><br><span class="line">    <span class="keyword">if</span>(!vertexBuffer)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to create thie buffer object&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象保存到目标上</span></span><br><span class="line">    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向缓存对象写入数据</span></span><br><span class="line">    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a_Position = gl.getAttribLocation(gl.program, <span class="string">&#x27;a_Position&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span>(a_Position &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Failed to get the storage location of a_Position&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将缓冲区对象分配给a_Postion变量</span></span><br><span class="line">    gl.vertexAttribPointer(a_Position, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接a_Postion变量与分配给它的缓冲区对象</span></span><br><span class="line">    gl.enableVertexAttribArray(a_Position);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/HelloRectangle01.png" alt="1"></p>
-<p><img src="/images/HelloRectangle02.png" alt="2"></p>
 ]]></content>
       <categories>
         <category>code</category>
@@ -1481,7 +1481,33 @@ function down(){
 <blockquote>
 <p>三维图形学还使用一些其他类型的光，比如用聚合灯光来模拟电筒，车前灯等。</p>
 </blockquote>
-]]></content>
+<p><img src="/images/LightedCube2.png" alt="平行光、点光源光、环境光"></p>
+<h5 id="平行光"><a href="#平行光" class="headerlink" title="平行光"></a>平行光</h5><p>顾名思义，平行光的光线是互相平行的，<u>平行光具有方向</u>。平行光可以看做是无限远处的光源（比如太阳）发出的光。因为太阳距离地球很远，所以阳光到达地球时可以认为是平行的。平行光很简单，可以用一个方向和一个<u>颜色</u>来定义。</p>
+<blockquote>
+<p>本章节提到的“光的颜色”，实际上已包含光的强度信息。比如标准的白光为(1, 1, 1)，那么两倍于其强度的白光就表示为(2, 2, 2)。</p>
+</blockquote>
+<h5 id="点光源光"><a href="#点光源光" class="headerlink" title="点光源光"></a>点光源光</h5><p>点光源光是<u>从一个点向周围</u>的所有方向发出的光。点光源光可以用来表示现实中的灯泡、火焰等。我们需要指定点光源的<u>位置</u>和<u>颜色</u>。光线的方向将根据点光源的位置和被照射之处的位置计算出来，因为<u>点光源的光线的方向在场景内的不同位置是不同的。</u></p>
+<blockquote>
+<p>实际上点光源的光会衰减，本章教程中为了程序简单并未进行点光源光强的衰减。</p>
+</blockquote>
+<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>环境光（间接光）是指那些经光源（点光源或平行光源）发出后，被墙壁等物体多次<u>反射</u>，然后照到物体表面上的光。环境光从各个角度照射物体，其强度都是一致的。比如说，在夜间打开冰箱的门，整个厨房都会有些微微亮，这就是环境光的作用。<u>环境光不用指定位置和方向，只需要指定颜色即可</u>。</p>
+<h4 id="1-3-反射类型"><a href="#1-3-反射类型" class="headerlink" title="1.3 反射类型"></a>1.3 反射类型</h4><p>物体向哪个方向反射光，反射的光是什么颜色，取决于以下两个因素：</p>
+<ul>
+<li>入射光</li>
+<li>物体表面的类型</li>
+</ul>
+<p>入射光的信息包括<u>入射光的方向和颜色</u>，而物体表面的信息包括<u>表面的固有颜色和反射特性。</u></p>
+<p>物体表面反射光线的方式由两种：<strong>漫反射</strong>和<strong>环境反射</strong>。本节的重点是如何很据上述两种信息（入射光和物体表面特性）来计算出反射光的颜色。本节会涉及一些简单的数学计算。</p>
+<h5 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h5><p>漫反射是针对<strong>平行光</strong>或<strong>点光源</strong>而言的。漫反射的反射光在各个方向上是均匀的，如下图所示。</p>
+<p><img src="/images/LightedCube3.png" alt="漫反射"></p>
+<p>如果物体表面像镜子一样光滑，那么光线就会以特定的角度反射出去；但是现实中的大部分材质，比如纸张、岩石、塑料等，其表面都是粗糙的，在这种情况下反射光就会以不固定的角度反射出去。漫反射就是针对后一种情况而建立的理想反射模型。</p>
+<p>在漫反射中，反射光的颜色取决于<strong>入射光的颜色</strong>、<strong>表面的基底色</strong>、<strong>入射光与表面形成的入射角</strong>。</p>
+<p><strong>入射角定义</strong>：入射光与表面的法线形成的夹角，用 θ 表示。</p>
+<p>漫反射光的颜色可以根据下式计算得到：</p>
+<p><code>&lt;漫反射光颜色&gt; = &lt;入射光颜色&gt; x &lt;表面基底色&gt; x cosθ</code></p>
+<p>式子中，<code>&lt;入射光颜色&gt;</code>指的是<u>点光源</u>或<u>平行光的颜色</u>，乘法操作是在颜色矢量上<u>逐分量（R、G、B）</u>进行的。因为漫反射光在各个方向上都是”均匀“的，所以从任何角度看上去其<u>强度都相等</u>。</p>
+<p><img src="/images/LightedCube4.png" alt="漫反射光各方向均匀"></p>
+<h5 id="环境反射"><a href="#环境反射" class="headerlink" title="环境反射"></a>环境反射</h5>]]></content>
       <categories>
         <category>code</category>
         <category>frontend</category>
@@ -1490,29 +1516,6 @@ function down(){
       <tags>
         <tag>frontEnd</tag>
         <tag>WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UA伪装爬取网页【★】</title>
-    <url>/UA%E4%BC%AA%E8%A3%85%E7%88%AC%E5%8F%96%E7%BD%91%E9%A1%B5/</url>
-    <content><![CDATA[<p>复习：<strong>UA检测</strong></p>
-<blockquote>
-<p>UA：User-Agent（请求载体的身份标识）.</p>
-<p>门户网站的服务器会检测对应请求的载体身份标识，如果检测到请求的载体身份标识为某一款浏览器，说明该请求是一个正常的请求。但是，如果检测到请求的载体身份标识不是基于某一款浏览器的，则表示该请求为不正常的请求（爬虫），则服务器端就很有可能拒绝该次请求。</p>
-</blockquote>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># UA伪装：让爬虫对应的请求载体身份标识伪装成某一款浏览器</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># UA伪装：将对应的User-Agent封装到一个字典中</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="comment"># &#x27;User-Agent&#x27;: &#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/web&#x27;</span></span><br><span class="line">    <span class="comment"># 处理url携带的参数：封装到字典中</span></span><br><span class="line">    kw = <span class="built_in">input</span>(<span class="string">&#x27;enter a word:&#x27;</span>)</span><br><span class="line">    param = &#123;</span><br><span class="line">        <span class="string">&#x27;query&#x27;</span>: kw</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 对指定的url发起的请求对应的url是携带参数的，并且请求过程中处理了参数</span></span><br><span class="line">    response = requests.get(url=url, params=param, headers=headers)</span><br><span class="line"></span><br><span class="line">    page_text = response.text</span><br><span class="line">    fileName = kw + <span class="string">&#x27;.html&#x27;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(fileName, <span class="string">&#x27;保存成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -1612,6 +1615,29 @@ function down(){
         <tag>frontEnd</tag>
         <tag>websocket</tag>
         <tag>Algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UA伪装爬取网页【★】</title>
+    <url>/UA%E4%BC%AA%E8%A3%85%E7%88%AC%E5%8F%96%E7%BD%91%E9%A1%B5/</url>
+    <content><![CDATA[<p>复习：<strong>UA检测</strong></p>
+<blockquote>
+<p>UA：User-Agent（请求载体的身份标识）.</p>
+<p>门户网站的服务器会检测对应请求的载体身份标识，如果检测到请求的载体身份标识为某一款浏览器，说明该请求是一个正常的请求。但是，如果检测到请求的载体身份标识不是基于某一款浏览器的，则表示该请求为不正常的请求（爬虫），则服务器端就很有可能拒绝该次请求。</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># UA伪装：让爬虫对应的请求载体身份标识伪装成某一款浏览器</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># UA伪装：将对应的User-Agent封装到一个字典中</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="comment"># &#x27;User-Agent&#x27;: &#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36&#x27;</span></span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    url = <span class="string">&#x27;https://www.sogou.com/web&#x27;</span></span><br><span class="line">    <span class="comment"># 处理url携带的参数：封装到字典中</span></span><br><span class="line">    kw = <span class="built_in">input</span>(<span class="string">&#x27;enter a word:&#x27;</span>)</span><br><span class="line">    param = &#123;</span><br><span class="line">        <span class="string">&#x27;query&#x27;</span>: kw</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 对指定的url发起的请求对应的url是携带参数的，并且请求过程中处理了参数</span></span><br><span class="line">    response = requests.get(url=url, params=param, headers=headers)</span><br><span class="line"></span><br><span class="line">    page_text = response.text</span><br><span class="line">    fileName = kw + <span class="string">&#x27;.html&#x27;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(page_text)</span><br><span class="line">    <span class="built_in">print</span>(fileName, <span class="string">&#x27;保存成功！！！&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -2342,26 +2368,6 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
       </tags>
   </entry>
   <entry>
-    <title>使用爬虫破解百度翻译【★★】</title>
-    <url>/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
-    <content><![CDATA[<blockquote>
-<p>携带post参数的爬虫</p>
-</blockquote>
-<span id="more"></span>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>code</category>
-        <category>backend</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ajax跨域解决方案</title>
     <url>/%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%87%BA%E7%8E%B0%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h5 id="本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https"><a href="#本地-Ajax-跨域报错-Cross-origin-requests-are-only-supported-for-protocol-schemes-http-data-chrome-chrome-extension-chrome-untrusted-https" class="headerlink" title="本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https."></a>本地 Ajax 跨域报错 Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, chrome-untrusted, https.</h5><span id="more"></span>
@@ -2413,6 +2419,26 @@ http://125.35.6.84:81/xk/itownet/portal/dzpz.jsp?id=f63f61fe04684c46a016a45eac87
 <span id="more"></span>
 
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 爬取图片数据</span></span><br><span class="line">    url = <span class="string">&#x27;http://api.aoau.top:9999/photos/3/%20%2834%29.png&#x27;</span></span><br><span class="line">    <span class="comment"># content返回的是二进制形式的图片数据</span></span><br><span class="line">    <span class="comment"># text（字符串） content（二进制）json() (对象)</span></span><br><span class="line">    img_data = requests.get(url=url).content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tp.jpg&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>code</category>
+        <category>backend</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用爬虫破解百度翻译【★★】</title>
+    <url>/%E4%BD%BF%E7%94%A8%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/</url>
+    <content><![CDATA[<blockquote>
+<p>携带post参数的爬虫</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 1.指定url</span></span><br><span class="line">    post_url = <span class="string">&#x27;https://fanyi.baidu.com/sug&#x27;</span></span><br><span class="line">    <span class="comment"># 2.进行UA伪装</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 3.post请求参数处理（同get请求一致）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br><span class="line">    word = <span class="built_in">input</span>(<span class="string">&#x27;请输入您要翻译的文本: &#x27;</span>)</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;kw&#x27;</span>: word  <span class="comment"># 待翻译数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 4.请求发送</span></span><br><span class="line">    response = requests.post(url=post_url, data=data, headers=headers)</span><br><span class="line">    <span class="comment"># 5.获取响应数据:json()方法返回的是obj（如果确认响应数据是json类型的，才可以使用json（））</span></span><br><span class="line">    dic_obj = response.json()</span><br><span class="line">    <span class="built_in">print</span>(dic_obj)</span><br><span class="line">    <span class="comment"># 持久化存储</span></span><br><span class="line">    fileName = word + <span class="string">&#x27;.json&#x27;</span></span><br><span class="line">    fp = <span class="built_in">open</span>(fileName, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    json.dump(dic_obj, fp=fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;******************************************************&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>code</category>
