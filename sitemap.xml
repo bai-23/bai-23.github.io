@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://freepiao.cn/%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87%E7%B3%BB%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%9D%90%E6%A0%87%E7%B3%BB/</loc>
+    
+    <lastmod>2021-08-06</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/</loc>
     
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     
   </url>
   
@@ -396,7 +403,7 @@
 
   <url>
     <loc>https://freepiao.cn/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -404,119 +411,119 @@
   
   <url>
     <loc>https://freepiao.cn/tags/frontEnd/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/WebGL/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/python/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/%E7%88%AC%E8%99%AB/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/websocket/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Algorithm/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Javascript/</loc>
-    <lastmod>2021-08-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/tags/hexo/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Linux/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Nginx/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://freepiao.cn/tags/hexo/</loc>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/%E5%9B%BE%E7%89%87Api/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/NodeJs/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Ajax/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Browser/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/Echarts/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/typescript/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/tags/React/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -525,119 +532,119 @@
   
   <url>
     <loc>https://freepiao.cn/categories/code/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/webgl/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/backend/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/algorithm/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/Javascript/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/essay/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/apis/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/Ajax/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/backend/Python/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/essay/%E5%BB%BA%E7%AB%99%E6%8C%87%E5%8D%97/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/apis/%E5%9B%BE%E7%89%87api/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/browser/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/echarts/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/typescript/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/backend/NodeJs/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://freepiao.cn/categories/code/frontend/React/</loc>
-    <lastmod>2021-08-05</lastmod>
+    <lastmod>2021-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
