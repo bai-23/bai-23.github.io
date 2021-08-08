@@ -27,7 +27,7 @@
 <meta name="description" content="对应《WebGL编程指南》第八章 36-LightedCube、37-LightedCube_animation、38-LightedCube_ambient 要点：光源类型（平行光、点光源光）、反射类型（漫反射、环境反射）、根据光线和表面的方向计算入射角、法向量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【WebGL之巅】26-光照-光照原理">
-<meta property="og:url" content="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/index.html">
+<meta property="og:url" content="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/index.html">
 <meta property="og:site_name" content="快乐码原">
 <meta property="og:description" content="对应《WebGL编程指南》第八章 36-LightedCube、37-LightedCube_animation、38-LightedCube_ambient 要点：光源类型（平行光、点光源光）、反射类型（漫反射、环境反射）、根据光线和表面的方向计算入射角、法向量">
 <meta property="og:locale" content="zh_CN">
@@ -54,11 +54,11 @@
 <meta name="twitter:image" content="https://freepiao.cn/images/LightedCube1.png">
 
 
-<link rel="canonical" href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/">
+<link rel="canonical" href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/","path":"26-光照-光照原理-LightedCube/","title":"【WebGL之巅】26-光照-光照原理"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/","path":"26-光照-光照原理-平行光-LightedCube/","title":"【WebGL之巅】26-光照-光照原理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>【WebGL之巅】26-光照-光照原理 | 快乐码原</title>
@@ -110,7 +110,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">17</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a></li>
         <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
         <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
         <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -248,7 +248,7 @@
           <h3 class="widget-title">Tag Cloud</h3>
           <div id="myCanvasContainer" class="widget tagcloud">
               <canvas width="250" height="250" id="resCanvas" style="width=100%">
-                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">34</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">35</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
               </canvas>
           </div>
       </div>
@@ -286,7 +286,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -299,7 +299,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【WebGL之巅】26-光照-光照原理<a href="https://github.com/bai-23/bai-23.github.io_posts/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+          【WebGL之巅】26-光照-光照原理<a href="https://github.com/bai-23/bai-23.github.io_posts/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
         </h1>
 
         <div class="post-meta-container">
@@ -879,7 +879,7 @@ function animate(angle) {
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/" title="【WebGL之巅】26-光照-光照原理">https://freepiao.cn/26-光照-光照原理-LightedCube/</a>
+      <a href="https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/" title="【WebGL之巅】26-光照-光照原理">https://freepiao.cn/26-光照-光照原理-平行光-LightedCube/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -950,14 +950,14 @@ function animate(angle) {
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">406k</span>
+    <span title="站点总字数">410k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:09</span>
+    <span title="站点阅读时长">6:12</span>
   </span>
 </div>
 
@@ -1020,7 +1020,7 @@ setInterval("createtime()",250);
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-LightedCube/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"bai-23/commons","issue_term":"og:title","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
