@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://freepiao.cn/27-%E5%85%89%E7%85%A7-%E8%BF%90%E5%8A%A8%E7%89%A9%E4%BD%93%E7%9A%84%E5%85%89%E7%85%A7%E6%95%88%E6%9E%9C-LightedTranslatedRotatedCube/</loc>
+    <loc>https://freepiao.cn/jointModel/</loc>
     
     <lastmod>2021-08-08</lastmod>
     
@@ -17,6 +17,20 @@
   
   <url>
     <loc>https://freepiao.cn/26-%E5%85%89%E7%85%A7-%E5%85%89%E7%85%A7%E5%8E%9F%E7%90%86-%E5%B9%B3%E8%A1%8C%E5%85%89-LightedCube/</loc>
+    
+    <lastmod>2021-08-08</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://freepiao.cn/23-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4%EF%BC%88%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%EF%BC%89-perspectiveview/</loc>
+    
+    <lastmod>2021-08-08</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://freepiao.cn/27-%E5%85%89%E7%85%A7-%E8%BF%90%E5%8A%A8%E7%89%A9%E4%BD%93%E7%9A%84%E5%85%89%E7%85%A7%E6%95%88%E6%9E%9C-LightedTranslatedRotatedCube/</loc>
     
     <lastmod>2021-08-08</lastmod>
     
@@ -61,13 +75,6 @@
     <loc>https://freepiao.cn/25-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E7%AB%8B%E6%96%B9%E4%BD%93-HelloCubes/</loc>
     
     <lastmod>2021-08-05</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/23-%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C-%E5%8F%AF%E8%A7%86%E7%A9%BA%E9%97%B4%EF%BC%88%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1%EF%BC%89-perspectiveview/</loc>
-    
-    <lastmod>2021-08-04</lastmod>
     
   </url>
   
@@ -473,6 +480,13 @@
   </url>
   
   <url>
+    <loc>https://freepiao.cn/tags/hexo/</loc>
+    <lastmod>2021-08-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/tags/Linux/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
@@ -481,13 +495,6 @@
   
   <url>
     <loc>https://freepiao.cn/tags/Nginx/</loc>
-    <lastmod>2021-08-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/tags/hexo/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -522,14 +529,14 @@
   </url>
   
   <url>
-    <loc>https://freepiao.cn/tags/Echarts/</loc>
+    <loc>https://freepiao.cn/tags/typescript/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://freepiao.cn/tags/typescript/</loc>
+    <loc>https://freepiao.cn/tags/Echarts/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -636,14 +643,14 @@
   </url>
   
   <url>
-    <loc>https://freepiao.cn/categories/code/frontend/echarts/</loc>
+    <loc>https://freepiao.cn/categories/code/frontend/typescript/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://freepiao.cn/categories/code/frontend/typescript/</loc>
+    <loc>https://freepiao.cn/categories/code/frontend/echarts/</loc>
     <lastmod>2021-08-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
