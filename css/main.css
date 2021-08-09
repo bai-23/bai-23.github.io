@@ -2117,9 +2117,23 @@ body {
   padding: 18px;
   background: rgba(255,255,255,0.8);
 }
+.use-motion .page a {
+  color: #55b9f3;
+  border-bottom: none;
+  border-bottom: 1px solid #55b9f3;
+}
+.use-motion .page a:hover {
+  color: #fc6423;
+  border-bottom: none;
+  border-bottom: 1px solid #fc6423;
+}
 .use-motion .page .post-block {
-  background: rgba(241,225,231,0.6);
+  padding-top: 15px;
   border-radius: 5px;
+  box-shadow: none;
+}
+.use-motion .page .post-block .post-header {
+  margin-bottom: 0px;
 }
 .use-motion .post-header {
   visibility: hidden;
@@ -2395,23 +2409,6 @@ body {
   font-weight: normal;
   margin: initial;
   overflow-wrap: break-word;
-}
-.posts-expand .post-title .post-edit-link {
-  border-bottom: 0;
-  color: #bbb;
-  display: inline-block;
-  float: right;
-  font-size: 1.25em;
-  margin-left: -1.2em;
-  transition: color 0.2s ease-in;
-}
-@media (max-width: 567px) {
-  .posts-expand .post-title .post-edit-link {
-    margin-left: initial;
-  }
-}
-.posts-expand .post-title .post-edit-link:hover {
-  color: #fc6423;
 }
 .posts-expand .post-title-link {
   border-bottom: 0;
