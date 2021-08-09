@@ -2113,6 +2113,14 @@ body {
 .use-motion .index .post-block .post-content .post-footer {
   display: none;
 }
+.use-motion .page {
+  padding: 18px;
+  background: rgba(255,255,255,0.8);
+}
+.use-motion .page .post-block {
+  background: rgba(241,225,231,0.6);
+  border-radius: 5px;
+}
 .use-motion .post-header {
   visibility: hidden;
 }
