@@ -24,37 +24,30 @@
   <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"freepiao.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="要点：web渗透、信息收集、靶场搭建、XSS、SQL注入、CSRF漏洞、SSRF漏洞、XXE漏洞、反序列化漏洞、文件上传漏洞、命令与代码注入、逻辑漏洞、内网渗透、研发安全。">
+<meta name="description" content="要点：XSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Web安全笔记">
-<meta property="og:url" content="https://freepiao.cn/WebSecurity/index.html">
+<meta property="og:title" content="【Web安全扫盲】03-XSS">
+<meta property="og:url" content="https://freepiao.cn/WebSecurity03-XSS/index.html">
 <meta property="og:site_name" content="快乐码原">
-<meta property="og:description" content="要点：web渗透、信息收集、靶场搭建、XSS、SQL注入、CSRF漏洞、SSRF漏洞、XXE漏洞、反序列化漏洞、文件上传漏洞、命令与代码注入、逻辑漏洞、内网渗透、研发安全。">
+<meta property="og:description" content="要点：XSS">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_ZrimAa4buAAGDyX9tPm4751.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/C7/Cip5yF_a9iqAG5wmAAEiks_na48436.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/8A/39/CgqCHl_Zr5-ATUhRAAMpS6Rf1Ck851.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_Zr76AWiNtAAQSZ-8_J_I002.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/0D/CgpVE1_Zr9CANWyzAAU-P_qrIcA458.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/0D/CgpVE1_Zr-WAMAhNAAFcqtWjIv0666.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/8A/2E/Ciqc1F_ZsIyAXEQjAANXYn70e8c897.png">
-<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_ZsJiAAv-dAASNGdT-lWY809.png">
-<meta property="article:published_time" content="2021-08-10T01:42:40.000Z">
-<meta property="article:modified_time" content="2021-08-10T01:33:42.133Z">
+<meta property="og:image" content="https://s0.lgstatic.com/i/image2/M01/03/7A/Cip5yF_cObWAcn2DAAEyh5k671U380.png">
+<meta property="article:published_time" content="2021-08-10T06:32:40.000Z">
+<meta property="article:modified_time" content="2021-08-10T07:32:17.475Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="Web安全">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_ZrimAa4buAAGDyX9tPm4751.png">
+<meta name="twitter:image" content="https://s0.lgstatic.com/i/image2/M01/03/7A/Cip5yF_cObWAcn2DAAEyh5k671U380.png">
 
 
-<link rel="canonical" href="https://freepiao.cn/WebSecurity/">
+<link rel="canonical" href="https://freepiao.cn/WebSecurity03-XSS/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/WebSecurity/","path":"WebSecurity/","title":"Web安全笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/WebSecurity03-XSS/","path":"WebSecurity03-XSS/","title":"【Web安全扫盲】03-XSS"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Web安全笔记 | 快乐码原</title>
+<title>【Web安全扫盲】03-XSS | 快乐码原</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -103,8 +96,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-广场"><a href="/" rel="section"><i class="fa fa-comment-dots fa-fw"></i>广场</a></li>
         <li class="menu-item menu-item-home"><a href="/home" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">18</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">58</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">19</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a></li>
         <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
         <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
         <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
@@ -169,7 +162,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web%E5%AE%89%E5%85%A8"><span class="nav-text">Web安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%A7%88"><span class="nav-text">一、概览</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Why-Web-%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-text">1.1 Why Web 安全？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97"><span class="nav-text">1.2 学习模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%80%EF%BC%9AWeb-%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80"><span class="nav-text">模块一：Web 攻防基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%BA%8C%EF%BC%9A%E6%BC%8F%E6%B4%9E%E6%94%BB%E9%98%B2%E5%8E%9F%E7%90%86"><span class="nav-text">模块二：漏洞攻防原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%89%EF%BC%9A-Web-%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%BE"><span class="nav-text">模块三： Web 安全建设</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-How-%E5%AD%A6%E4%B9%A0web%E6%B8%97%E9%80%8F%E6%8A%80%E6%9C%AF"><span class="nav-text">1.3 How 学习web渗透技术</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Web-%E6%89%80%E6%B6%89%E5%8F%8A%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-text">Web 所涉及的内容</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-text">1.4 三个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%EF%BC%9A%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0"><span class="nav-text">阶段一：前端知识学习</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81"><span class="nav-text">二、</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E6%BA%90"><span class="nav-text">起源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B1%E5%AE%B3%EF%BC%9A%E7%BB%9D%E4%B8%8D%E4%BB%85%E4%BB%85%E5%8F%AA%E6%98%AF%E5%BC%B9%E6%A1%86"><span class="nav-text">危害：绝不仅仅只是弹框</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,14 +180,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -242,7 +235,7 @@
           <h3 class="widget-title">Tag Cloud</h3>
           <div id="myCanvasContainer" class="widget tagcloud">
               <canvas width="250" height="250" id="resCanvas" style="width=100%">
-                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag">Web安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">37</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/" rel="tag">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag">Web安全</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">37</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
               </canvas>
           </div>
       </div>
@@ -280,7 +273,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/WebSecurity/">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/WebSecurity03-XSS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -293,7 +286,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Web安全笔记
+          【Web安全扫盲】03-XSS
         </h1>
 
         <div class="post-meta-container">
@@ -305,7 +298,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-08-10 09:42:40 / 修改时间：09:33:42" itemprop="dateCreated datePublished" datetime="2021-08-10T09:42:40+08:00">2021-08-10</time>
+      <time title="创建时间：2021-08-10 14:32:40 / 修改时间：15:32:17" itemprop="dateCreated datePublished" datetime="2021-08-10T14:32:40+08:00">2021-08-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -340,14 +333,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -358,39 +351,69 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>要点：web渗透、信息收集、靶场搭建、XSS、SQL注入、CSRF漏洞、SSRF漏洞、XXE漏洞、反序列化漏洞、文件上传漏洞、命令与代码注入、逻辑漏洞、内网渗透、研发安全。</p>
+        <p>要点：XSS</p>
 <span id="more"></span>
 
-<h1 id="Web安全"><a href="#Web安全" class="headerlink" title="Web安全"></a>Web安全</h1><h3 id="一、概览"><a href="#一、概览" class="headerlink" title="一、概览"></a>一、概览</h3><h4 id="1-1-Why-Web-安全？"><a href="#1-1-Why-Web-安全？" class="headerlink" title="1.1 Why Web 安全？"></a>1.1 Why Web 安全？</h4><p>随着时代的发展，如今无论是国家还是企业，都十分重视网络安全，各种相关的岗位也随之出现。在拉勾网上搜“Web 安全”就能找到相关的岗位。</p>
-<img src="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_ZrimAa4buAAGDyX9tPm4751.png" alt="招聘信息来源拉勾网" data-nodeid="6336">
+<p>在这些常见的Web 漏洞中，<strong>XSS</strong>（Cross-site Script，跨站脚本）漏洞无疑是最多见的。根据 HackerOne 漏洞奖励平台发布的 The 2020 Hacker Report，XSS 漏洞类型占所有报告漏洞中的 23％，排名第一。</p>
+<img src="https://s0.lgstatic.com/i/image2/M01/03/7A/Cip5yF_cObWAcn2DAAEyh5k671U380.png" alt="HackerOne 平台上报告的漏洞类型占比" data-nodeid="53288">
 
+<h3 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h3><p>最早的 XSS 漏洞可追溯到 1999 年末，微软安全工程师发现一些网站遭到攻击，网站被插入了一些恶意脚本和图像标签。随后，微软对此类漏洞进行研究分析，并在 2000 年 1 月，正式使用“cross-site scripting”这个名称，然后逐渐被业界采用，留传至今。</p>
+<p>跨站脚本（Cross-site Script），按理应该简称为 CSS，但为了与层叠样式表（CSS）区分开，特意改为 XSS。</p>
+<p>XSS 漏洞，通常指的是<strong>网站对用户输入数据未做有效过滤，攻击者可以将恶意脚本注入网站页面中，达到执行恶意代码的目的</strong>。攻击者只需要诱使受害者打开特定的网址，就可以在受害者的浏览器中执行被注入的恶意代码，从而窃取用户身份，执行一些敏感操作，或是进行其他的危害行为。</p>
+<h3 id="危害：绝不仅仅只是弹框"><a href="#危害：绝不仅仅只是弹框" class="headerlink" title="危害：绝不仅仅只是弹框"></a>危害：绝不仅仅只是弹框</h3><p>一些听过 XSS的同学，可能仅停留在弹框的印象里；我曾在修复此类漏洞时，只是简单地针对alert 函数做了下过滤。这都是对 XSS 攻防原理理解不够造成的误解。其实，只要你想象力够丰富，它的危害是可以造成很大的。</p>
+<p>比如 2005 年 10 月 4 日诞生的世界上第一个 XSS 蠕虫：Samy（作者的名字）。Samy 利用网络社交媒体 MySpace的XSS 漏洞传播，受害者会自动将 Samy 本人添加为关注者，并在受害者的用户页面显示一行字串“but most of all，samy is my hero”，并再次插入恶意代码，谁访问受害者的网页谁就会被感染。</p>
+<p>Samy 感染的用户呈指数倍增长，最终，超过 100 万用户被感染，作者也因事态发展失控而入狱，并被禁止 3 年内接触计算机，外加 90 小时的社区服务。</p>
+<p>图 3：受 Samy 蠕虫攻击后，作者粉丝暴涨</p>
+<p>图 4：受 Samy 蠕虫攻击后，受害者的用户页面被篡改</p>
+<p>Samy 蠕虫是现实世界中 XSS 攻击的经典案例，除了蠕虫攻击外还有很多其他危害：盗号、钓鱼欺诈、篡改页面、刷广告流量、内网扫描、网页挂马、挖矿、键盘监听、窃取用户隐私等等。</p>
+<p>如果能充分利用好业务场景下的功能，再结合一定技术和想象力，XSS 所造成的危害绝不仅仅只是弹框。如果你是开发，在修复 XSS 漏洞过程中，也别单纯想着怎么防止弹框。更为全面的防御方案，我会在下一讲《05｜XSS：漏洞的检测与防御》中介绍。</p>
+<p>XSS 漏洞的分类<br>通常 XSS 分为存储型和反射型，但还有一种比较特殊的 DOM 型 XSS，它本身属于反射型 XSS，不过介绍的时候需要单独来讲。因此，我就按 3 种类型划分：反射型、存储型、DOM 型。</p>
+<p>反射型 XSS</p>
+<p>我们首先来看反射型 XSS。反射型 XSS 又被称为非持久型跨站脚本，它是将攻击代码放在 URL 参数中，而不是存储到服务器，因此需要诱使用户点击才能触发攻击。</p>
+<p>以 DVWA 中的反射型 XSS 题目为例，通过向 name 参数输入以下代码即可触发漏洞：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(<span class="number">1</span>)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-
-<p>根据 HackerOne 的报告数据（下图），71％ 的安全问题都出现在网站上，其次是一些 API 接口，这些接口可能是 Web 的，也有可能是二进制软件的；再往下就是 iOS 与 Android 应用了。</p>
-<img src="https://s0.lgstatic.com/i/image2/M01/02/C7/Cip5yF_a9iqAG5wmAAEiks_na48436.png" alt="HackerOne 的报告数据" data-nodeid="6340">
-
-<p>可以说，网站安全攻防，也就是我们俗称的 Web 安全，占比通常达到了 80％以上。<strong>Web 安全是最受外部黑客关注的目标，也是企业应该重点防御的对象</strong></p>
-<p>尽管 Web 安全如此重要，但我在面试一些渗透测试岗位的<strong>求职者</strong>时，发现多数人要么<strong>只懂得利用，不懂得防御</strong>，要么就是<strong data-nodeid="6365">缺乏实战能力</strong>。</p>
-<p>企业你是想让你来发现和解决安全问题的，如果不懂防御，又如何为企业提供相应的解决方案呢？更何况 Web 安全是一项注重实战的技能，如果缺乏实战能力，到了真被入侵的时候，根本就无法应对。</p>
-<p>另外，学习 Web 安全相关的知识，不仅可以帮助你提升自己，还能赚取赏金。国内外企业都有自建安全响应中心，用于接收外部报告漏洞；然后，依据漏洞危害等级和质量给予相应的赏金或礼品，比如 TSRC（腾讯安全应急响应中心）、MSRC（微软安全响应中心）。此外也有一些知名的第三方漏洞奖励平台，比如 HackerOne，上面经常会公开一些漏洞案例，非常有学习价值。</p>
-<h4 id="1-2-学习模块"><a href="#1-2-学习模块" class="headerlink" title="1.2 学习模块"></a>1.2 学习模块</h4><p>分成了 3 个模块</p>
-<h5 id="模块一：Web-攻防基础"><a href="#模块一：Web-攻防基础" class="headerlink" title="模块一：Web 攻防基础"></a>模块一：Web 攻防基础</h5><p>这是正式开始前的准备工作，主要介绍了一些常用的工具，并带你<strong data-nodeid="6387">搭建靶场，避免非法测试他人网站</strong>。通过这一部分的学习，你可以掌握一些常用的渗透工具和信息收集的方法，帮助你提高测试效率和成功率；搭建靶场也能让你更好地理解漏洞的产生原理和利用，提高实战能力。</p>
-<h5 id="模块二：漏洞攻防原理"><a href="#模块二：漏洞攻防原理" class="headerlink" title="模块二：漏洞攻防原理"></a>模块二：漏洞攻防原理</h5><p>作为这门课最硬核的部分，在模块一的基础上，补充了一些实用的工具和测试方法（例如 sqlmap），讲解了各种常见的 Web 漏洞攻防原理，教你进行安全测试，并通过靶场进行演练。通过这一部分的学习，你可以<strong>了解 XSS、SQL 注入、CSRF 等常见 Web 漏洞类型的攻击与防御方法</strong>。只有深入学习这些漏洞攻防技术，才能避免自己成为只会使用工具的“脚本小子”。</p>
-<h5 id="模块三：-Web-安全建设"><a href="#模块三：-Web-安全建设" class="headerlink" title="模块三： Web 安全建设"></a>模块三： Web 安全建设</h5><p>这里介绍的是企业内部对于 Web 安全漏洞的防御方法。<strong>如何更系统、更全面、更早地检测、修复、拦截各种漏洞，防止企业产品遭受外部利用漏洞进行恶意攻击</strong>是这一模块的重点。业务开发过程中，避免安全漏洞的产生也是一个非常重要的流程。</p>
-<h4 id="1-3-How-学习web渗透技术"><a href="#1-3-How-学习web渗透技术" class="headerlink" title="1.3 How 学习web渗透技术"></a>1.3 How 学习web渗透技术</h4><h5 id="Web-所涉及的内容"><a href="#Web-所涉及的内容" class="headerlink" title="Web 所涉及的内容"></a>Web 所涉及的内容</h5><p>一般来说，我们常说的 Web 是指网站，其本义是万维网。这个实际涵盖的内容就很多了，涉及浏览器、服务器运行环境等常出现内存破坏漏洞的应用和系统。但是在安全行业内，我们通常所说的 Web 安全，是指 Web 应用安全，即网站安全，也包含仅提供后端 CGI 服务的应用（供移动 App 调用的，无直接的前端网页），可以简单地分为前端和后端，如下图所示：</p>
-<img src="https://s0.lgstatic.com/i/image/M00/8A/39/CgqCHl_Zr5-ATUhRAAMpS6Rf1Ck851.png" alt="图片1.png" data-nodeid="9229">
-
-<p>平常行业内所说的二进制安全，通常是指内存破坏漏洞、逆向工程、病毒对抗等涉及二进制数据分析的技术领域。虽然浏览器、Linux 系统等也是 Web 领域中的一个环节，但本课程不涉及二进制安全内容，仍以狭义上的网站安全为主要内容。<br>在学习 Web 安全的过程中，有 3 个阶段。</p>
-<h4 id="1-4-三个阶段"><a href="#1-4-三个阶段" class="headerlink" title="1.4 三个阶段"></a>1.4 三个阶段</h4><h5 id="阶段一：前端知识学习"><a href="#阶段一：前端知识学习" class="headerlink" title="阶段一：前端知识学习"></a>阶段一：前端知识学习</h5><h3 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h3><img src="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_Zr76AWiNtAAQSZ-8_J_I002.png" alt="图片2.png" data-nodeid="9247">
-
-<img src="https://s0.lgstatic.com/i/image2/M01/02/0D/CgpVE1_Zr9CANWyzAAU-P_qrIcA458.png" alt="图片3.png" data-nodeid="9288">
-
-<img src="https://s0.lgstatic.com/i/image2/M01/02/0D/CgpVE1_Zr-WAMAhNAAFcqtWjIv0666.png" alt="Drawing 3.png" data-nodeid="9381">
-
-<img src="https://s0.lgstatic.com/i/image/M00/8A/2E/Ciqc1F_ZsIyAXEQjAANXYn70e8c897.png" alt="图片5.png" data-nodeid="9438">
-
-<img src="https://s0.lgstatic.com/i/image2/M01/02/0C/Cip5yF_ZsJiAAv-dAASNGdT-lWY809.png" alt="图片6.png" data-nodeid="9442">
-
+<p>图5：利用 XSS 漏洞执行注入的JS代码</p>
+<p>在 Chrome 浏览器中，用“检查”功能看下网页源码，可以发现我们输入的代码被解析并执行了：</p>
+<p>图6：被解析执行的注入的代码</p>
+<p>其漏洞代码也非常简单。从 GET 参数 name 获取用户输入后，未经过滤就直接调用 echo 函数输出到页面，最终导致 XSS 的产生。漏洞代码如下：<br><?php
+// Is there any input?
+if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+    // Feedback for end user
+    echo '<pre>Hello ' . $_GET[ 'name' ] . '</pre>';
+}
+?></p>
+<p>有人认为反射型 XSS 的危害不如存储型 XSS，但我认为没有什么区别。这里的挑战主要是URL是否包含攻击代码。</p>
+<p>存储型 XSS</p>
+<p>第二种 XSS 漏洞是存储型 XSS，它又被称为持久型跨站脚本。攻击者将恶意代码存储到服务器上，只要诱使受害者访问被插入恶意代码的页面即可触发。存储型 XSS 经常出现在一些可以发表评论的地方，如帖子、博客。</p>
+<p>在 DVWA 靶场中就有一个存储型 XSS 案例，它是个留言本的功能，支持用户发表评论，然后将用户输入的数据直接存储到数据库，并输出到页面上。这个过程中因为未做任何的过滤，导致了 XSS 漏洞的产生。</p>
+<p>图 7：DVWA 靶场中的存储型 XSS</p>
+<p>存储型 XSS 的特点就是不需要在诱使用户访问的URL中包含攻击代码，因为它已经存储到了服务器中，只需要让用户访问包含输出攻击代码的页面即可，漏洞代码如下：<br><?php
+if( isset( $_POST[ 'btnSign' ] ) ) {
+    // Get input
+    $message = trim( $_POST[ 'mtxMessage' ] );
+    $name    = trim( $_POST[ 'txtName' ] );
+    // Sanitize message input
+    $message = stripslashes( $message );
+    $message = mysql_real_escape_string( $message );
+    // Sanitize name input
+    $name = mysql_real_escape_string( $name );
+    // Update database
+    $query  = "INSERT INTO guestbook ( comment, name ) VALUES ( '$message', '$name' );";
+    $result = mysql_query( $query ) or die( '<pre>' . mysql_error() . '</pre>' );
+    //mysql_close();
+}
+?></p>
+<p>从 POST 参数中获取 mtxMessage 和 txtName 参数后，虽然经过一定过滤才插入到数据库中，但是中括号不会被过滤，在其他地方将其输出到页面后就会被解析（如图 5）。我们在 Message 中输入“<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>”，点击“Sign Guestbook”提交，即可触发漏洞。</p>
+<p>图 8：触发漏洞弹框</p>
+<p>利用 Chrome 浏览器的“检查”功能查看网页源码，可以发现刚才输入消息中的<code>&lt;script&gt;</code>标签被解析了：</p>
+<p>图 9：script 标签被解析</p>
+<p>正是它导致弹框的出现。</p>
+<p>DOM 型 XSS</p>
+<p>最后是 DOM 型 XSS 漏洞，它是基于文档对象模型（Document Object Model，DOM，用于将 Web 页面与脚本语言链接起来的标准编程接口）的一种漏洞，它不经过服务端，而是通过 URL 传入参数去触发，因此也属于反射型 XSS。</p>
+<blockquote>
+<p>过段时间更新</p>
+</blockquote>
 
     </div>
 
@@ -398,6 +421,15 @@
     
     
       
+  <div class="popular-posts-header">相关推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\WebSecurity02-environment\" rel="bookmark">【Web安全扫盲】02-靶场：漏洞练习环境搭建</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\WebSecurity01\" rel="bookmark">【Web安全扫盲】01-概览、常用渗透工具、信息收集</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
@@ -410,7 +442,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://freepiao.cn/WebSecurity/" title="Web安全笔记">https://freepiao.cn/WebSecurity/</a>
+      <a href="https://freepiao.cn/WebSecurity03-XSS/" title="【Web安全扫盲】03-XSS">https://freepiao.cn/WebSecurity03-XSS/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -426,11 +458,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/30-%E5%B1%82%E6%AC%A1%E6%A8%A1%E5%9E%8B-%E5%A4%9A%E8%8A%82%E7%82%B9%E6%A8%A1%E5%9E%8B-MultiJointModel/" rel="prev" title="【WebGL之巅】（完结篇）30-层次模型-多节点模型">
-                  <i class="fa fa-chevron-left"></i> 【WebGL之巅】（完结篇）30-层次模型-多节点模型
+                <a href="/WebSecurity02-environment/" rel="prev" title="【Web安全扫盲】02-靶场：漏洞练习环境搭建">
+                  <i class="fa fa-chevron-left"></i> 【Web安全扫盲】02-靶场：漏洞练习环境搭建
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/%E3%80%90%E7%AE%97%E6%B3%95%E3%80%91%E6%80%8E%E4%B9%88%E5%AD%A6%E7%AE%97%E6%B3%95%EF%BC%9F/" rel="next" title="【算法复习】复杂度">
+                  【算法复习】复杂度 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -477,14 +512,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">505k</span>
+    <span title="站点总字数">528k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:39</span>
+    <span title="站点阅读时长">8:01</span>
   </span>
 </div>
 
@@ -547,7 +582,7 @@ setInterval("createtime()",250);
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/WebSecurity/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/WebSecurity03-XSS/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 <script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"bai-23/commons","issue_term":"og:title","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
