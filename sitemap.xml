@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://freepiao.cn/%E3%80%90%E7%AE%97%E6%B3%95%E3%80%91%E6%80%8E%E4%B9%88%E5%AD%A6%E7%AE%97%E6%B3%95%EF%BC%9F/</loc>
+    <loc>https://freepiao.cn/Algorithm-%E5%A4%8D%E6%9D%82%E5%BA%A6/</loc>
     
     <lastmod>2021-08-10</lastmod>
     
@@ -494,6 +494,13 @@
   </url>
   
   <url>
+    <loc>https://freepiao.cn/tags/Algorithm/</loc>
+    <lastmod>2021-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/tags/python/</loc>
     <lastmod>2021-08-10</lastmod>
     <changefreq>daily</changefreq>
@@ -564,13 +571,6 @@
   </url>
   
   <url>
-    <loc>https://freepiao.cn/tags/Algorithm/</loc>
-    <lastmod>2021-08-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://freepiao.cn/tags/Ajax/</loc>
     <lastmod>2021-08-10</lastmod>
     <changefreq>daily</changefreq>
@@ -629,6 +629,13 @@
   </url>
   
   <url>
+    <loc>https://freepiao.cn/categories/code/algorithm/</loc>
+    <lastmod>2021-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://freepiao.cn/categories/code/backend/</loc>
     <lastmod>2021-08-10</lastmod>
     <changefreq>daily</changefreq>
@@ -665,13 +672,6 @@
   
   <url>
     <loc>https://freepiao.cn/categories/apis/</loc>
-    <lastmod>2021-08-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://freepiao.cn/categories/code/algorithm/</loc>
     <lastmod>2021-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
