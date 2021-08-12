@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-xldbpbtuvv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"freepiao.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="要点：线性表知识点汇总">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【数据结构与算法】线性表">
+<meta property="og:url" content="https://freepiao.cn/Algorithm-linearList/index.html">
+<meta property="og:site_name" content="快乐码原">
+<meta property="og:description" content="要点：线性表知识点汇总">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm7.png">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm8.png">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm5.png">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm9.png">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm10.png">
+<meta property="og:image" content="https://freepiao.cn/images/algorithm11.png">
+<meta property="article:published_time" content="2021-08-12T02:35:25.000Z">
+<meta property="article:modified_time" content="2021-08-12T03:29:10.559Z">
+<meta property="article:author" content="Song木头">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://freepiao.cn/images/algorithm7.png">
+
+
+<link rel="canonical" href="https://freepiao.cn/Algorithm-linearList/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://freepiao.cn/Algorithm-linearList/","path":"Algorithm-linearList/","title":"【数据结构与算法】线性表"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【数据结构与算法】线性表 | 快乐码原</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?c8b0778ca062f7721fa47eddb1ebf49c"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">快乐码原</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-广场"><a href="/" rel="section"><i class="fa fa-comment-dots fa-fw"></i>广场</a></li>
+        <li class="menu-item menu-item-home"><a href="/home" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">19</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">65</span></a></li>
+        <li class="menu-item menu-item-随笔"><a href="/categories/essay/" rel="section"><i class="fa fa-coffee fa-fw"></i>随笔</a></li>
+        <li class="menu-item menu-item-前端"><a href="/categories/code/frontend" rel="section"><i class="fa fa-code fa-fw"></i>前端</a></li>
+        <li class="menu-item menu-item-算法"><a href="/categories/code/algorithm" rel="section"><i class="fa fa-code-branch fa-fw"></i>算法</a></li>
+        <li class="menu-item menu-item-webgl"><a href="/categories/code/frontend/webgl" rel="section"><i class="fa fa-file-code fa-fw"></i>WebGL</a></li>
+        <li class="menu-item menu-item-爬虫"><a href="/categories/code/backend/Python" rel="section"><i class="fa fa-bug fa-fw"></i>爬虫</a></li>
+        <li class="menu-item menu-item-api"><a href="/apis/" rel="section"><i class="fa fa-star-half-alt fa-fw"></i>API</a></li>
+        <li class="menu-item menu-item-合作"><a href="/cooperation/" rel="section"><i class="fa fa-user-friends fa-fw"></i>合作</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">一、线性表的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-text">二、线性表的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-text">三、线性表的顺序存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">3.1 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%A4%BA%E6%84%8F%E5%9B%BE%E5%A6%82%E4%B8%8B%E6%89%80%E7%A4%BA"><span class="nav-text">3.2 顺序存储示意图如下所示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E7%BC%96%E5%8F%B7%E5%9C%B0%E5%9D%80"><span class="nav-text">3.3 编号地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE%E5%85%AC%E5%BC%8F"><span class="nav-text">3.4 存储位置公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E5%AD%98%E5%8F%96%E6%93%8D%E4%BD%9C%E6%97%B6%E9%97%B4%E6%80%A7%E8%83%BD"><span class="nav-text">3.5 存取操作时间性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-%E9%9A%8F%E6%9C%BA%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-text">3.6 随机存储结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">3.7 时间复杂度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%AD%98%E5%8F%96%E6%93%8D%E4%BD%9C"><span class="nav-text">对于存取操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E6%8F%92%E5%85%A5%E5%92%8C%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="nav-text">对于插入和删除操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-8-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">3.8 使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-text">四、线性表的链式存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E9%93%BE%E8%A1%A8"><span class="nav-text">4.1 什么是链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E7%BB%93%E7%82%B9"><span class="nav-text">4.2 结点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E5%A4%B4%E6%8C%87%E9%92%88-amp-%E5%A4%B4%E7%BB%93%E7%82%B9"><span class="nav-text">4.3 头指针&amp;头结点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%B4%E6%8C%87%E9%92%88"><span class="nav-text">头指针</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%B4%E7%BB%93%E7%82%B9"><span class="nav-text">头结点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-%E5%8D%95%E9%93%BE%E8%A1%A8"><span class="nav-text">4.4 单链表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">单链表的时间复杂度</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%AD%98%E5%8F%96%E6%93%8D%E4%BD%9C-1"><span class="nav-text">对于存取操作</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E6%8F%92%E5%85%A5%E5%92%8C%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C-1"><span class="nav-text">对于插入和删除操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E7%BA%BF%E6%80%A7%E8%A1%A8%E5%92%8C%E5%8D%95%E9%93%BE%E8%A1%A8%E6%AF%94%E8%BE%83"><span class="nav-text">4.5 线性表和单链表比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-6-%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8"><span class="nav-text">4.6 循环链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-7-%E5%8D%95%E9%93%BE%E8%A1%A8%E5%92%8C%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">4.7 单链表和循环链表的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6"><span class="nav-text">单链表判断条件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6"><span class="nav-text">循环链表判断条件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-8-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="nav-text">4.8 双向链表</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Song木头"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Song木头</p>
+  <div class="site-description" itemprop="description">民以食为天</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bai-23" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bai-23" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2421662954@qq.com" title="E-Mail → mailto:2421662954@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/xxg0" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;xxg0" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      传送门
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.aoau.top/" title="http:&#x2F;&#x2F;www.aoau.top" rel="noopener" target="_blank">AOAU.TOP</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+      <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div id="myCanvasContainer" class="widget tagcloud">
+              <canvas width="250" height="250" id="resCanvas" style="width=100%">
+                  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/" rel="tag">Ajax</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Browser/" rel="tag">Browser</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Echarts/" rel="tag">Echarts</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebGL/" rel="tag">WebGL</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag">Web安全</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontEnd/" rel="tag">frontEnd</a><span class="tag-list-count">37</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/" rel="tag">typescript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/websocket/" rel="tag">websocket</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87Api/" rel="tag">图片Api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a><span class="tag-list-count">13</span></li></ul>
+              </canvas>
+          </div>
+      </div>
+      
+
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/bai-23" class="github-corner" title="yo yoyo" aria-label="yo yoyo" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://freepiao.cn/Algorithm-linearList/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Song木头">
+      <meta itemprop="description" content="民以食为天">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="快乐码原">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【数据结构与算法】线性表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-08-12 10:35:25 / 修改时间：11:29:10" itemprop="dateCreated datePublished" datetime="2021-08-12T10:35:25+08:00">2021-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/code/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>要点：线性表知识点汇总</p>
+<span id="more"></span>
+
+<p><img src="/images/algorithm7.png" alt="1"></p>
+<h3 id="一、线性表的定义"><a href="#一、线性表的定义" class="headerlink" title="一、线性表的定义"></a>一、线性表的定义</h3><p>由n(n≥O)个数据特性相同的元素构成的有限序列称为线性表。</p>
+<p><img src="/images/algorithm8.png" alt="2"></p>
+<h3 id="二、线性表的特点"><a href="#二、线性表的特点" class="headerlink" title="二、线性表的特点"></a>二、线性表的特点</h3><p>1、线性表中元素的个数<code>n(n≥O)</code>定义为线性表的长度，<code>n=O</code>时称为空表。</p>
+<p>2、将非空的线性表(n&gt;O)记作(a1，a2，a3，…，an)；</p>
+<p>3、这里的数据元素$a_i (1≤i≤n)$​​​只是个抽象的符号，其具体含义在不同情况下可以不同；</p>
+<p>4、在非空的线性表，有且仅有一个开始结点$a_1$​,它没有直接前趋，而仅有一个直接后继；</p>
+<p>5、有且仅有一个终端结点$a_n$,它没有直接后继，而仅有一个直接前趋$a_n-1$​；</p>
+<p>6、其余的内部结点$a_i$​,(2&lt;i&lt;n-1)都有且仅有一个直接前趋$a_i-1$​和一个直接后继$a_i+1$​​ 。</p>
+<blockquote>
+<p>线性表的例子: </p>
+<p>26个英文字母的字母表：(A, B, C, …，Z)；学生信息表；12星座。</p>
+<p>同一线性表中的元素必定具有相同的特性，数据元素之间关系是线性的。</p>
+</blockquote>
+<h3 id="三、线性表的顺序存储结构"><a href="#三、线性表的顺序存储结构" class="headerlink" title="三、线性表的顺序存储结构"></a>三、线性表的顺序存储结构</h3><h4 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h4><p>是用一段<strong>地址连续的存储单元依次存储</strong>线性表的<strong>数据元</strong></p>
+<h4 id="3-2-顺序存储示意图如下所示"><a href="#3-2-顺序存储示意图如下所示" class="headerlink" title="3.2 顺序存储示意图如下所示"></a>3.2 顺序存储示意图如下所示</h4><p><img src="/images/algorithm5.png" alt="3"></p>
+<h4 id="3-3-编号地址"><a href="#3-3-编号地址" class="headerlink" title="3.3 编号地址"></a>3.3 编号地址</h4><p><strong>存储器中的每个存储单元都有自己的编号，这个编号称为地址</strong></p>
+<h4 id="3-4-存储位置公式"><a href="#3-4-存储位置公式" class="headerlink" title="3.4 存储位置公式"></a>3.4 存储位置公式</h4><p>每个数据元素，不管它是整型，实型还是字符型，它<strong>都是需要</strong>占用一定的存储单元空间的。</p>
+<p>假设占用的是 <strong>c 个存储单元</strong>，那么对于线性表的<strong>第 i 个数据元素</strong> $a_i$​ 的<strong>存储位置</strong>都可以由 $a_1$​ 推导算出：</p>
+<p>$LOC(a_i) = LOC(a_1) + (i - 1) * c$</p>
+<h4 id="3-5-存取操作时间性能"><a href="#3-5-存取操作时间性能" class="headerlink" title="3.5 存取操作时间性能"></a>3.5 存取操作时间性能</h4><p>上述推导公式具体内容如下图所示: </p>
+<p><img src="/images/algorithm9.png" alt="4"></p>
+<p>通过该公式，就可以<strong>随时算出</strong>线性表中<strong>任意位置的地址</strong>；</p>
+<p>不管是第一个还是最后一个，都是相同的时间，<strong>也即</strong>对于线性表<strong>每个位置</strong>的<strong>存入或者取出数据</strong>，对于计算机来说<strong>都是相等的时间</strong>，也就是一个<strong>常数时间</strong>。</p>
+<p>因此，线性表的<strong>存取操作时间性能</strong>为 $O(1)$</p>
+<h4 id="3-6-随机存储结构"><a href="#3-6-随机存储结构" class="headerlink" title="3.6 随机存储结构"></a>3.6 随机存储结构</h4><p>我们通常将<strong>存取操作</strong>具备<strong>常数性能</strong>（$O(1)$）的<strong>存储结构</strong>称为随机存储结构</p>
+<h4 id="3-7-时间复杂度"><a href="#3-7-时间复杂度" class="headerlink" title="3.7 时间复杂度"></a>3.7 时间复杂度</h4><h5 id="对于存取操作"><a href="#对于存取操作" class="headerlink" title="对于存取操作"></a>对于存取操作</h5><p>线性表的顺序存储结构，对于<strong>存取操作</strong>，其<strong>时间复杂度</strong>为 $O(1)$​，因为<strong>元素位置</strong>可以<strong>直接计算得到</strong></p>
+<h5 id="对于插入和删除操作"><a href="#对于插入和删除操作" class="headerlink" title="对于插入和删除操作"></a>对于<strong>插入和删除</strong>操作</h5><p>对于<strong>插入和删除</strong>操作，其<strong>时间复杂度</strong>为 $O(n)$，因为插入或删除后，需要<strong>移动其余元素</strong></p>
+<h4 id="3-8-使用场景"><a href="#3-8-使用场景" class="headerlink" title="3.8 使用场景"></a>3.8 使用场景</h4><p>线性表顺序存储结构<strong>比较适用于</strong>元素<strong>存取操作</strong>较多，<strong>增删操作较少</strong>的场景</p>
+<h3 id="四、线性表的链式存储结构"><a href="#四、线性表的链式存储结构" class="headerlink" title="四、线性表的链式存储结构"></a>四、线性表的链式存储结构</h3><blockquote>
+<p>参考：<a href="https://freepiao.cn/Algorithm-SingleLinkedList/">单链表详解</a>、<a href="https://freepiao.cn/Algorithm-DoubleLinkedList/">双向链表详解</a></p>
+</blockquote>
+<h4 id="4-1-什么是链表"><a href="#4-1-什么是链表" class="headerlink" title="4.1 什么是链表"></a>4.1 什么是链表</h4><p><strong>一个或多个结点</strong>组合而成的数据结构称为链表</p>
+<h4 id="4-2-结点"><a href="#4-2-结点" class="headerlink" title="4.2 结点"></a>4.2 结点</h4><p><strong>结点</strong> 一般由<strong>两部分</strong>内容构成：</p>
+<ul>
+<li><p>数据域：存储<strong>真实数据元素</strong></p>
+</li>
+<li><p>指针域：存储<strong>下一个</strong>结点的<strong>地址（指针）</strong></p>
+</li>
+</ul>
+<p><img src="/images/algorithm10.png" alt="5"></p>
+<h4 id="4-3-头指针-amp-头结点"><a href="#4-3-头指针-amp-头结点" class="headerlink" title="4.3 头指针&amp;头结点"></a>4.3 头指针&amp;头结点</h4><p><strong>头结点的数据</strong>域<strong>可以不存储任何信息</strong>，其指针域存储<strong>指向</strong>第一个结点的指针（<strong>即指向头指针</strong>）</p>
+<h5 id="头指针"><a href="#头指针" class="headerlink" title="头指针"></a>头指针</h5><p>一般把<strong>链表</strong>中的<strong>第一个结</strong>点称为 <strong>头指针</strong>，其<strong>存储</strong>链表的<strong>第一个数据元素</strong></p>
+<h5 id="头结点"><a href="#头结点" class="headerlink" title="头结点"></a>头结点</h5><p>为了能更加方便地对链表进行操作，会在<strong>单链表的第一个结点（即头指针）前</strong>附<strong>设一个结点</strong>，称为 <strong>头结点</strong></p>
+<p><img src="/images/algorithm11.png" alt="6"></p>
+<h4 id="4-4-单链表"><a href="#4-4-单链表" class="headerlink" title="4.4 单链表"></a>4.4 单链表</h4><p>在<strong>线性表的顺序存储结构</strong>（即数组）中，其任意一个元素的存储位置可以通过计算得到，因此其数据读取的<strong>时间复杂度为</strong> $O(1)$</p>
+<h5 id="单链表的时间复杂度"><a href="#单链表的时间复杂度" class="headerlink" title="单链表的时间复杂度"></a>单链表的时间复杂度</h5><h6 id="对于存取操作-1"><a href="#对于存取操作-1" class="headerlink" title="对于存取操作"></a>对于存取操作</h6><p>对于单链表结构，假设需要获取第 i 个元素，则必须从第一个结点开始依次进行遍历，直到达到第 i 个结点。因此，对于单链表结构而言，其数据元素读取的<strong>时间复杂度</strong>为 $O(n)$</p>
+<h6 id="对于插入和删除操作-1"><a href="#对于插入和删除操作-1" class="headerlink" title="对于插入和删除操作"></a>对于<strong>插入和删除</strong>操作</h6><p>对单链表结构来说，对其任意一个位置进行增删操作，其<strong>时间复杂度</strong>为 $O(n)$</p>
+<p><strong>因为</strong>需要先进行<strong>遍历找到目标元素</strong>，对头指针的增删操作其<strong>时间复杂度</strong>为 $O(1)$</p>
+<h4 id="4-5-线性表和单链表比较"><a href="#4-5-线性表和单链表比较" class="headerlink" title="4.5 线性表和单链表比较"></a>4.5 线性表和单链表比较</h4><p>如果只对一个元素进行增删操作，两种结构并不存在优劣之分，但如果针对多个数据进行增删，由于线性表每一次增删都需要移动 n-i 个元素，即<strong>每个元素</strong>的操作都为 $O(n)$</p>
+<p>而单链表只在<strong>第一次</strong>遍历定位目标元素时为$O(n)$，<strong>对后续元素</strong>的增删只需简单地赋值移动指针即可，其时间复杂度为 $O(1)$</p>
+<blockquote>
+<p>总结：对于<strong>插入或删除数据越频繁</strong>的操作，<strong>单链表</strong>的效率就越明显</p>
+</blockquote>
+<h4 id="4-6-循环链表"><a href="#4-6-循环链表" class="headerlink" title="4.6 循环链表"></a>4.6 循环链表</h4><p>将单链表中的<strong>终端结点</strong>的<strong>指针端</strong>由空指针<strong>改为指向头结点</strong>，就使整个单链表形成一个环；</p>
+<p>这种头尾相接的单链表称为单循环链表，简称 <strong>循环链表</strong>（circular linked list）</p>
+<blockquote>
+<p>循环链表<strong>不一定需要头结点</strong></p>
+</blockquote>
+<h4 id="4-7-单链表和循环链表的区别"><a href="#4-7-单链表和循环链表的区别" class="headerlink" title="4.7 单链表和循环链表的区别"></a>4.7 单链表和循环链表的区别</h4><p>为了使空链表与非空链表<strong>处理一致，我们通常设一个头结点（</strong>循环链表不一定需要头结点）</p>
+<p>主要差异<strong>就在于循环的判断条件上</strong></p>
+<h5 id="单链表判断条件"><a href="#单链表判断条件" class="headerlink" title="单链表判断条件"></a>单链表判断条件</h5><p>尾结点是否<strong>指向空</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;next = NULL</span><br></pre></td></tr></table></figure>
+
+<h5 id="循环链表判断条件"><a href="#循环链表判断条件" class="headerlink" title="循环链表判断条件"></a>循环链表判断条件</h5><p>当前结点是否指<strong>向头结点</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;next = head</span><br></pre></td></tr></table></figure>
+
+<p>是则当前结点为尾结点</p>
+<h4 id="4-8-双向链表"><a href="#4-8-双向链表" class="headerlink" title="4.8 双向链表"></a>4.8 双向链表</h4><p>双向链表（double linked list）：在单链表的每个结点中，再设置一个<strong>指向其前驱结点的指针域</strong></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Algorithm-Array\" rel="bookmark">【数据结构与算法】JavaScript数组-操作数组方法总结</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Algorithm-DoubleLinkedList\" rel="bookmark">【数据结构与算法】双向链表详解</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Algorithm-SingleLinkedList\" rel="bookmark">【数据结构与算法】单向链表详解</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Algorithm-guide\" rel="bookmark">【数据结构与算法】数据结构与算法前言、复杂度</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Song木头
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://freepiao.cn/Algorithm-linearList/" title="【数据结构与算法】线性表">https://freepiao.cn/Algorithm-linearList/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN,en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Algorithm/" rel="tag"><i class="fa fa-tag"></i> Algorithm</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Algorithm-Array/" rel="prev" title="【数据结构与算法】JavaScript数组-操作数组方法总结">
+                  <i class="fa fa-chevron-left"></i> 【数据结构与算法】JavaScript数组-操作数组方法总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Algorithm-SingleLinkedList/" rel="next" title="【数据结构与算法】单向链表详解">
+                  【数据结构与算法】单向链表详解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+  
+  <div class='myComments' style="margin-top:20px;margin-bottom:-50px;padding-top:5px;border-top:1px dashed #c0bfbf">
+    <span>倾听是一种美德，做一个高雅的人</span>
+    <span style="font-size:14px;">—— Here <span style="font-size:20px;color:#d0685d;">☛</span> <a target="_blank" rel="noopener" href="https://github.com/">github</a> to Join Square/Comment.</span>
+  </div>
+    <div class="comments utterances-container"></div>
+  </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-egg"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Song木头</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        站点访客：<span id="busuanzi_value_site_uv"><i class="fa fa-spinner"></i></span>人次
+      </span>
+    </span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">570k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:38</span>
+  </span>
+</div>
+
+<!-- 网站运行时间的设置
+<div> 
+  <i class="fa fa-dog"></i>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span> 
+</div>
+
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/10/2021 13:14:21");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "与她在一起的: -"+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒 ";
+    }
+setInterval("createtime()",250);
+</script>
+ -->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.4" zIndex="-2" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":"forest","js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js","integrity":"sha256-sVAx+v/Q7v0Q2xm5vN7h5ccSna6gaLREhG9sF8pKT6I="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":false}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://freepiao.cn/Algorithm-linearList/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"bai-23/commons","issue_term":"og:title","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

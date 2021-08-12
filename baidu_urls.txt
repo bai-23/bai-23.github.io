@@ -1,5 +1,5 @@
+https://freepiao.cn/Algorithm-DoubleLinkedList/
+https://freepiao.cn/Algorithm-SingleLinkedList/
+https://freepiao.cn/Algorithm-linearList/
 https://freepiao.cn/Algorithm-Array/
 https://freepiao.cn/Algorithm-guide/
-https://freepiao.cn/WebSecurity03-XSS/
-https://freepiao.cn/WebSecurity02-environment/
-https://freepiao.cn/WebSecurity01/
