@@ -1,5 +1,5 @@
+https://freepiao.cn/JavaScript-time/
 https://freepiao.cn/Algorithm-String/
 https://freepiao.cn/Algorithm-Queue/
 https://freepiao.cn/Algorithm-Stack/
 https://freepiao.cn/Algorithm-DoubleLinkedList/
-https://freepiao.cn/Algorithm-SingleLinkedList/
