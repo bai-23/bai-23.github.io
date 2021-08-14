@@ -1,4 +1,4 @@
-https://freepiao.cn/JavaScript-time/
+https://freepiao.cn/JavaScript-dateTime/
 https://freepiao.cn/Algorithm-String/
 https://freepiao.cn/Algorithm-Queue/
 https://freepiao.cn/Algorithm-Stack/
