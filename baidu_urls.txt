@@ -1,5 +1,5 @@
+https://freepiao.cn/Algorithm-Tree/
 https://freepiao.cn/Algorithm-Hashtable/
 https://freepiao.cn/Algorithm-set%EF%BC%86map/
 https://freepiao.cn/JavaScript-dateTime/
 https://freepiao.cn/Algorithm-String/
-https://freepiao.cn/Algorithm-Queue/
