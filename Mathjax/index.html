@@ -32,7 +32,7 @@
 <meta property="og:description" content="先知：mathjax是一个用于latex、mathml和ascimath表示法的开源javascript显示引擎。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-16T07:10:43.000Z">
-<meta property="article:modified_time" content="2021-08-16T08:01:14.274Z">
+<meta property="article:modified_time" content="2021-08-16T08:08:19.190Z">
 <meta property="article:author" content="Song木头">
 <meta property="article:tag" content="Math">
 <meta property="article:tag" content="Markdown">
@@ -297,7 +297,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-08-16 15:10:43 / 修改时间：16:01:14" itemprop="dateCreated datePublished" datetime="2021-08-16T15:10:43+08:00">2021-08-16</time>
+      <time title="创建时间：2021-08-16 15:10:43 / 修改时间：16:08:19" itemprop="dateCreated datePublished" datetime="2021-08-16T15:10:43+08:00">2021-08-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -328,7 +328,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4k</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -624,10 +624,10 @@
 <h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p>起始标记<code>\begin&#123;matrix&#125;``，结束标记``\end&#123;matrix&#125;</code></p>
 <p>每一行末尾标记<code>\\</code>，行间元素之间以<code>&amp;</code>分隔</p>
 <p>举例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;matrix&#125;</span><br><span class="line"><span class="number">1</span>&amp;<span class="number">0</span>&amp;<span class="number">0</span>\\</span><br><span class="line"><span class="number">0</span>&amp;<span class="number">1</span>&amp;<span class="number">0</span>\\</span><br><span class="line"><span class="number">0</span>&amp;<span class="number">0</span>&amp;<span class="number">1</span>\\</span><br><span class="line">\end&#123;matrix&#125;$$</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;matrix&#125;</span><br><span class="line"><span class="number">1</span>&amp;<span class="number">0</span>&amp;<span class="number">0</span>\\\</span><br><span class="line"><span class="number">0</span>&amp;<span class="number">1</span>&amp;<span class="number">0</span>\\</span><br><span class="line"><span class="number">0</span>&amp;<span class="number">0</span>&amp;<span class="number">1</span></span><br><span class="line">\end&#123;matrix&#125;$$</span><br></pre></td></tr></table></figure>
 
 <p>效果为</p>
-<p>$$\begin{matrix}<br>1&amp;0&amp;0\<br>0&amp;1&amp;0\<br>0&amp;0&amp;1\<br>\end{matrix}$$</p>
+<p>$$\begin{matrix}<br>1&amp;0&amp;0\\<br>0&amp;1&amp;0\\<br>0&amp;0&amp;1<br>\end{matrix}$$​​​</p>
 <h3 id="矩阵边框"><a href="#矩阵边框" class="headerlink" title="矩阵边框"></a>矩阵边框</h3><p>在起始、结束标记处用下列词替换<code>matrix</code></p>
 <ul>
 <li><code>pmatrix</code>：小括号边框</li>
@@ -640,10 +640,10 @@
 <p>竖省略号：<code>\vdots</code></p>
 <p>斜省略号：<code>\ddots</code></p>
 <p>举例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;bmatrix&#125;</span><br><span class="line">&#123;a_&#123;<span class="number">11</span>&#125;&#125;&amp;&#123;a_&#123;<span class="number">12</span>&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;<span class="number">1n</span>&#125;&#125;\\</span><br><span class="line">&#123;a_&#123;<span class="number">21</span>&#125;&#125;&amp;&#123;a_&#123;<span class="number">22</span>&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;<span class="number">2n</span>&#125;&#125;\\</span><br><span class="line">&#123;\vdots&#125;&amp;&#123;\vdots&#125;&amp;&#123;\ddots&#125;&amp;&#123;\vdots&#125;\\</span><br><span class="line">&#123;a_&#123;m1&#125;&#125;&amp;&#123;a_&#123;m2&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;mn&#125;&#125;\\</span><br><span class="line">\end&#123;bmatrix&#125;$$</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;bmatrix&#125;</span><br><span class="line">&#123;a_&#123;<span class="number">11</span>&#125;&#125;&amp;&#123;a_&#123;<span class="number">12</span>&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;<span class="number">1n</span>&#125;&#125;\\\\</span><br><span class="line">&#123;a_&#123;<span class="number">21</span>&#125;&#125;&amp;&#123;a_&#123;<span class="number">22</span>&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;<span class="number">2n</span>&#125;&#125;\\\\</span><br><span class="line">&#123;\vdots&#125;&amp;&#123;\vdots&#125;&amp;&#123;\ddots&#125;&amp;&#123;\vdots&#125;\\\\</span><br><span class="line">&#123;a_&#123;m1&#125;&#125;&amp;&#123;a_&#123;m2&#125;&#125;&amp;&#123;\cdots&#125;&amp;&#123;a_&#123;mn&#125;&#125;</span><br><span class="line">\end&#123;bmatrix&#125;$$</span><br></pre></td></tr></table></figure>
 
 <p>效果为</p>
-<p>$$\begin{bmatrix}<br>{a_{11}}&amp;{a_{12}}&amp;{\cdots}&amp;{a_{1n}}\<br>{a_{21}}&amp;{a_{22}}&amp;{\cdots}&amp;{a_{2n}}\<br>{\vdots}&amp;{\vdots}&amp;{\ddots}&amp;{\vdots}\<br>{a_{m1}}&amp;{a_{m2}}&amp;{\cdots}&amp;{a_{mn}}\<br>\end{bmatrix}$$</p>
+<p>$$\begin{bmatrix}<br>{a_{11}}&amp;{a_{12}}&amp;{\cdots}&amp;{a_{1n}}\\<br>{a_{21}}&amp;{a_{22}}&amp;{\cdots}&amp;{a_{2n}}\\<br>{\vdots}&amp;{\vdots}&amp;{\ddots}&amp;{\vdots}\\<br>{a_{m1}}&amp;{a_{m2}}&amp;{\cdots}&amp;{a_{mn}}<br>\end{bmatrix}$$​​​​</p>
 <h3 id="阵列"><a href="#阵列" class="headerlink" title="阵列"></a>阵列</h3><p>需要array环境：起始、结束处以<code>&#123;array&#125;</code>声明</p>
 <p>对齐方式：在<code>&#123;array&#125;</code>后以<code>&#123;&#125;</code>逐行统一声明</p>
 <ul>
@@ -652,15 +652,15 @@
 </ul>
 <p>插入水平线：<code>\hline</code></p>
 <p>举例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;array&#125;&#123;c|lll&#125;</span><br><span class="line">&#123;↓&#125;&amp;&#123;a&#125;&amp;&#123;b&#125;&amp;&#123;c&#125;\\</span><br><span class="line">\hline</span><br><span class="line">&#123;R_1&#125;&amp;&#123;c&#125;&amp;&#123;b&#125;&amp;&#123;a&#125;\\</span><br><span class="line">&#123;R_2&#125;&amp;&#123;b&#125;&amp;&#123;c&#125;&amp;&#123;c&#125;\\</span><br><span class="line">\end&#123;array&#125;$$</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;array&#125;&#123;c|lll&#125;</span><br><span class="line">&#123;↓&#125;&amp;&#123;a&#125;&amp;&#123;b&#125;&amp;&#123;c&#125;\\\\</span><br><span class="line">\hline</span><br><span class="line">&#123;R_1&#125;&amp;&#123;c&#125;&amp;&#123;b&#125;&amp;&#123;a&#125;\\\\</span><br><span class="line">&#123;R_2&#125;&amp;&#123;b&#125;&amp;&#123;c&#125;&amp;&#123;c&#125;</span><br><span class="line">\end&#123;array&#125;$$</span><br></pre></td></tr></table></figure>
 
 <p>效果为</p>
-<p>$$\begin{array}{c|lll}<br>{↓}&amp;{a}&amp;{b}&amp;{c}\<br>\hline<br>{R_1}&amp;{c}&amp;{b}&amp;{a}\<br>{R_2}&amp;{b}&amp;{c}&amp;{c}\<br>\end{array}$$</p>
+<p>$$\begin{array}{c|lll}<br>{↓}&amp;{a}&amp;{b}&amp;{c}\\<br>\hline<br>{R_1}&amp;{c}&amp;{b}&amp;{a}\\<br>{R_2}&amp;{b}&amp;{c}&amp;{c}<br>\end{array}$$​​​​​​</p>
 <h3 id="方程组"><a href="#方程组" class="headerlink" title="方程组"></a>方程组</h3><p>需要cases环境：起始、结束处以<code>&#123;cases&#125;</code>声明</p>
 <p>举例</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;cases&#125;</span><br><span class="line">a_1x+b_1y+c_1z=d_1\\</span><br><span class="line">a_2x+b_2y+c_2z=d_2\\</span><br><span class="line">a_3x+b_3y+c_3z=d_3\\</span><br><span class="line">\end&#123;cases&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$$\begin&#123;cases&#125;</span><br><span class="line">a_1x+b_1y+c_1z=d_1\\\\</span><br><span class="line">a_2x+b_2y+c_2z=d_2\\\\</span><br><span class="line">a_3x+b_3y+c_3z=d_3</span><br><span class="line">\end&#123;cases&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
 
-<p>$$\begin{cases}<br>a_1x+b_1y+c_1z=d_1\<br>a_2x+b_2y+c_2z=d_2\<br>a_3x+b_3y+c_3z=d_3\<br>\end{cases}<br>$$</p>
+<p>$$\begin{cases}<br>a_1x+b_1y+c_1z=d_1\\<br>a_2x+b_2y+c_2z=d_2\\<br>a_3x+b_3y+c_3z=d_3<br>\end{cases}<br>$$​​​​</p>
 
     </div>
 
